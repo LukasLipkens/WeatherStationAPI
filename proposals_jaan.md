@@ -184,6 +184,7 @@
 | sensorId | no | null |  | multiple allowed |
 | page | no | 1 |  |  |
 | perpage | no | 100 |  |  |
+
 **success response:**
 ```json
 {

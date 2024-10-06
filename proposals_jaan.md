@@ -316,7 +316,6 @@
 Dit is zeer modulair. Als er een sensor zou zijn die we nog niet kennen kunnen we deze ook gewoon toevoegen.
 ```json
 {
-  "stationId": "WSTATION-XXXXXXXX",
   "timestamp": "YYYY-MM-DDTHH:MM:SSZ",
   "sensorType": "temprature",
   "sensorUnit": "celsius",
@@ -328,7 +327,6 @@ Dit is zeer modulair. Als er een sensor zou zijn die we nog niet kennen kunnen w
 Ook modulair als er nieuwe station is. gewoon toe voegen aan database.
 ```json
 {
-  "stationId": "WSTATION-XXXXXXXX",
   "latitude": "XX.XXXXXX",
   "longitude": "XX.XXXXXX"
 }

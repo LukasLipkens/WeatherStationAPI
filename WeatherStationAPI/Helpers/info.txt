@@ -1,0 +1,2 @@
+﻿in deze map komen de MappingProfiles, dit is een bestand dat de omzetting tussen een model en een Dto regelt
+gebruik hiervoor de automapper library bij nuget

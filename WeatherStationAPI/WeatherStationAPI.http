@@ -3,4 +3,6 @@
 GET {{WeatherStationAPI_HostAddress}}/weatherforecast/
 Accept: application/json
 
+
+
 ###

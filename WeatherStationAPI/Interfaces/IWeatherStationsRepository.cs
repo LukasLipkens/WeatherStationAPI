@@ -11,7 +11,7 @@ namespace WeatherStationAPI.Interfaces
         Task UpdateWeatherStationAsync(WeatherStation weatherStation);
 
         // Verkrijg alle weerstations
-        Task<IEnumerable<WeatherStation>> GetAllWeatherStationsAsync();
+        Task<List<WeatherStation>> GetAllWeatherStationsAsync();
 
         // Verkrijg een weerstation op basis van ID
         Task<WeatherStation> GetWeatherStationByIdAsync(int stationId);

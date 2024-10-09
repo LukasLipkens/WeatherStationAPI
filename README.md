@@ -32,7 +32,6 @@
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | station_id | yes | stations(id) | string | no | no |
 | sensor_id | yes | sensors(id) | int | no | no |
-| latest_value | no | no | string | yes | no |
 
 # API endpoints
 ## basic API response structure

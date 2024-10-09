@@ -138,7 +138,15 @@
       "longitude": "XX.XXXXXX"
     },
     "name": null,
-    "description": null
+    "description": null,
+    "sensors": [
+      {
+        "id": X,
+        "type": "temperature",
+        "unit": "celsius"
+      },
+      ...
+    ]
   }
 }
 ```
@@ -193,6 +201,7 @@
   "message": "Station measurements retrieved successfully.",
   "data": [
     {
+      "sensorId": X,
       "sensorType": "temperature",
       "sensorUnit": "celsius",
       "sensorValues": [

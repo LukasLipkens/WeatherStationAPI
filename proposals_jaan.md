@@ -22,7 +22,7 @@
 | station_id | yes | stations(id) | string | no | no |
 | sensor_id | yes | sensors(id) | int | no | no |
 | sensor_value | no | no | string | no | no |
-## Maybe "station_sensors" table?
+## "station_sensors" table
 | column | PK | FK | type | nullable | auto increment |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | station_id | yes | stations(id) | string | no | no |
@@ -165,7 +165,7 @@
   }
 }
 ```
-## GET baseurl/api/v1/stations/{stationId}/sensors (if "station_sensors" table exists)
+## GET baseurl/api/v1/stations/{stationId}/sensors
 **success response:**
 ```json
 {

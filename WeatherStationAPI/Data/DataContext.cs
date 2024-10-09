@@ -30,12 +30,14 @@ namespace WeatherStationAPI.Data
             modelBuilder.Entity<Station_Sensor>()
                 .HasOne<Station>()
                 .WithMany(s => s.Station_Sensors)
-                .HasForeignKey(ss => ss.StationId);
+                .HasForeignKey(ss => ss.StationId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Station_Sensor>()
                 .HasOne<Sensor>()
                 .WithMany(s => s.Station_Sensors)
-                .HasForeignKey(ss => ss.SensorId);
+                .HasForeignKey(ss => ss.SensorId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Measurement relationship with Station
             modelBuilder.Entity<Measurement>()

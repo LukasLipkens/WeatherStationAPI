@@ -19,7 +19,7 @@ namespace WeatherStationAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("GetList")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<StationDto>))]
         [ProducesResponseType(400)]
         public IActionResult GetAllStations()
@@ -34,12 +34,23 @@ namespace WeatherStationAPI.Controllers
             return Ok(stations);
         }
 
-        [HttpGet("latest")]
+        [HttpGet("Latest")]
         [ProducesResponseType(200, Type = typeof(StationDto))]
         [ProducesResponseType(400)]
-        public IActionResult GetStationsWithLatestMeasurements([FromQuery]List<int> stationIds)
+        public IActionResult GetStationsWithLatestMeasurements([FromQuery]List<int> stationIds, int measurementAmount = 1)
         {
-            var stations = _stationRepository.GetStationWithLatestMeasurementsPerSensor(stationIds[0]);
+            //var stations = _stationRepository.GetStationsWithMeasurementsPerSensor(stationIds, 2);
+            List<StationDto>? stations;
+
+            if (stationIds == null || !stationIds.Any())
+            {
+                stations = _stationRepository.GetStationsWithMeasurementsPerSensor(measurementAmount);
+            }
+            else
+            {
+                stations = _stationRepository.GetStationsWithMeasurementsPerSensor(stationIds, measurementAmount);
+            }
+
 
             if (stations == null)
             {

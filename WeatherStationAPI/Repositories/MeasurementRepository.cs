@@ -1,4 +1,5 @@
 ﻿using WeatherStationAPI.Data;
+using WeatherStationAPI.Dto;
 using WeatherStationAPI.Interfaces;
 using WeatherStationAPI.Models;
 
@@ -15,5 +16,38 @@ namespace WeatherStationAPI.Repositories
 
         public List<Measurement> GetAllMeasurementsFromStationSensor(int stationId, int sensorId)
             => _dataContext.Measurements.Where(m => m.StationId == stationId && m.SensorId == sensorId).ToList();
+
+        public List<SensorDto> GetMeasurementsFromSensorInTimeRange(List<int> sensorIds, int stationId, DateTime start, DateTime end)
+        {
+            return _dataContext.Measurements
+                .Where(m => sensorIds.Contains(m.SensorId) && m.Timestamp >= start && m.Timestamp <= end && m.StationId == stationId)
+                .GroupBy(m => m.SensorId)
+                .Select(g => new SensorDto
+                {
+                    Id = g.Key,
+                    Measurements = g.Select(m => new MeasurementDto
+                    {
+                        Timestamp = m.Timestamp,
+                        Value = m.Value
+                    }).ToList()
+                }).ToList();
+        }
+
+        public List<SensorDto> GetMeasurementsFromSensorInTimeRange(int stationId, DateTime start, DateTime end)
+
+        {
+            return _dataContext.Measurements
+                .Where(m => m.Timestamp >= start && m.Timestamp <= end && m.StationId == stationId)
+                .GroupBy(m => m.SensorId)
+                .Select(g => new SensorDto
+                {
+                    Id = g.Key,
+                    Measurements = g.Select(m => new MeasurementDto
+                    {
+                        Timestamp = m.Timestamp,
+                        Value = m.Value
+                    }).ToList()
+                }).ToList();
+        }
     }
 }

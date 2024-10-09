@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using WeatherStationAPI.Dto;
+using WeatherStationAPI.Models;
 
 namespace WeatherStationAPI.Helpers
 {
@@ -6,9 +8,10 @@ namespace WeatherStationAPI.Helpers
     {
         public MappingProfiles()
         {
-            CreateMap<Models.Measurement, Dto.MeasurementDto>();
-            CreateMap<Models.Sensor, Dto.SensorDto>();
-            CreateMap<Models.Station, Dto.StationDto>();
+            CreateMap<Measurement, MeasurementDto>();
+            CreateMap<Sensor, SensorDto>();
+            CreateMap<Station, StationDto>();
+            CreateMap<Station, SimpleStationDto>();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace WeatherStationAPI.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetAllStations()
         {
-            var stations = _mapper.Map<List<StationDto>>(_stationRepository.GetAllStations());
+            var stations = _mapper.Map<List<SimpleStationDto>>(_stationRepository.GetAllStations());
 
             if (stations == null || !stations.Any())
             {

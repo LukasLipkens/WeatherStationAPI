@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeatherStationAPI.Data;
 
@@ -11,9 +12,11 @@ using WeatherStationAPI.Data;
 namespace WeatherStationAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241009170835_test1")]
+    partial class test1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,21 +50,21 @@ namespace WeatherStationAPI.Migrations
                         {
                             StationId = 1,
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 8, 17, 11, 17, 622, DateTimeKind.Utc).AddTicks(7682),
+                            Timestamp = new DateTime(2024, 10, 8, 17, 8, 35, 312, DateTimeKind.Utc).AddTicks(7834),
                             Value = 23.5
                         },
                         new
                         {
                             StationId = 1,
                             SensorId = 2,
-                            Timestamp = new DateTime(2024, 10, 8, 17, 11, 17, 622, DateTimeKind.Utc).AddTicks(7686),
+                            Timestamp = new DateTime(2024, 10, 8, 17, 8, 35, 312, DateTimeKind.Utc).AddTicks(7839),
                             Value = 60.0
                         },
                         new
                         {
                             StationId = 2,
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 9, 11, 11, 17, 622, DateTimeKind.Utc).AddTicks(7687),
+                            Timestamp = new DateTime(2024, 10, 9, 11, 8, 35, 312, DateTimeKind.Utc).AddTicks(7840),
                             Value = 18.199999999999999
                         });
                 });

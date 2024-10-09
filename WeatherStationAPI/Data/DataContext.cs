@@ -28,13 +28,13 @@ namespace WeatherStationAPI.Data
                 .HasKey(ss => new { ss.StationId, ss.SensorId });
 
             modelBuilder.Entity<Station_Sensor>()
-                .HasOne<Station>()
+                .HasOne(ss => ss.Station)
                 .WithMany(s => s.Station_Sensors)
                 .HasForeignKey(ss => ss.StationId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Station_Sensor>()
-                .HasOne<Sensor>()
+                .HasOne(ss => ss.Sensor)
                 .WithMany(s => s.Station_Sensors)
                 .HasForeignKey(ss => ss.SensorId)
                 .OnDelete(DeleteBehavior.Cascade);

@@ -15,11 +15,5 @@ namespace WeatherStationAPI.Models
         public int SensorId { get; set; }
 
         public double Value { get; set; }
-
-        [ForeignKey("StationId")]
-        public required Station Station { get; set; }
-
-        [ForeignKey("SensorId")]
-        public required Sensor Sensor { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-# Database structure proposal
+# Database structure
 ## "stations" table
 | column | PK | FK | type | nullable | auto increment |
 | :----: | :----: | :----: | :----: | :----: | :----: |
@@ -27,7 +27,8 @@
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | station_id | yes | stations(id) | string | no | no |
 | sensor_id | yes | sensors(id) | int | no | no |
-# API endpoints proposal
+
+# API endpoints
 ## basic API response structure
 **succes response:**
 ```json
@@ -320,16 +321,14 @@
   }
 }
 ```
-# MQTT topics proposal
+# MQTT topics
 **Send measurement (station):** /data/stations/{stationId}/measurement
 
 **Update location (station):** /data/stations/{stationId}/location
 
 **Subscribe to data (server):** /data/stations/#
 
-**Subscribe to data from specific station (web/app):** /data/stations/{stationId}/measurement
-
-# MQTT JSON messages format proposal
+# MQTT JSON messages format
 
 ## Station --> MQTT (data)
 Dit is zeer modulair. Als er een sensor zou zijn die we nog niet kennen kunnen we deze ook gewoon toevoegen.
@@ -350,4 +349,3 @@ Ook modulair als er nieuwe station is. gewoon toe voegen aan database.
   "longitude": "XX.XXXXXX"
 }
 ```
-# General proposal

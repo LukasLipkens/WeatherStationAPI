@@ -328,7 +328,7 @@
 
 **Subscribe to data (server):** /data/stations/#
 
-# MQTT JSON messages format proposal
+# MQTT JSON messages format
 
 ## Station --> MQTT (data)
 Dit is zeer modulair. Als er een sensor zou zijn die we nog niet kennen kunnen we deze ook gewoon toevoegen.

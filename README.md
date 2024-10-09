@@ -328,8 +328,6 @@
 
 **Subscribe to data (server):** /data/stations/#
 
-**Subscribe to data from specific station (web/app):** /data/stations/{stationId}/measurement
-
 # MQTT JSON messages format proposal
 
 ## Station --> MQTT (data)

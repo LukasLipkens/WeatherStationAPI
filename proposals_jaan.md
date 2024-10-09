@@ -192,10 +192,19 @@
   "message": "Station measurements retrieved successfully.",
   "data": [
     {
-      "timestamp": "YYYY-MM-DDTHH:MM:SSZ",
-      "stationId": "WSTATION-XXXXXXXX",
-      "sensorId": X,
-      "sensorValue": ""
+      "sensorType": "temperature",
+      "sensorUnit": "celsius",
+      "sensorValues": [
+        {
+          "timestamp": "YYYY-MM-DDTHH:MM:SSZ",
+          "value": ""
+        },
+        {
+          "timestamp": "YYYY-MM-DDTHH:MM:SSZ",
+          "value": ""
+        },
+        ...
+      ]
     },
     ...
   ],

@@ -18,7 +18,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LaptopConnectionString"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("WeatherStationDb"));
 });
 
 var app = builder.Build();

@@ -13,8 +13,8 @@ namespace WeatherStationAPI.Models
         public double Longitude { get; set; }
         public string Description { get; set; } = "";
 
-        // Relaties
-        public ICollection<Station_Sensor> Station_Sensors { get; set; }
-        public ICollection<Measurement> Measurements { get; set; }
+        // Relationships
+        public ICollection<Station_Sensor> Station_Sensors { get; set; } = null!;
+        public ICollection<Measurement> Measurements { get; set; } = null!;
     }
 }

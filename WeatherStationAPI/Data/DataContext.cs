@@ -5,6 +5,12 @@ namespace WeatherStationAPI.Data
 {
     public class DataContext : DbContext
     {
+        public DataContext(DbContextOptions<DataContext> options)
+            : base(options)
+        { 
+        
+        }
+
         public DbSet<Station> Stations { get; set; }
         public DbSet<Sensor> Sensors { get; set; }
         public DbSet<Station_Sensor> Station_Sensors { get; set; }
@@ -13,6 +19,38 @@ namespace WeatherStationAPI.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Relationships:
+            modelBuilder.Entity<Measurement>()
+                .HasKey(m => new { m.StationId, m.SensorId, m.Timestamp }); //3 primary keys
+
+            modelBuilder.Entity<Station_Sensor>()
+                .HasKey(ss => new { ss.StationId, ss.SensorId });
+
+            modelBuilder.Entity<Station_Sensor>()
+                .HasOne<Station>()
+                .WithMany(s => s.Station_Sensors)
+                .HasForeignKey(ss => ss.StationId);
+
+            modelBuilder.Entity<Station_Sensor>()
+                .HasOne<Sensor>()
+                .WithMany(s => s.Station_Sensors)
+                .HasForeignKey(ss => ss.SensorId);
+
+            // Measurement relationship with Station
+            modelBuilder.Entity<Measurement>()
+                .HasOne<Station>()
+                .WithMany(s => s.Measurements)
+                .HasForeignKey(m => m.StationId)
+                .OnDelete(DeleteBehavior.Cascade); // Cascade delete if a Station is deleted
+
+            // Measurement relationship with Sensor
+            modelBuilder.Entity<Measurement>()
+                .HasOne<Sensor>()
+                .WithMany(s => s.Measurements)
+                .HasForeignKey(m => m.SensorId)
+                .OnDelete(DeleteBehavior.Cascade); // Cascade delete if a Sensor is deleted
+
 
             // Seed Stations
             modelBuilder.Entity<Station>().HasData(

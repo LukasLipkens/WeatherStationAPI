@@ -96,6 +96,9 @@
   }
 }
 ```
+
+[Determining the size of a page for pagination in an API that sends JSON data.](./READMEmedia/pagination_guide)
+
 ## GET baseurl/api/v1/stations
 **success response:**
 ```json

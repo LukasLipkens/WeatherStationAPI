@@ -328,21 +328,21 @@
 
 **Subscribe to data (server):** /data/stations/#
 
-# MQTT JSON messages format proposal
+# MQTT JSON messages format
 
 ## Station --> MQTT (data)
-Dit is zeer modulair. Als er een sensor zou zijn die we nog niet kennen kunnen we deze ook gewoon toevoegen.
 ```json
 {
   "timestamp": "YYYY-MM-DDTHH:MM:SSZ",
-  "sensorType": "temprature",
-  "sensorUnit": "celsius",
-  "sensorValue": "15.7"
+  "values": [
+    "temperature|celsius|15.7",
+    "pressure|bar|1013.25"
+  ]
 }
 ```
 
 ## Station --> MQTT (location/register)
-Ook modulair als er nieuwe station is. gewoon toe voegen aan database.
+Als er nieuwe station is, gewoon toe voegen aan database.
 ```json
 {
   "latitude": "XX.XXXXXX",

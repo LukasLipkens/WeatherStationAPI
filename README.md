@@ -1,3 +1,7 @@
+# Frontend requesting live data flow example
+
+![requestingLiveData.png](./READMEmedia/requestingLiveData.png)
+
 # Database structure
 ## "stations" table
 | column | PK | FK | type | nullable | auto increment |

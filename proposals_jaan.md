@@ -351,10 +351,3 @@ Ook modulair als er nieuwe station is. gewoon toe voegen aan database.
 }
 ```
 # General proposal
-Voor de LIVE data stel ik voor dat de website of de app gewoon zelf een MQTT  connection over web sockets maakt met de broker en dan zelf zen data aanvult. Als ze historische data nodig hebben vragen ze dat aan de API.
-
-voorbeeld, ze willen grafiek van data tonen:
-1) ze vragen aan API data van nu tot x tijd geleden
---> api geeft data en ze plotten een graph
-2) ze maken een websocket connectie met de MQTT broker en plotten de live data op de graph
-

@@ -163,15 +163,16 @@
 {
   "status": "success",
   "message": "Station sensors retrieved successfully.",
-  "data": {  
-	  "staionId": "WSTATION-XXXXXXXX",
-	  "sensors": [
-	    {
-	      "id": X,
-	      "type": "temperature",
-	      "unit": "celsius"
-	    }
-	  ]
+  "data": {
+    "staionId": "WSTATION-XXXXXXXX",
+    "sensors": [
+      {
+        "id": X,
+        "type": "temperature",
+        "unit": "celsius"
+      },
+      ...
+    ]
   }
 }
 ```

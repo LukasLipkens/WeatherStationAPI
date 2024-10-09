@@ -7,6 +7,7 @@
 | column | PK | FK | type | nullable | auto increment |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | id | yes | no | string | no | no |
+| battery | no | no | double | yes | no |
 | latitude | no | no | double | no | no |
 | longitude | no | no | double | no | no |
 | name | no | no | string | yes | no |
@@ -31,6 +32,7 @@
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | station_id | yes | stations(id) | string | no | no |
 | sensor_id | yes | sensors(id) | int | no | no |
+| latest_value | no | no | string | yes | no |
 
 # API endpoints
 ## basic API response structure

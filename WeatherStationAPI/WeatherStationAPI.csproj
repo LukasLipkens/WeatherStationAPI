@@ -7,24 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Data\info.txt" />
-    <None Remove="Dto\info.txt" />
-    <None Remove="Helpers\info.txt" />
-    <None Remove="Interfaces\info.txt" />
-    <None Remove="Models\info.txt" />
-    <None Remove="Repositories\info.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Data\info.txt" />
-    <Compile Include="Dto\info.txt" />
-    <Compile Include="Helpers\info.txt" />
-    <Compile Include="Interfaces\info.txt" />
-    <Compile Include="Models\info.txt" />
-    <Compile Include="Repositories\info.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
       <PrivateAssets>all</PrivateAssets>
@@ -36,6 +18,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dto\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>

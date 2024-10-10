@@ -5,7 +5,7 @@ using WeatherStationAPI.Models;
 
 namespace WeatherStationAPI.Controllers
 {
-    [Route("api/[Controller]")]
+    [Route("api/v1/[Controller]")]
     [ApiController]
     public class MeasurementController : Controller
     {
@@ -33,7 +33,7 @@ namespace WeatherStationAPI.Controllers
             return Ok(measurements);
         }
 
-        [HttpGet("station/{stationId}")]
+        [HttpGet("station/v1/{stationId}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<SensorDto>))]
         [ProducesResponseType(400)]
         public IActionResult GetMeasurementsFromStation(int stationId, [FromQuery]List<int> sensors, DateTime? startDateTime = null, DateTime? endDateTime = null)

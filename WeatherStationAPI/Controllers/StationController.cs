@@ -6,7 +6,7 @@ using WeatherStationAPI.Models;
 
 namespace WeatherStationAPI.Controllers
 {
-    [Route("api/[Controller]")]
+    [Route("api/v1/[Controller]")]
     [ApiController]
     public class StationController :Controller
     {

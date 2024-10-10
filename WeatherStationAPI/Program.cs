@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using WeatherStationAPI.Data;
 using WeatherStationAPI.Interfaces;
 using WeatherStationAPI.Repositories;
+using WeatherStationAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,7 @@ builder.Services.AddScoped<IMeasurementRepository, MeasurementRepository>();
 builder.Services.AddScoped<IStationRepository, StationRepository>();
 
 builder.Services.AddControllers();
+builder.Services.AddHostedService<BackgroundWorkerService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

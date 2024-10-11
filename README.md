@@ -7,7 +7,7 @@
 | column | PK | FK | type | nullable | auto increment |
 | :----: | :----: | :----: | :----: | :----: | :----: |
 | id | yes | no | string | no | no |
-| battery | no | no | double | yes | no |
+| battery_level | no | no | double | yes | no |
 | latitude | no | no | double | no | no |
 | longitude | no | no | double | no | no |
 | name | no | no | string | yes | no |

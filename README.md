@@ -1,3 +1,22 @@
+<h1>
+  <img src="./READMEmedia/weatherstations_logo.png" alt="Project Logo" width="100" height="100" style="vertical-align: middle;">
+  Meten is Weten: Climate Measurement Station API
+</h1>
+
+# Introduction
+
+Climate change is a pressing issue that demands a better understanding of its real impact on our environment. To help gather valuable data, this project aims to create a network of measurement stations that can be deployed globally to continuously monitor environmental and weather conditions.
+
+Each station is designed to be energy self-sufficient, using solar panels and batteries, and equipped with sensors tailored to the needs of the location. These sensors may vary per station, monitoring parameters such as wind speed, rainfall, CO2 levels, fine particles, volatile organic compounds (VOCs), and more.
+
+Data collected from each station is transmitted to a centralized platform, which stores the information and makes it accessible through a web interface. Users can explore the stations on a detailed map, zooming in to see current sensor readings and historical data. New stations are automatically added to the system when activated.
+
+This repository contains the API that powers the interaction between the measurement stations and the central database, enabling data collection, retrieval, and visualization.
+
+# Running the project
+
+---
+
 # Frontend requesting live data flow example
 
 ![requestingLiveData.png](./READMEmedia/requestingLiveData.png)

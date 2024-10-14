@@ -1,4 +1,5 @@
-﻿using WeatherStationAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using WeatherStationAPI.Data;
 using WeatherStationAPI.Dto;
 using WeatherStationAPI.Interfaces;
 using WeatherStationAPI.Models;
@@ -38,16 +39,20 @@ namespace WeatherStationAPI.Repositories
         {
             return _dataContext.Measurements
                 .Where(m => m.Timestamp >= start && m.Timestamp <= end && m.StationId == stationId)
-                .GroupBy(m => m.SensorId)
+                .Include(m => m.Sensor)  // Include the Sensor entity
+                .GroupBy(m => new { m.SensorId, m.Sensor.Unit, m.Sensor.Type })  // Group by SensorId and include Sensor's Unit and Type
                 .Select(g => new SensorDto
                 {
-                    Id = g.Key,
+                    Id = g.Key.SensorId,
+                    Unit = g.Key.Unit,  // Fill in Unit from the Sensor entity
+                    Type = g.Key.Type,  // Fill in Type from the Sensor entity
                     Measurements = g.Select(m => new MeasurementDto
                     {
                         Timestamp = m.Timestamp,
                         Value = m.Value
                     }).ToList()
                 }).ToList();
+
         }
     }
 }

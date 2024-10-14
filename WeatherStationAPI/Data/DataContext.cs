@@ -48,7 +48,7 @@ namespace WeatherStationAPI.Data
 
             // Measurement relationship with Sensor
             modelBuilder.Entity<Measurement>()
-                .HasOne<Sensor>()
+                .HasOne(m => m.Sensor)
                 .WithMany(s => s.Measurements)
                 .HasForeignKey(m => m.SensorId)
                 .OnDelete(DeleteBehavior.Cascade); // Cascade delete if a Sensor is deleted

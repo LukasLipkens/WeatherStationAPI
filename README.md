@@ -349,11 +349,11 @@ This repository contains the API that powers the interaction between the measure
 }
 ```
 # MQTT topics
-**Send measurement (station):** /data/stations/{stationId}/measurement
+**Send measurement (station):** /weatherstations/data/stations/{stationId}/measurement
 
-**Update location (station):** /data/stations/{stationId}/location
+**Update location (station):** /weatherstations/data/stations/{stationId}/location
 
-**Subscribe to data (server):** /data/stations/#
+**Subscribe to data (server):** /weatherstations/data/stations/#
 
 # MQTT JSON messages format
 

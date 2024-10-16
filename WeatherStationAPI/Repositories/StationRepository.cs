@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WeatherStationAPI.Data;
+using WeatherStationAPI.Dto;
 using WeatherStationAPI.Interfaces;
 using WeatherStationAPI.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace WeatherStationAPI.Repositories
 {
@@ -13,12 +15,51 @@ namespace WeatherStationAPI.Repositories
         {
             _dataContext = dataContext;
         }
-        public List<Station> GetAllStations()
+
+        //public List<Station> GetAllStations()
+        //{
+        //    return _dataContext.Stations.ToList<Station>(); // check later //untested, probably disfunctional
+        //}
+
+        public IEnumerable<StationDto> GetStationsLatestMeasurements(List<int> stationIds, int measurementAmount)
         {
-            return _dataContext.Stations
-                //.Include(s => s.Station_Sensors)
-                //.Include(s => s.Measurements)
-                .OrderBy(s => s.Id).ToList();
+            var query = _dataContext.Stations
+                .Include(s => s.Station_Sensors) // Include the Station_Sensor navigation
+                .ThenInclude(ss => ss.Sensor) // Then include the Sensor navigation from Station_Sensor
+                .Include(s => s.Measurements) // Include Measurements directly from Station
+                .AsQueryable();
+
+            // check if any station ID's are existant, if not; search for all existant ones.
+            if (stationIds != null && stationIds.Any())
+            {
+                query = query.Where(s => stationIds.Contains(s.Id));
+            }
+
+            var stations = query.Select(station => new StationDto
+            {
+                Id = station.Id,
+                Name = station.Name,
+                Latitude = station.Latitude,
+                Longitude = station.Longitude,
+                Description = station.Description,
+                Sensors = station.Station_Sensors.Select(ss => new SensorDto
+                {
+                    Id = ss.SensorId,
+                    Unit = ss.Sensor.Unit,
+                    Type = ss.Sensor.Type,
+                    Measurements = station.Measurements
+                        .Where(m => m.SensorId == ss.SensorId)
+                        .OrderByDescending(m => m.Timestamp)
+                        .Take(measurementAmount)
+                        .Select(m => new MeasurementDto
+                        {
+                            Timestamp = m.Timestamp,
+                            Value = m.Value
+                        }).ToList()
+                }).ToList()
+            }).ToList();
+
+            return stations;
         }
     }
 }

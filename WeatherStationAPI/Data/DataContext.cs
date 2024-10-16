@@ -7,8 +7,8 @@ namespace WeatherStationAPI.Data
     {
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
-        { 
-        
+        {
+
         }
 
         public DbSet<Station> Stations { get; set; }

@@ -9,6 +9,8 @@ namespace WeatherStationAPI.Helpers
         public DtoMapping() 
         { 
             CreateMap<Station, StationDto>();
+            CreateMap<Measurement, MeasurementDto>();
+            CreateMap<Sensor, SensorDto>();
         }
     }
 }

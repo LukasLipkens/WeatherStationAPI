@@ -4,6 +4,7 @@ namespace WeatherStationAPI.Models
 {
     public class Sensor
     {
+        [Key]
         public int Id { get; set; }
         public string Unit { get; set; } = "";
         public string Type { get; set; } = "";

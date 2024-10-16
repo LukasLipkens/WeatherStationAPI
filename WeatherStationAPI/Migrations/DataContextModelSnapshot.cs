@@ -47,22 +47,57 @@ namespace WeatherStationAPI.Migrations
                         {
                             StationId = 1,
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 8, 12, 21, 53, 737, DateTimeKind.Utc).AddTicks(3148),
+                            Timestamp = new DateTime(2024, 10, 14, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2072),
                             Value = 23.5
                         },
                         new
                         {
                             StationId = 1,
                             SensorId = 2,
-                            Timestamp = new DateTime(2024, 10, 8, 12, 21, 53, 737, DateTimeKind.Utc).AddTicks(3158),
+                            Timestamp = new DateTime(2024, 10, 14, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2082),
                             Value = 60.0
+                        },
+                        new
+                        {
+                            StationId = 1,
+                            SensorId = 1,
+                            Timestamp = new DateTime(2024, 10, 15, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2085),
+                            Value = 22.5
+                        },
+                        new
+                        {
+                            StationId = 1,
+                            SensorId = 2,
+                            Timestamp = new DateTime(2024, 10, 15, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2087),
+                            Value = 58.0
                         },
                         new
                         {
                             StationId = 2,
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 9, 6, 21, 53, 737, DateTimeKind.Utc).AddTicks(3161),
+                            Timestamp = new DateTime(2024, 10, 14, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2089),
+                            Value = 19.199999999999999
+                        },
+                        new
+                        {
+                            StationId = 2,
+                            SensorId = 2,
+                            Timestamp = new DateTime(2024, 10, 14, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2091),
+                            Value = 61.0
+                        },
+                        new
+                        {
+                            StationId = 2,
+                            SensorId = 1,
+                            Timestamp = new DateTime(2024, 10, 16, 7, 31, 17, 123, DateTimeKind.Utc).AddTicks(2093),
                             Value = 18.199999999999999
+                        },
+                        new
+                        {
+                            StationId = 2,
+                            SensorId = 2,
+                            Timestamp = new DateTime(2024, 10, 16, 7, 31, 17, 123, DateTimeKind.Utc).AddTicks(2096),
+                            Value = 57.0
                         });
                 });
 
@@ -175,6 +210,11 @@ namespace WeatherStationAPI.Migrations
                         {
                             StationId = 2,
                             SensorId = 1
+                        },
+                        new
+                        {
+                            StationId = 2,
+                            SensorId = 2
                         });
                 });
 
@@ -195,17 +235,21 @@ namespace WeatherStationAPI.Migrations
 
             modelBuilder.Entity("WeatherStationAPI.Models.Station_Sensor", b =>
                 {
-                    b.HasOne("WeatherStationAPI.Models.Sensor", null)
+                    b.HasOne("WeatherStationAPI.Models.Sensor", "Sensor")
                         .WithMany("Station_Sensors")
                         .HasForeignKey("SensorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WeatherStationAPI.Models.Station", null)
+                    b.HasOne("WeatherStationAPI.Models.Station", "Station")
                         .WithMany("Station_Sensors")
                         .HasForeignKey("StationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Sensor");
+
+                    b.Navigation("Station");
                 });
 
             modelBuilder.Entity("WeatherStationAPI.Models.Sensor", b =>

@@ -1,7 +1,11 @@
+#region
+
 using Microsoft.EntityFrameworkCore;
 using UCLL.projects.WeatherStations.WebApi.Data;
 using UCLL.projects.WeatherStations.WebApi.Interfaces;
 using UCLL.projects.WeatherStations.WebApi.Repositories;
+
+#endregion
 
 var builder = WebApplication.CreateBuilder(args);
 

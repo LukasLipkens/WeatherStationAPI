@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿#region
+
+using Microsoft.AspNetCore.Mvc;
 using UCLL.projects.WeatherStations.WebApi.Dto;
 using UCLL.projects.WeatherStations.WebApi.Interfaces;
+
+#endregion
 
 namespace UCLL.projects.WeatherStations.WebApi.Controllers
 {

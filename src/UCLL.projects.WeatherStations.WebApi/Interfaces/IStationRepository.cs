@@ -1,4 +1,8 @@
-﻿using UCLL.projects.WeatherStations.WebApi.Dto;
+﻿#region
+
+using UCLL.projects.WeatherStations.WebApi.Dto;
+
+#endregion
 
 namespace UCLL.projects.WeatherStations.WebApi.Interfaces
 {

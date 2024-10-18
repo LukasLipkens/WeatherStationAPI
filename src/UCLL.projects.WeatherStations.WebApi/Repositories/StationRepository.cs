@@ -1,7 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿#region
+
+using Microsoft.EntityFrameworkCore;
 using UCLL.projects.WeatherStations.WebApi.Data;
 using UCLL.projects.WeatherStations.WebApi.Dto;
 using UCLL.projects.WeatherStations.WebApi.Interfaces;
+
+#endregion
 
 namespace UCLL.projects.WeatherStations.WebApi.Repositories
 {

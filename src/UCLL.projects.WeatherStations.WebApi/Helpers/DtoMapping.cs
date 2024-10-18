@@ -1,6 +1,10 @@
-﻿using AutoMapper;
+﻿#region
+
+using AutoMapper;
 using UCLL.projects.WeatherStations.WebApi.Dto;
 using UCLL.projects.WeatherStations.WebApi.Models;
+
+#endregion
 
 namespace UCLL.projects.WeatherStations.WebApi.Helpers
 {

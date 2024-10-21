@@ -2,6 +2,13 @@
 using MQTTnet.Client;
 using System.Text;
 
+/*
+    dit is een manier om mqtt te gebruiken in c#
+    ik ben niet zeker dat dit een goede manier is om dit te doen
+        er is namelijk niet veel structuur, hier ben ik nog mee bezig
+ */
+
+
 namespace WeatherStationMQTT
 {
     class Publisher
@@ -36,6 +43,10 @@ namespace WeatherStationMQTT
                 {
                     Console.WriteLine("Received message on topic: " + e.ApplicationMessage.Topic);
                     Console.WriteLine($"Received message: {Encoding.UTF8.GetString(e.ApplicationMessage.PayloadSegment)}");
+
+                    // hier bericht verwerken
+
+
                     return Task.CompletedTask;
                 };
 

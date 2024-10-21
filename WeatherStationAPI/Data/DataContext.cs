@@ -7,8 +7,8 @@ namespace WeatherStationAPI.Data
     {
         public DataContext(DbContextOptions<DataContext> options)
             : base(options)
-        { 
-        
+        {
+
         }
 
         public DbSet<Station> Stations { get; set; }
@@ -28,13 +28,13 @@ namespace WeatherStationAPI.Data
                 .HasKey(ss => new { ss.StationId, ss.SensorId });
 
             modelBuilder.Entity<Station_Sensor>()
-                .HasOne<Station>()
+                .HasOne(ss => ss.Sensor)
                 .WithMany(s => s.Station_Sensors)
                 .HasForeignKey(ss => ss.StationId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Station_Sensor>()
-                .HasOne<Sensor>()
+                .HasOne(ss => ss.Sensor)
                 .WithMany(s => s.Station_Sensors)
                 .HasForeignKey(ss => ss.SensorId)
                 .OnDelete(DeleteBehavior.Cascade);
@@ -70,14 +70,20 @@ namespace WeatherStationAPI.Data
             modelBuilder.Entity<Station_Sensor>().HasData(
                 new Station_Sensor { StationId = 1, SensorId = 1 },
                 new Station_Sensor { StationId = 1, SensorId = 2 },
-                new Station_Sensor { StationId = 2, SensorId = 1 }
+                new Station_Sensor { StationId = 2, SensorId = 1 },
+                new Station_Sensor { StationId = 2, SensorId = 2 }
             );
 
             // Seed Measurements
             modelBuilder.Entity<Measurement>().HasData(
-                new Measurement { StationId = 1, SensorId = 1, Value = 23.5, Timestamp = DateTime.UtcNow.AddDays(-1) },
-                new Measurement { StationId = 1, SensorId = 2, Value = 60, Timestamp = DateTime.UtcNow.AddDays(-1) },
-                new Measurement { StationId = 2, SensorId = 1, Value = 18.2, Timestamp = DateTime.UtcNow.AddHours(-6) }
+                new Measurement { StationId = 1, SensorId = 1, Value = 23.5, Timestamp = DateTime.UtcNow.AddDays(-2) },
+                new Measurement { StationId = 1, SensorId = 2, Value = 60, Timestamp = DateTime.UtcNow.AddDays(-2) },
+                new Measurement { StationId = 1, SensorId = 1, Value = 22.5, Timestamp = DateTime.UtcNow.AddDays(-1) },
+                new Measurement { StationId = 1, SensorId = 2, Value = 58, Timestamp = DateTime.UtcNow.AddDays(-1) },
+                new Measurement { StationId = 2, SensorId = 1, Value = 19.2, Timestamp = DateTime.UtcNow.AddDays(-2) },
+                new Measurement { StationId = 2, SensorId = 2, Value = 61, Timestamp = DateTime.UtcNow.AddDays(-2) },
+                new Measurement { StationId = 2, SensorId = 1, Value = 18.2, Timestamp = DateTime.UtcNow.AddHours(-6) },
+                new Measurement { StationId = 2, SensorId = 2, Value = 57, Timestamp = DateTime.UtcNow.AddHours(-6) }
             );
         }
     }

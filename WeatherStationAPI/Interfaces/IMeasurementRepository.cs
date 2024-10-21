@@ -9,4 +9,3 @@ namespace WeatherStationAPI.Interfaces
         List<SensorDto> GetMeasurementsFromSensorInTimeRange(int stationId, DateTime start, DateTime end, List<int>? sensorIds = null);
     }
 }
-

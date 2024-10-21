@@ -13,6 +13,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EB03D4F0-E950-412B-967A-5C21D9E03114}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{6F77E1AD-947F-4C5D-98F0-3ACED2D7C14E}"
+	ProjectSection(SolutionItems) = preProject
+		docker\compose.yml = docker\compose.yml
+		docker\.env = docker\.env
+		docker\.env.sample = docker\.env.sample
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-data", "docker-data", "{2725C35D-EEC9-4E51-98BD-E791C7234828}"
 EndProject

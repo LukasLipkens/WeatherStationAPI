@@ -1,0 +1,7 @@
+# Read-only user can only subscribe to topics
+user weatherstations_r
+topic read /weatherstations/data/#
+
+# Read-write user can both subscribe and publish to topics
+user weatherstations_rw
+topic readwrite /weatherstations/data/#

@@ -16,10 +16,13 @@ namespace WeatherStationAPI.Repositories
             _dataContext = dataContext;
         }
 
-        //public List<Station> GetAllStations()
-        //{
-        //    return _dataContext.Stations.ToList<Station>(); // check later //untested, probably disfunctional
-        //}
+        public List<Station> GetAllStations()
+        {
+            return _dataContext.Stations
+                //.Include(s => s.Station_Sensors)
+                //.Include(s => s.Measurements)
+                .OrderBy(s => s.Id).ToList();
+        }
 
         public IEnumerable<StationDto> GetStationsLatestMeasurements(List<int> stationIds, int measurementAmount)
         {

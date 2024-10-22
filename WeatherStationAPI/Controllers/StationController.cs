@@ -21,12 +21,12 @@ namespace WeatherStationAPI.Controllers
         }
 
         [HttpGet("getList")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<StationDto>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<SimpleStationDto>))]
         [ProducesResponseType(400)]
         public IActionResult GetAllStations()
         {
             // Haal metingen op via de repository
-            var stations = _mapper.Map<List<StationDto>>(_stationRepository.GetAllStations());
+            var stations = _mapper.Map<List<SimpleStationDto>>(_stationRepository.GetAllStations());
 
             // Controleer of er resultaten zijn
             if (stations == null || !stations.Any())

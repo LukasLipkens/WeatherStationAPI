@@ -362,4 +362,13 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+
+/.vs/
 /.idea/
+/.vscode/
+
+**/.env
+
+/docker-data/mosquitto/data/
+/docker-data/mosquitto/log/
+/docker-data/mssql/log

@@ -1,0 +1,106 @@
+﻿services:
+  mqtt:
+    image: eclipse-mosquitto:2.0
+    container_name: weatherstations_mqtt
+    ports:
+      - "1883:1883" # default mqtt port
+      - "9001:9001" # default mqtt over websockets port
+    networks:
+      - default
+    volumes:
+      - ../docker-data/mosquitto/config:/mosquitto/config:rw
+      - ../docker-data/mosquitto/data:/mosquitto/data:rw
+      - ../docker-data/mosquitto/log:/mosquitto/log:rw
+    healthcheck:
+      test: [ "CMD", "nc", "-zv", "localhost", "1883" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  db_mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: weatherstations_db_mssql
+    user: root # don't like this but no other fix at the moment
+    command: /bin/bash -c "sed -i 's/\r$//' /init/init-db.sh && chmod +x /init/init-db.sh && /bin/bash /init/init-db.sh"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${MSSQL_SERVERADMIN_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_USER_R=${DB_USER_R}
+      - DB_USER_R_PASSWORD=${DB_USER_R_PASSWORD}
+      - DB_USER_RW=${DB_USER_RW}
+      - DB_USER_RW_PASSWORD=${DB_USER_RW_PASSWORD}
+    ports:
+      - "1433:1433"
+    networks:
+      - default
+    volumes:
+      - mssqldata:/var/opt/mssql
+      - ../docker-data/mssql/init:/init:rw
+      - ../docker-data/mssql/log:/var/opt/mssql/log:rw
+    healthcheck:
+      test: [ "CMD", "pidof", "sqlservr" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  db_pg:
+    image: timescale/timescaledb:latest-pg16
+    container_name: weatherstations_db_pg
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}_prod
+      - DB_NAME=${DB_NAME}
+      - DB_USER_R=${DB_USER_R}
+      - DB_USER_R_PASSWORD=${DB_USER_R_PASSWORD}
+      - DB_USER_RW=${DB_USER_RW}
+      - DB_USER_RW_PASSWORD=${DB_USER_RW_PASSWORD}
+    ports:
+      - "5432:5432"
+    networks:
+      - default
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ../docker-data/timescaledb/init:/docker-entrypoint-initdb.d/:rw
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  webapi:
+    image: weatherstations_webapi:latest
+    container_name: weatherstations_webapi
+    build:
+      context: ../src/UCLL.Projects.WeatherStations.WebApi
+      dockerfile: ./Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      #- ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_HTTP_PORTS=8080
+    ports:
+      - "8081:8081"
+      - "8080:8080"
+    networks:
+      - default
+    depends_on:
+      - mqtt
+      - db_mssql
+      - db_pg
+    restart: unless-stopped
+
+
+
+volumes:
+  mssqldata:
+  pgdata:
+
+
+
+networks:
+  default:

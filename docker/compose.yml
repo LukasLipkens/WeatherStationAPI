@@ -73,6 +73,27 @@
       retries: 5
     restart: unless-stopped
 
+  webapi:
+    image: weatherstations_webapi:latest
+    container_name: weatherstations_webapi
+    build:
+      context: ../src/UCLL.Projects.WeatherStations.WebApi
+      dockerfile: ./Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_HTTP_PORTS=8080
+    ports:
+      - "8081:8081"
+      - "8080:8080"
+    networks:
+      - default
+    depends_on:
+      - mqtt
+      - db_mssql
+      - db_pg
+    restart: unless-stopped
+
 
 
 volumes:

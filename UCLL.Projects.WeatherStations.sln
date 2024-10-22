@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UCLL.Projects.WeatherStatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UCLL.Projects.WeatherStations.MQTT", "src\UCLL.Projects.WeatherStations.MQTT\UCLL.Projects.WeatherStations.MQTT.csproj", "{338E1417-ADC3-4E83-8597-2A075C025BE9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UCLL.Projects.Weatherstations.WebApi.Tests", "tests\UCLL.Projects.Weatherstations.WebApi.Tests\UCLL.Projects.Weatherstations.WebApi.Tests.csproj", "{FB00EE12-EAB3-4516-86D1-CD733DE48396}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UCLL.Projects.Weatherstations.MQTT.Tests", "tests\UCLL.Projects.Weatherstations.MQTT.Tests\UCLL.Projects.Weatherstations.MQTT.Tests.csproj", "{2B3C429C-2E47-4E68-8616-0DEAE320A21B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{338E1417-ADC3-4E83-8597-2A075C025BE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{338E1417-ADC3-4E83-8597-2A075C025BE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{338E1417-ADC3-4E83-8597-2A075C025BE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB00EE12-EAB3-4516-86D1-CD733DE48396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB00EE12-EAB3-4516-86D1-CD733DE48396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB00EE12-EAB3-4516-86D1-CD733DE48396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB00EE12-EAB3-4516-86D1-CD733DE48396}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B3C429C-2E47-4E68-8616-0DEAE320A21B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B3C429C-2E47-4E68-8616-0DEAE320A21B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B3C429C-2E47-4E68-8616-0DEAE320A21B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B3C429C-2E47-4E68-8616-0DEAE320A21B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,5 +61,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C057591D-6F9A-4E08-B687-CD301892F213} = {2215AC95-1A8B-4183-95DE-01908FF7823F}
 		{338E1417-ADC3-4E83-8597-2A075C025BE9} = {2215AC95-1A8B-4183-95DE-01908FF7823F}
+		{FB00EE12-EAB3-4516-86D1-CD733DE48396} = {EB03D4F0-E950-412B-967A-5C21D9E03114}
+		{2B3C429C-2E47-4E68-8616-0DEAE320A21B} = {EB03D4F0-E950-412B-967A-5C21D9E03114}
 	EndGlobalSection
 EndGlobal

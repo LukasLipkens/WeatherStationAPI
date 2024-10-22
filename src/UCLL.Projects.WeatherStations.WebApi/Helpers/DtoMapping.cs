@@ -15,6 +15,7 @@ namespace UCLL.Projects.WeatherStations.WebApi.Helpers
             CreateMap<Station, StationDto>();
             CreateMap<Measurement, MeasurementDto>();
             CreateMap<Sensor, SensorDto>();
+            CreateMap<Station, SimpleStationDto>();
         }
     }
 }

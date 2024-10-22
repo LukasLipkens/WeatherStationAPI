@@ -43,7 +43,7 @@ namespace UCLL.Projects.WeatherStations.WebApi.Controllers
         public IActionResult GetMeasurementsFromStation(int stationId, [FromQuery] List<int> sensors, DateTime? startDate = null, DateTime? endDate = null)
         {
             //indien velden leeg gelaten wordt waarde rechts van ?? erin gestoken
-            var start = startDate ?? DateTime.UtcNow.AddDays(-30);
+            var start = startDate ?? DateTime.UtcNow.AddDays(-7);
             var end = endDate ?? DateTime.UtcNow;
 
             //haalt query uit MeasurementRepository

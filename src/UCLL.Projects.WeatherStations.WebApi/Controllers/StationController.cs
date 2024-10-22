@@ -1,5 +1,6 @@
 ﻿#region
 
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
 using UCLL.Projects.WeatherStations.WebApi.Interfaces;
@@ -13,9 +14,31 @@ namespace UCLL.Projects.WeatherStations.WebApi.Controllers
     public class StationController : Controller
     {
         private readonly IStationRepository _stationRepository;
-        public StationController(IStationRepository stationRepository)
+        private readonly IMapper _mapper;
+
+        public StationController(IStationRepository stationRepository, IMapper mapper)
         {
             _stationRepository = stationRepository;
+            _mapper = mapper;
+
+        }
+
+        [HttpGet("getList")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<SimpleStationDto>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetAllStations()
+        {
+            // Haal metingen op via de repository
+            var stations = _mapper.Map<List<SimpleStationDto>>(_stationRepository.GetAllStations());
+
+            // Controleer of er resultaten zijn
+            if (stations == null || !stations.Any())
+            {
+                return NotFound("Geen metingen gevonden voor het opgegeven station en sensor.");
+            }
+
+            // Retourneer de metingen
+            return Ok(stations);
         }
 
         //Endpoint = .../api/v1/Station/Latest?stationIds=1&stationIds=2&measurementAmount=1

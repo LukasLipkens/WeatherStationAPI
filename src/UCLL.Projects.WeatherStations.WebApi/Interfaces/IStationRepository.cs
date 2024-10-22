@@ -8,7 +8,7 @@ namespace UCLL.Projects.WeatherStations.WebApi.Interfaces
 {
     public interface IStationRepository
     {
-        //List<Station> GetAllStations();
+        List<Station> GetAllStations();
 
         public IEnumerable<StationDto> GetStationsLatestMeasurements(List<int> stationIds, int measurementAmount);
     }

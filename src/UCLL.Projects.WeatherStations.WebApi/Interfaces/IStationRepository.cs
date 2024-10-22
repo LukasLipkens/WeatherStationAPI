@@ -1,6 +1,7 @@
 ﻿#region
 
 using UCLL.Projects.WeatherStations.WebApi.Dto;
+using UCLL.Projects.WeatherStations.WebApi.Models;
 
 #endregion
 

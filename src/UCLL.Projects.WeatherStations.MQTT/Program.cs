@@ -1,6 +1,6 @@
-﻿using MQTTnet;
+﻿using System.Text;
+using MQTTnet;
 using MQTTnet.Client;
-using System.Text;
 
 /*
     dit is een manier om mqtt te gebruiken in c#
@@ -9,7 +9,7 @@ using System.Text;
  */
 
 
-namespace WeatherStationMQTT
+namespace UCLL.Projects.WeatherStations.MQTT
 {
     class Publisher
     {

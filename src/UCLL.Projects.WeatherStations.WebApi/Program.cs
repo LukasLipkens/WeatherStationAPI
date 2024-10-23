@@ -7,7 +7,7 @@ using UCLL.Projects.WeatherStations.WebApi.Repositories;
 
 #endregion
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // add automapper for the Dto's
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -26,7 +26,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("WeatherStationDb"));
 });
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

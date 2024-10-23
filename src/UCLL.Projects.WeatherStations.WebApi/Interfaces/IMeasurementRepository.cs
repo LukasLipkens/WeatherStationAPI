@@ -5,11 +5,10 @@ using UCLL.Projects.WeatherStations.WebApi.Models;
 
 #endregion
 
-namespace UCLL.Projects.WeatherStations.WebApi.Interfaces
+namespace UCLL.Projects.WeatherStations.WebApi.Interfaces;
+
+public interface IMeasurementRepository
 {
-    public interface IMeasurementRepository
-    {
-        List<Measurement> GetAllMeasurementsFromStationSensor(int stationId, int sensorId);
-        List<SensorDto> GetMeasurementsFromSensorInTimeRange(int stationId, DateTime start, DateTime end, List<int>? sensorIds = null);
-    }
+    List<Measurement> GetAllMeasurementsFromStationSensor(int stationId, int sensorId);
+    List<SensorDto> GetMeasurementsFromSensorInTimeRange(int stationId, DateTime start, DateTime end, List<int>? sensorIds = null);
 }

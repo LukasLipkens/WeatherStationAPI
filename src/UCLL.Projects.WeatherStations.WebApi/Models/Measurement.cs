@@ -1,13 +1,12 @@
-﻿namespace UCLL.Projects.WeatherStations.WebApi.Models
+﻿namespace UCLL.Projects.WeatherStations.WebApi.Models;
+
+public class Measurement
 {
-    public class Measurement
-    {
-        public DateTime Timestamp { get; set; }
+    public DateTime Timestamp { get; set; }
 
-        public int StationId { get; set; }
+    public int StationId { get; set; }
 
-        public int SensorId { get; set; }
+    public int SensorId { get; set; }
 
-        public double Value { get; set; }
-    }
+    public double Value { get; set; }
 }

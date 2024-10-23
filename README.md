@@ -360,11 +360,9 @@ This repository contains the API that powers the interaction between the measure
 ## Station --> MQTT (data)
 ```json
 {
-  "timestamp": "YYYY-MM-DDTHH:MM:SSZ",
-  "values": [
-    "temperature|celsius|15.7",
-    "pressure|bar|1013.25"
-  ]
+  "temperature(C)": 24.46,
+  "humidity(%)": 48.16699,
+  "pressure(HPa)": 1032.109
 }
 ```
 

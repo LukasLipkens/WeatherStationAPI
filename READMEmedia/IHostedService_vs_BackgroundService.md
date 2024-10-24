@@ -1,6 +1,6 @@
 In .NET, both `IHostedService` and `BackgroundService` are used for running background tasks in an application. However, they differ in their design and usage.
 
-## 1. `IHostedService`
+## `IHostedService`
 - **Interface:** `IHostedService` is an interface that represents a hosted service in a .NET application.
 - **Start/Stop Lifecycle:** It defines two methods, `StartAsync` and `StopAsync`, which are called when the application starts and stops, respectively.
 - **Control:** You need to implement both methods to handle starting and stopping your background service logic. This gives you full control over the service's lifecycle, but also requires more boilerplate code.
@@ -24,7 +24,7 @@ public class MyService : IHostedService
 }
 ```
 
-## 2. `BackgroundService`
+## `BackgroundService`
 - **Base Class:** `BackgroundService` is an abstract base class that implements `IHostedService` and provides additional convenience for running long-running background tasks.
 - **Task Handling:** You only need to implement the `ExecuteAsync` method, which runs in a loop or as a continuous task. This reduces the boilerplate code as it handles the lifecycle for you.
 - **Cancellation:** `ExecuteAsync` gets a `CancellationToken` that you can monitor to gracefully shut down the service.

@@ -21,9 +21,9 @@ namespace UCLL.Projects.WeatherStations.MQTT.Services
 
             // dit kan eventueel beter in een appsettings.json
             _mqttOptions = new MqttClientOptionsBuilder()
-                .WithClientId("TestServer")
-                .WithTcpServer("www.lukaslipkens.be", 1883)
-                .WithCredentials("station", "Elo-Ict-2024")
+                .WithClientId("MqttProcessing")
+                .WithTcpServer("k106.ucll-labo.be", 1883)
+                .WithCredentials("project", "eloict1234")
                 .WithCleanSession()
                 .Build();
 
@@ -36,9 +36,9 @@ namespace UCLL.Projects.WeatherStations.MQTT.Services
                 _logger.LogInformation("Connected to MQTT broker");
 
                 // subscribe to all topics
-                await _mqttClient.SubscribeAsync("station/#");
+                await _mqttClient.SubscribeAsync("weatherstations/data/#");
 
-                _logger.LogInformation("Subscribed to topic: stetion/#");
+                _logger.LogInformation("Subscribed to topic: weatherstations/data/#");
             };
 
             //handler when disconnected from broker 
@@ -52,7 +52,8 @@ namespace UCLL.Projects.WeatherStations.MQTT.Services
             _mqttClient.ApplicationMessageReceivedAsync += e =>
             {
                 var message = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
-                _logger.LogInformation($"Received message: {message}");
+                var topic = e.ApplicationMessage.Topic;
+                _logger.LogInformation($"Received on topic {topic} message: {message}");
 
 
                 // hier zou je de data in de queue moeten stoppen

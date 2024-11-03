@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Threading.Channels;
+using UCLL.Projects.WeatherStations.MQTT.Data;
 using UCLL.Projects.WeatherStations.MQTT.Services;
 
 
@@ -29,6 +31,13 @@ internal class Program
             })
             .ConfigureServices((context, services) =>
             {
+                services.AddSingleton(Channel.CreateUnbounded<string>(
+                    new UnboundedChannelOptions
+                    {
+                        SingleReader = false,
+                        SingleWriter = false,
+                    }
+                    )); // channel voor strings (json wordt ontvangens als een string)
                 services.AddHostedService<MqttService>();
             })
             .ConfigureLogging(loggingBuilder =>

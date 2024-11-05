@@ -8,7 +8,7 @@ using UCLL.Projects.WeatherStations.WebApi.Data;
 
 #nullable disable
 
-namespace WeatherStationAPI.Migrations
+namespace UCLL.Projects.WeatherStations.WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
@@ -47,56 +47,56 @@ namespace WeatherStationAPI.Migrations
                         {
                             StationId = 1,
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 14, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2072),
+                            Timestamp = new DateTime(2024, 11, 3, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(709),
                             Value = 23.5
                         },
                         new
                         {
                             StationId = 1,
                             SensorId = 2,
-                            Timestamp = new DateTime(2024, 10, 14, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2082),
+                            Timestamp = new DateTime(2024, 11, 3, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(720),
                             Value = 60.0
                         },
                         new
                         {
                             StationId = 1,
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 15, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2085),
+                            Timestamp = new DateTime(2024, 11, 4, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(722),
                             Value = 22.5
                         },
                         new
                         {
                             StationId = 1,
                             SensorId = 2,
-                            Timestamp = new DateTime(2024, 10, 15, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2087),
+                            Timestamp = new DateTime(2024, 11, 4, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(724),
                             Value = 58.0
                         },
                         new
                         {
                             StationId = 2,
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 14, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2089),
+                            Timestamp = new DateTime(2024, 11, 3, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(725),
                             Value = 19.199999999999999
                         },
                         new
                         {
                             StationId = 2,
                             SensorId = 2,
-                            Timestamp = new DateTime(2024, 10, 14, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2091),
+                            Timestamp = new DateTime(2024, 11, 3, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(727),
                             Value = 61.0
                         },
                         new
                         {
                             StationId = 2,
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 16, 7, 31, 17, 123, DateTimeKind.Utc).AddTicks(2093),
+                            Timestamp = new DateTime(2024, 11, 5, 15, 55, 48, 471, DateTimeKind.Utc).AddTicks(728),
                             Value = 18.199999999999999
                         },
                         new
                         {
                             StationId = 2,
                             SensorId = 2,
-                            Timestamp = new DateTime(2024, 10, 16, 7, 31, 17, 123, DateTimeKind.Utc).AddTicks(2096),
+                            Timestamp = new DateTime(2024, 11, 5, 15, 55, 48, 471, DateTimeKind.Utc).AddTicks(729),
                             Value = 57.0
                         });
                 });

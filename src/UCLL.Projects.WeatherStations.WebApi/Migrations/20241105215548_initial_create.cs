@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace WeatherStationAPI.Migrations
+namespace UCLL.Projects.WeatherStations.WebApi.Migrations
 {
     /// <inheritdoc />
-    public partial class firstversion : Migration
+    public partial class initial_create : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -116,9 +116,14 @@ namespace WeatherStationAPI.Migrations
                 columns: new[] { "SensorId", "StationId", "Timestamp", "Value" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2024, 10, 8, 12, 21, 53, 737, DateTimeKind.Utc).AddTicks(3148), 23.5 },
-                    { 2, 1, new DateTime(2024, 10, 8, 12, 21, 53, 737, DateTimeKind.Utc).AddTicks(3158), 60.0 },
-                    { 1, 2, new DateTime(2024, 10, 9, 6, 21, 53, 737, DateTimeKind.Utc).AddTicks(3161), 18.199999999999999 }
+                    { 1, 1, new DateTime(2024, 11, 3, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(709), 23.5 },
+                    { 1, 1, new DateTime(2024, 11, 4, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(722), 22.5 },
+                    { 2, 1, new DateTime(2024, 11, 3, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(720), 60.0 },
+                    { 2, 1, new DateTime(2024, 11, 4, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(724), 58.0 },
+                    { 1, 2, new DateTime(2024, 11, 3, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(725), 19.199999999999999 },
+                    { 1, 2, new DateTime(2024, 11, 5, 15, 55, 48, 471, DateTimeKind.Utc).AddTicks(728), 18.199999999999999 },
+                    { 2, 2, new DateTime(2024, 11, 3, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(727), 61.0 },
+                    { 2, 2, new DateTime(2024, 11, 5, 15, 55, 48, 471, DateTimeKind.Utc).AddTicks(729), 57.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -128,7 +133,8 @@ namespace WeatherStationAPI.Migrations
                 {
                     { 1, 1 },
                     { 2, 1 },
-                    { 1, 2 }
+                    { 1, 2 },
+                    { 2, 2 }
                 });
 
             migrationBuilder.CreateIndex(

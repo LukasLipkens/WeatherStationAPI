@@ -4,17 +4,18 @@ using MQTTnet;
 using MQTTnet.Client;
 using System.Text;
 using System.Threading.Channels;
+using UCLL.Projects.WeatherStations.ClassLib;
 
 namespace UCLL.Projects.WeatherStations.MQTT.Services
 {
     public class MqttService : IHostedService
     {
         private readonly ILogger<MqttService> _logger;
-        private readonly Channel<string> _channel;
+        private readonly Channel<MqttMessage> _channel;
         private IMqttClient _mqttClient;
         private  MqttClientOptions _mqttOptions;
 
-        public MqttService(ILogger<MqttService> logger, Channel<string> channel)
+        public MqttService(ILogger<MqttService> logger, Channel<MqttMessage> channel)
         {
             _logger = logger;
             _channel = channel;
@@ -39,7 +40,7 @@ namespace UCLL.Projects.WeatherStations.MQTT.Services
                 _logger.LogInformation("Connected to MQTT broker");
 
                 // subscribe to all topics
-                await _mqttClient.SubscribeAsync("weatherstations/data/#");
+                await _mqttClient.SubscribeAsync("weatherstations/#");
 
                 _logger.LogInformation("Subscribed to topic: weatherstations/data/#");
             };
@@ -58,13 +59,22 @@ namespace UCLL.Projects.WeatherStations.MQTT.Services
                 var topic = e.ApplicationMessage.Topic;
                 _logger.LogInformation($"\u001b[32mReceived on topic {topic} message: {message}\u001b[0m");
 
+                var topicParts = topic.Split('/');
+
+                MqttMessage mqttmessage = new MqttMessage();
+
+                mqttmessage.StationId = topicParts[^2];
+                mqttmessage.Topic = topicParts[^1];
+                mqttmessage.Payload = message;
+                
 
                 // hier zou je de data in de queue moeten stoppen
-                _channel.Writer.TryWrite(message);
+                _channel.Writer.TryWrite(mqttmessage);
                 
-                _channel.Reader.TryRead(out var data);
+                //_channel.Reader.TryRead(out var data);
 
-                _logger.LogInformation($"\u001b[34mData in queue: {data}\u001b[0m");
+                //_logger.LogInformation($"\u001b[34mData in queue: {data}\u001b[0m");
+
 
                 return Task.CompletedTask;
             };

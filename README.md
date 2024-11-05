@@ -9,7 +9,7 @@ Climate change is a pressing issue that demands a better understanding of its re
 
 Each station is designed to be energy self-sufficient, using solar panels and batteries, and equipped with sensors tailored to the needs of the location. These sensors may vary per station, monitoring parameters such as wind speed, rainfall, CO2 levels, fine particles, volatile organic compounds (VOCs), and more.
 
-Data collected from each station is transmitted to a centralized platform, which stores the information and makes it accessible through a web interface. Users can explore the stations on a detailed map, zooming in to see current sensor readings and historical data. New stations are automatically added to the system when activated.
+Data collected from each station is transmitted to a centralized platform, which stores the information and makes it accessible through a web interface. Users can explore the stations on a detailed map, zooming in to see current sensor readings and historical data. New stations are automatically added to the system whdbazjhdzahgen activated.
 
 This repository contains the API that powers the interaction between the measurement stations and the central database, enabling data collection, retrieval, and visualization.
 

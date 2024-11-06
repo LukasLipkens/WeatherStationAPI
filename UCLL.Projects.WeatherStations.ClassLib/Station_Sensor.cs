@@ -1,8 +1,8 @@
-﻿namespace UCLL.Projects.WeatherStations.WebApi.Models;
+﻿namespace UCLL.Projects.WeatherStations.ClassLib;
 
 public class Station_Sensor
 {
-    public string StationId { get; set; }
+    public int StationId { get; set; }
 
     public int SensorId { get; set; }
 

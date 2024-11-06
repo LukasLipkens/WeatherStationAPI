@@ -1,6 +1,13 @@
-﻿using System.Text;
-using MQTTnet;
-using MQTTnet.Client;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System.Threading.Channels;
+using UCLL.Projects.WeatherStations.ClassLib;
+
+//using UCLL.Projects.WeatherStations.MQTT.Data;
+using UCLL.Projects.WeatherStations.MQTT.Services;
+
 
 /*
     dit is een manier om mqtt te gebruiken in c#
@@ -11,54 +18,40 @@ using MQTTnet.Client;
 
 namespace UCLL.Projects.WeatherStations.MQTT;
 
-internal class Publisher
+internal class Program
 {
-    private static async Task Main(string[] args)
+    private static async Task Main()
     {
-        string broker = "www.lukaslipkens.be";
-        int port = 1883;
-        string clientId = Guid.NewGuid().ToString();
-        string username = "station";
-        string password = "Elo-Ict-2024";
-        string topic = "station/data/#";
-
-        MqttFactory factory = new MqttFactory();
-        IMqttClient? mqttClient = factory.CreateMqttClient();
-
-        MqttClientOptions? options = new MqttClientOptionsBuilder()
-            .WithClientId(clientId)
-            .WithTcpServer(broker, port)
-            .WithCredentials(username, password)
-            .WithCleanSession()
+        IHost host = Host.CreateDefaultBuilder()
+            .ConfigureHostConfiguration(hostConfigBuilder =>
+            {
+                //configHost.AddJsonFile("appsettings.json", optional: true);
+            })
+            .ConfigureAppConfiguration((hostBuilderContext, appConfigBuilder) =>
+            {
+                //appConfigBuilder.AddJsonFile("appsettings.json", optional: true);
+            })
+            .ConfigureServices((context, services) =>
+            {
+                services.AddSingleton(Channel.CreateUnbounded<MqttMessage>(
+                    new UnboundedChannelOptions
+                    {
+                        SingleReader = false,
+                        SingleWriter = false,
+                    }
+                    )); // channel voor strings (json wordt ontvangens als een string)
+                services.AddHostedService<MqttService>();
+                services.AddHostedService<DatabaseService>();
+            })
+            .ConfigureLogging(loggingBuilder =>
+            {
+                //loggingBuilder.AddConsole();
+                loggingBuilder.SetMinimumLevel(LogLevel.Information);
+                loggingBuilder.ClearProviders();
+                loggingBuilder.AddConsole();
+            })
             .Build();
 
-        MqttClientConnectResult? connectionResult = mqttClient.ConnectAsync(options).Result;
-
-        if (connectionResult.ResultCode == MqttClientConnectResultCode.Success)
-        {
-            Console.WriteLine("Connected to MQTT broker");
-            await mqttClient.SubscribeAsync(topic);
-
-            mqttClient.ApplicationMessageReceivedAsync += e =>
-            {
-                Console.WriteLine("Received message on topic: " + e.ApplicationMessage.Topic);
-                Console.WriteLine($"Received message: {Encoding.UTF8.GetString(e.ApplicationMessage.PayloadSegment)}");
-
-                // hier bericht verwerken
-
-
-                return Task.CompletedTask;
-            };
-        }
-        else
-        {
-            Console.WriteLine("Failed to connect to MQTT broker");
-            return;
-        }
-
-        while (true)
-        {
-
-        }
+        await host.RunAsync();
     }
 }

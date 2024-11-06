@@ -8,7 +8,7 @@ using UCLL.Projects.WeatherStations.WebApi.Data;
 
 #nullable disable
 
-namespace WeatherStationAPI.Migrations
+namespace UCLL.Projects.WeatherStations.WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
@@ -24,8 +24,8 @@ namespace WeatherStationAPI.Migrations
 
             modelBuilder.Entity("UCLL.Projects.WeatherStations.WebApi.Models.Measurement", b =>
                 {
-                    b.Property<int>("StationId")
-                        .HasColumnType("int");
+                    b.Property<string>("StationId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("SensorId")
                         .HasColumnType("int");
@@ -45,58 +45,58 @@ namespace WeatherStationAPI.Migrations
                     b.HasData(
                         new
                         {
-                            StationId = 1,
+                            StationId = "1",
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 14, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2072),
+                            Timestamp = new DateTime(2024, 11, 4, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7343),
                             Value = 23.5
                         },
                         new
                         {
-                            StationId = 1,
+                            StationId = "1",
                             SensorId = 2,
-                            Timestamp = new DateTime(2024, 10, 14, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2082),
+                            Timestamp = new DateTime(2024, 11, 4, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7358),
                             Value = 60.0
                         },
                         new
                         {
-                            StationId = 1,
+                            StationId = "1",
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 15, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2085),
+                            Timestamp = new DateTime(2024, 11, 5, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7358),
                             Value = 22.5
                         },
                         new
                         {
-                            StationId = 1,
+                            StationId = "1",
                             SensorId = 2,
-                            Timestamp = new DateTime(2024, 10, 15, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2087),
+                            Timestamp = new DateTime(2024, 11, 5, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7359),
                             Value = 58.0
                         },
                         new
                         {
-                            StationId = 2,
+                            StationId = "2",
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 14, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2089),
+                            Timestamp = new DateTime(2024, 11, 4, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7360),
                             Value = 19.199999999999999
                         },
                         new
                         {
-                            StationId = 2,
+                            StationId = "2",
                             SensorId = 2,
-                            Timestamp = new DateTime(2024, 10, 14, 13, 31, 17, 123, DateTimeKind.Utc).AddTicks(2091),
+                            Timestamp = new DateTime(2024, 11, 4, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7361),
                             Value = 61.0
                         },
                         new
                         {
-                            StationId = 2,
+                            StationId = "2",
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 16, 7, 31, 17, 123, DateTimeKind.Utc).AddTicks(2093),
+                            Timestamp = new DateTime(2024, 11, 6, 6, 22, 21, 797, DateTimeKind.Utc).AddTicks(7362),
                             Value = 18.199999999999999
                         },
                         new
                         {
-                            StationId = 2,
+                            StationId = "2",
                             SensorId = 2,
-                            Timestamp = new DateTime(2024, 10, 16, 7, 31, 17, 123, DateTimeKind.Utc).AddTicks(2096),
+                            Timestamp = new DateTime(2024, 11, 6, 6, 22, 21, 797, DateTimeKind.Utc).AddTicks(7363),
                             Value = 57.0
                         });
                 });
@@ -138,11 +138,8 @@ namespace WeatherStationAPI.Migrations
 
             modelBuilder.Entity("UCLL.Projects.WeatherStations.WebApi.Models.Station", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -165,7 +162,7 @@ namespace WeatherStationAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = "1",
                             Description = "Weather station in New York",
                             Latitude = 40.712800000000001,
                             Longitude = -74.006,
@@ -173,7 +170,7 @@ namespace WeatherStationAPI.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            Id = "2",
                             Description = "Weather station in Los Angeles",
                             Latitude = 34.052199999999999,
                             Longitude = -118.2437,
@@ -183,8 +180,8 @@ namespace WeatherStationAPI.Migrations
 
             modelBuilder.Entity("UCLL.Projects.WeatherStations.WebApi.Models.Station_Sensor", b =>
                 {
-                    b.Property<int>("StationId")
-                        .HasColumnType("int");
+                    b.Property<string>("StationId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("SensorId")
                         .HasColumnType("int");
@@ -198,22 +195,22 @@ namespace WeatherStationAPI.Migrations
                     b.HasData(
                         new
                         {
-                            StationId = 1,
+                            StationId = "1",
                             SensorId = 1
                         },
                         new
                         {
-                            StationId = 1,
+                            StationId = "1",
                             SensorId = 2
                         },
                         new
                         {
-                            StationId = 2,
+                            StationId = "2",
                             SensorId = 1
                         },
                         new
                         {
-                            StationId = 2,
+                            StationId = "2",
                             SensorId = 2
                         });
                 });

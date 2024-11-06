@@ -8,7 +8,7 @@ namespace UCLL.Projects.WeatherStations.WebApi.Models;
 
 public class Station
 {
-    [Key] public int Id { get; set; }
+    [Key] public string Id { get; set; }
 
     public string Name { get; set; } = "";
     public double Latitude { get; set; }

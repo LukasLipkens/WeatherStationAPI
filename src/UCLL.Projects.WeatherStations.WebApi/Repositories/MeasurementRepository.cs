@@ -19,10 +19,10 @@ public class MeasurementRepository : IMeasurementRepository
     }
 
 
-    public List<Measurement> GetAllMeasurementsFromStationSensor(int stationId, int sensorId)
+    public List<Measurement> GetAllMeasurementsFromStationSensor(string stationId, int sensorId)
         => _dataContext.Measurements.Where(m => m.StationId == stationId && m.SensorId == sensorId).ToList();
 
-    public List<SensorDto> GetMeasurementsFromSensorInTimeRange(int stationId, DateTime start, DateTime end, List<int>? sensorIds = null)
+    public List<SensorDto> GetMeasurementsFromSensorInTimeRange(string stationId, DateTime start, DateTime end, List<int>? sensorIds = null)
     {
         // Basisquery voor het filteren van metingen op basis van datumbereik en station
         IQueryable<Measurement> query = _dataContext.Measurements

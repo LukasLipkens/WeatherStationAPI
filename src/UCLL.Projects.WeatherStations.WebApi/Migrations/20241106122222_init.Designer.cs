@@ -9,11 +9,11 @@ using UCLL.Projects.WeatherStations.WebApi.Data;
 
 #nullable disable
 
-namespace WeatherStationAPI.Migrations
+namespace UCLL.Projects.WeatherStations.WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241009122154_firstversion")]
-    partial class firstversion
+    [Migration("20241106122222_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,10 +25,10 @@ namespace WeatherStationAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("UCLL.Projects.WeatherStations.WebApiModels.Measurement", b =>
+            modelBuilder.Entity("UCLL.Projects.WeatherStations.WebApi.Models.Measurement", b =>
                 {
-                    b.Property<int>("StationId")
-                        .HasColumnType("int");
+                    b.Property<string>("StationId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("SensorId")
                         .HasColumnType("int");
@@ -48,28 +48,63 @@ namespace WeatherStationAPI.Migrations
                     b.HasData(
                         new
                         {
-                            StationId = 1,
+                            StationId = "1",
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 8, 12, 21, 53, 737, DateTimeKind.Utc).AddTicks(3148),
+                            Timestamp = new DateTime(2024, 11, 4, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7343),
                             Value = 23.5
                         },
                         new
                         {
-                            StationId = 1,
+                            StationId = "1",
                             SensorId = 2,
-                            Timestamp = new DateTime(2024, 10, 8, 12, 21, 53, 737, DateTimeKind.Utc).AddTicks(3158),
+                            Timestamp = new DateTime(2024, 11, 4, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7358),
                             Value = 60.0
                         },
                         new
                         {
-                            StationId = 2,
+                            StationId = "1",
                             SensorId = 1,
-                            Timestamp = new DateTime(2024, 10, 9, 6, 21, 53, 737, DateTimeKind.Utc).AddTicks(3161),
+                            Timestamp = new DateTime(2024, 11, 5, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7358),
+                            Value = 22.5
+                        },
+                        new
+                        {
+                            StationId = "1",
+                            SensorId = 2,
+                            Timestamp = new DateTime(2024, 11, 5, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7359),
+                            Value = 58.0
+                        },
+                        new
+                        {
+                            StationId = "2",
+                            SensorId = 1,
+                            Timestamp = new DateTime(2024, 11, 4, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7360),
+                            Value = 19.199999999999999
+                        },
+                        new
+                        {
+                            StationId = "2",
+                            SensorId = 2,
+                            Timestamp = new DateTime(2024, 11, 4, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7361),
+                            Value = 61.0
+                        },
+                        new
+                        {
+                            StationId = "2",
+                            SensorId = 1,
+                            Timestamp = new DateTime(2024, 11, 6, 6, 22, 21, 797, DateTimeKind.Utc).AddTicks(7362),
                             Value = 18.199999999999999
+                        },
+                        new
+                        {
+                            StationId = "2",
+                            SensorId = 2,
+                            Timestamp = new DateTime(2024, 11, 6, 6, 22, 21, 797, DateTimeKind.Utc).AddTicks(7363),
+                            Value = 57.0
                         });
                 });
 
-            modelBuilder.Entity("UUCLL.Projects.WeatherStations.WebApiodels.Sensor", b =>
+            modelBuilder.Entity("UCLL.Projects.WeatherStations.WebApi.Models.Sensor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -104,13 +139,10 @@ namespace WeatherStationAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("UCUCLL.Projects.WeatherStations.WebApidels.Station", b =>
+            modelBuilder.Entity("UCLL.Projects.WeatherStations.WebApi.Models.Station", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -133,7 +165,7 @@ namespace WeatherStationAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = "1",
                             Description = "Weather station in New York",
                             Latitude = 40.712800000000001,
                             Longitude = -74.006,
@@ -141,7 +173,7 @@ namespace WeatherStationAPI.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            Id = "2",
                             Description = "Weather station in Los Angeles",
                             Latitude = 34.052199999999999,
                             Longitude = -118.2437,
@@ -149,10 +181,10 @@ namespace WeatherStationAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("UCLUCLL.Projects.WeatherStations.WebApiels.Station_Sensor", b =>
+            modelBuilder.Entity("UCLL.Projects.WeatherStations.WebApi.Models.Station_Sensor", b =>
                 {
-                    b.Property<int>("StationId")
-                        .HasColumnType("int");
+                    b.Property<string>("StationId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("SensorId")
                         .HasColumnType("int");
@@ -166,59 +198,68 @@ namespace WeatherStationAPI.Migrations
                     b.HasData(
                         new
                         {
-                            StationId = 1,
+                            StationId = "1",
                             SensorId = 1
                         },
                         new
                         {
-                            StationId = 1,
+                            StationId = "1",
                             SensorId = 2
                         },
                         new
                         {
-                            StationId = 2,
+                            StationId = "2",
                             SensorId = 1
+                        },
+                        new
+                        {
+                            StationId = "2",
+                            SensorId = 2
                         });
                 });
 
-            modelBuilder.Entity("UCLLUCLL.Projects.WeatherStations.WebApils.Measurement", b =>
+            modelBuilder.Entity("UCLL.Projects.WeatherStations.WebApi.Models.Measurement", b =>
                 {
-                    b.HasOne("UCLL.UCLL.Projects.WeatherStations.WebApis.Sensor", null)
+                    b.HasOne("UCLL.Projects.WeatherStations.WebApi.Models.Sensor", null)
                         .WithMany("Measurements")
                         .HasForeignKey("SensorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UCLL.pUCLL.Projects.WeatherStations.WebApi.Station", null)
+                    b.HasOne("UCLL.Projects.WeatherStations.WebApi.Models.Station", null)
                         .WithMany("Measurements")
                         .HasForeignKey("StationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("UCLL.prUCLL.Projects.WeatherStations.WebApiStation_Sensor", b =>
+            modelBuilder.Entity("UCLL.Projects.WeatherStations.WebApi.Models.Station_Sensor", b =>
                 {
-                    b.HasOne("UCLL.proUCLL.Projects.WeatherStations.WebApiensor", null)
+                    b.HasOne("UCLL.Projects.WeatherStations.WebApi.Models.Sensor", "Sensor")
                         .WithMany("Station_Sensors")
                         .HasForeignKey("SensorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UCLL.projUCLL.Projects.WeatherStations.WebApiation", null)
+                    b.HasOne("UCLL.Projects.WeatherStations.WebApi.Models.Station", "Station")
                         .WithMany("Station_Sensors")
                         .HasForeignKey("StationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Sensor");
+
+                    b.Navigation("Station");
                 });
 
-            modelBuilder.Entity("UCLL.projeUCLL.Projects.WeatherStations.WebApisor", b =>
+            modelBuilder.Entity("UCLL.Projects.WeatherStations.WebApi.Models.Sensor", b =>
                 {
                     b.Navigation("Measurements");
 
                     b.Navigation("Station_Sensors");
                 });
 
-            modelBuilder.Entity("UCLL.projecUCLL.Projects.WeatherStations.WebApiion", b =>
+            modelBuilder.Entity("UCLL.Projects.WeatherStations.WebApi.Models.Station", b =>
                 {
                     b.Navigation("Measurements");
 

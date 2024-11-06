@@ -79,7 +79,7 @@ jobs:
           context: .
           file: ./src/UCLL.Projects.WeatherStations.WebApi/Dockerfile
           push: true
-          tags: docker.io/weatherstations/weatherstations/ucll.projects.weatherstations.webapi:latest
+          tags: weatherstations/ucll.projects.weatherstations.webapi:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

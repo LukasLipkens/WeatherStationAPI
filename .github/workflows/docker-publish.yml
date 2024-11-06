@@ -8,8 +8,7 @@ name: Docker-Publish
 on:
   workflow_dispatch:
   push:
-    branches:
-      - live
+    branches: ["live"]
     tags:
       - 'v*.*.*'
   #pull_request:
@@ -73,7 +72,7 @@ jobs:
         with:
           context: .
           file: ./src/UCLL.Projects.WeatherStations.WebApi/Dockerfile
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: weatherstations/ucll.projects.weatherstations.webapi:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha

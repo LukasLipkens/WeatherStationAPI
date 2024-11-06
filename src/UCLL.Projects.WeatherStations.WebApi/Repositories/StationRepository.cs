@@ -27,7 +27,7 @@ public class StationRepository : IStationRepository
             .OrderBy(s => s.Id).ToList();
     }
 
-    public IEnumerable<StationDto> GetStationsLatestMeasurements(List<int> stationIds, int measurementAmount)
+    public IEnumerable<StationDto> GetStationsLatestMeasurements(List<string> stationIds, int measurementAmount)
     {
         IQueryable<Station> query = _dataContext.Stations
             .Include(s => s.Station_Sensors) // Include the Station_Sensor navigation

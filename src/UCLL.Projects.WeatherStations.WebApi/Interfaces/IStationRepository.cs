@@ -11,5 +11,5 @@ public interface IStationRepository
 {
     List<Station> GetAllStations();
 
-    public IEnumerable<StationDto> GetStationsLatestMeasurements(List<int> stationIds, int measurementAmount);
+    public IEnumerable<StationDto> GetStationsLatestMeasurements(List<string> stationIds, int measurementAmount);
 }

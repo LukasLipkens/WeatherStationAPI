@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UCLL.Projects.WeatherStations.WebApi.Migrations
 {
     /// <inheritdoc />
-    public partial class initial_create : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,8 +31,7 @@ namespace UCLL.Projects.WeatherStations.WebApi.Migrations
                 name: "Stations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Latitude = table.Column<double>(type: "float", nullable: false),
                     Longitude = table.Column<double>(type: "float", nullable: false),
@@ -48,7 +47,7 @@ namespace UCLL.Projects.WeatherStations.WebApi.Migrations
                 columns: table => new
                 {
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StationId = table.Column<int>(type: "int", nullable: false),
+                    StationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SensorId = table.Column<int>(type: "int", nullable: false),
                     Value = table.Column<double>(type: "float", nullable: false)
                 },
@@ -73,7 +72,7 @@ namespace UCLL.Projects.WeatherStations.WebApi.Migrations
                 name: "Station_Sensors",
                 columns: table => new
                 {
-                    StationId = table.Column<int>(type: "int", nullable: false),
+                    StationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SensorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -107,8 +106,8 @@ namespace UCLL.Projects.WeatherStations.WebApi.Migrations
                 columns: new[] { "Id", "Description", "Latitude", "Longitude", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Weather station in New York", 40.712800000000001, -74.006, "Station A" },
-                    { 2, "Weather station in Los Angeles", 34.052199999999999, -118.2437, "Station B" }
+                    { "1", "Weather station in New York", 40.712800000000001, -74.006, "Station A" },
+                    { "2", "Weather station in Los Angeles", 34.052199999999999, -118.2437, "Station B" }
                 });
 
             migrationBuilder.InsertData(
@@ -116,14 +115,14 @@ namespace UCLL.Projects.WeatherStations.WebApi.Migrations
                 columns: new[] { "SensorId", "StationId", "Timestamp", "Value" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2024, 11, 3, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(709), 23.5 },
-                    { 1, 1, new DateTime(2024, 11, 4, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(722), 22.5 },
-                    { 2, 1, new DateTime(2024, 11, 3, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(720), 60.0 },
-                    { 2, 1, new DateTime(2024, 11, 4, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(724), 58.0 },
-                    { 1, 2, new DateTime(2024, 11, 3, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(725), 19.199999999999999 },
-                    { 1, 2, new DateTime(2024, 11, 5, 15, 55, 48, 471, DateTimeKind.Utc).AddTicks(728), 18.199999999999999 },
-                    { 2, 2, new DateTime(2024, 11, 3, 21, 55, 48, 471, DateTimeKind.Utc).AddTicks(727), 61.0 },
-                    { 2, 2, new DateTime(2024, 11, 5, 15, 55, 48, 471, DateTimeKind.Utc).AddTicks(729), 57.0 }
+                    { 1, "1", new DateTime(2024, 11, 4, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7343), 23.5 },
+                    { 1, "1", new DateTime(2024, 11, 5, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7358), 22.5 },
+                    { 2, "1", new DateTime(2024, 11, 4, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7358), 60.0 },
+                    { 2, "1", new DateTime(2024, 11, 5, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7359), 58.0 },
+                    { 1, "2", new DateTime(2024, 11, 4, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7360), 19.199999999999999 },
+                    { 1, "2", new DateTime(2024, 11, 6, 6, 22, 21, 797, DateTimeKind.Utc).AddTicks(7362), 18.199999999999999 },
+                    { 2, "2", new DateTime(2024, 11, 4, 12, 22, 21, 797, DateTimeKind.Utc).AddTicks(7361), 61.0 },
+                    { 2, "2", new DateTime(2024, 11, 6, 6, 22, 21, 797, DateTimeKind.Utc).AddTicks(7363), 57.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -131,10 +130,10 @@ namespace UCLL.Projects.WeatherStations.WebApi.Migrations
                 columns: new[] { "SensorId", "StationId" },
                 values: new object[,]
                 {
-                    { 1, 1 },
-                    { 2, 1 },
-                    { 1, 2 },
-                    { 2, 2 }
+                    { 1, "1" },
+                    { 2, "1" },
+                    { 1, "2" },
+                    { 2, "2" }
                 });
 
             migrationBuilder.CreateIndex(

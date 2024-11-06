@@ -23,7 +23,7 @@ public class MeasurementController : Controller
     [HttpGet("station/{stationId}/sensor/{sensorId}")]
     [ProducesResponseType(200, Type = typeof(IEnumerable<Measurement>))]
     [ProducesResponseType(400)]
-    public IActionResult GetMeasurementsFromStationSensor(int stationId, int sensorId)
+    public IActionResult GetMeasurementsFromStationSensor(string stationId, int sensorId)
     {
         // Haal metingen op via de repository
         List<Measurement>? measurements = _measurementRepository.GetAllMeasurementsFromStationSensor(stationId, sensorId);
@@ -38,7 +38,7 @@ public class MeasurementController : Controller
     [HttpGet("station/{stationId}")]
     [ProducesResponseType(200, Type = typeof(IEnumerable<SensorDto>))]
     [ProducesResponseType(400)]
-    public IActionResult GetMeasurementsFromStation(int stationId, [FromQuery] List<int> sensors, DateTime? startDate = null,
+    public IActionResult GetMeasurementsFromStation(string stationId, [FromQuery] List<int> sensors, DateTime? startDate = null,
         DateTime? endDate = null)
     {
         //indien velden leeg gelaten wordt waarde rechts van ?? erin gestoken

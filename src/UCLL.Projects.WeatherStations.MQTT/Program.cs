@@ -1,12 +1,20 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Threading.Channels;
 using UCLL.Projects.WeatherStations.ClassLib;
+using UCLL.Projects.WeatherStations.MQTT.Interfaces;
+using UCLL.Projects.WeatherStations.MQTT.Repositories;
+
+
+
+
 
 //using UCLL.Projects.WeatherStations.MQTT.Data;
 using UCLL.Projects.WeatherStations.MQTT.Services;
+using UCLL.Projects.WeatherStations.MQTT.Data;
 
 
 /*
@@ -17,6 +25,8 @@ using UCLL.Projects.WeatherStations.MQTT.Services;
 
 
 namespace UCLL.Projects.WeatherStations.MQTT;
+
+
 
 internal class Program
 {
@@ -42,6 +52,15 @@ internal class Program
                     )); // channel voor strings (json wordt ontvangens als een string)
                 services.AddHostedService<MqttService>();
                 services.AddHostedService<DatabaseService>();
+                services.AddSingleton<IMeasurementRepository, MeasurementRepository>();
+                services.AddDbContext<DataContext>(options =>
+                {
+                    options.UseSqlServer(context.Configuration.GetConnectionString("WeatherStationDb"))
+                                .EnableSensitiveDataLogging(false) // Zet logging van gevoelige data uit
+                                .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddFilter((category, level) =>
+                                !category.Contains("Microsoft.EntityFrameworkCore") || level >= LogLevel.Warning))); // Filter EF Core logs;
+                });
+
             })
             .ConfigureLogging(loggingBuilder =>
             {

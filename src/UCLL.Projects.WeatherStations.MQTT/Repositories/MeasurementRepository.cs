@@ -6,30 +6,64 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using UCLL.Projects.WeatherStations.ClassLib;
 using UCLL.Projects.WeatherStations.MQTT.Interfaces;
 using UCLL.Projects.WeatherStations.MQTT.Services;
-using UCLL.Projects.WeatherStations.WebApi.Data;
-using UCLL.Projects.WeatherStations.WebApi.Dto;
+using UCLL.Projects.WeatherStations.MQTT.Data;
 
 namespace UCLL.Projects.WeatherStations.MQTT.Repositories
 {
     public class MeasurementRepository : IMeasurementRepository
     {
-        private readonly DataContext _dataContect;
-        private readonly ILogger<DatabaseService> _logger;
+        private readonly DataContext _dataContext;
 
 
         public MeasurementRepository(DataContext dataContect, ILogger<DatabaseService> logger)
         {
-            _dataContect = dataContect;
-            _logger = logger;
+            _dataContext = dataContect;
         }
 
         public bool AddMeasurements(string StationId, string Payload)
         {
-            MeasurementDto measuremnt = JsonSerializer.Deserialize<MeasurementDto>(Payload);
-            _logger.LogInformation($"{measuremnt}");
-            return false; 
+            return false;
         }
+
+        public bool CheckSensorExists(string type, string unit, string stationId)
+        {
+            // Check of de sensor al bestaat in de database
+            var sensor = _dataContext.Sensors.FirstOrDefault(s => s.Type == type);
+
+            if (sensor != null)
+            {
+                // Sensor bestaat al, dus we hoeven niets te doen
+                return true;
+            }
+
+            // Als de sensor niet bestaat, maken we een nieuwe sensor aan
+            sensor = new Sensor
+            {
+                Type = type,
+                Unit = unit
+            };
+
+            // Voeg de sensor toe aan de database
+            _dataContext.Sensors.Add(sensor);
+            _dataContext.SaveChanges(); // Zorg ervoor dat de wijzigingen worden opgeslagen en de sensor een ID krijgt
+
+            // Maak een nieuwe Station_Sensor aan en koppel de nieuwe sensor
+            var stationSensor = new Station_Sensor
+            {
+                StationId = stationId,
+                SensorId = sensor.Id
+            };
+
+            // Voeg de Station_Sensor toe aan de database
+            _dataContext.Station_Sensors.Add(stationSensor);
+            _dataContext.SaveChanges(); // Zorg ervoor dat deze wijziging ook wordt opgeslagen
+
+            // Retourneer true omdat de sensor is toegevoegd
+            return true;
+        }
+
     }
 }

@@ -81,8 +81,8 @@ jobs:
         with:
           context: .
           file: ./src/UCLL.Projects.WeatherStations.WebApi/Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          push: true
+          tags: docker.io/weatherstations/weatherstations/UCLL.Projects.WeatherStations.WebApi:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

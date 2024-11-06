@@ -71,7 +71,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: change directory
-        run: cd /home/runner/work/WeatherstationAPI/WeatherstationAPI/src/UCLL.Projects.WeatherStation.WebApi
+        run: cd ${{ github.workspace }}/src/UCLL.Project.WeatherStations.WebApi
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action

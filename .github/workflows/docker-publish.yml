@@ -8,8 +8,7 @@ name: Docker-Publish
 on:
   workflow_dispatch:
   push:
-    branches:
-      - test-docker
+    branches: ["live"]
     tags:
       - 'v*.*.*'
   #pull_request:
@@ -17,15 +16,11 @@ on:
        #- test-docker
 
 env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: docker.io/weatherstations/weatherstations
-  # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -58,7 +53,6 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
         with:
-          registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -78,26 +72,8 @@ jobs:
         with:
           context: .
           file: ./src/UCLL.Projects.WeatherStations.WebApi/Dockerfile
-          push: true
-          tags: docker.io/weatherstations/weatherstations/ucll.projects.weatherstations.webapi:latest
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: weatherstations/ucll.projects.weatherstations.webapi:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      # Sign the resulting Docker image digest except on PRs.
-      # This will only write to the public Rekor transparency log when the Docker
-      # repository is public to avoid leaking data.  If you would like to publish
-      # transparency data even for private images, pass --force to cosign below.
-      # https://github.com/sigstore/cosign
-      - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        # This step uses the identity token to provision an ephemeral certificate
-        # against the sigstore community Fulcio instance.
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
-
-
-

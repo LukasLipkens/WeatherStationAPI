@@ -25,10 +25,13 @@
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
         <PackageReference Include="MQTTnet" Version="4.3.7.1207" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+        <PackageReference Include="MySql.Data" Version="9.1.0" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\UCLL.Projects.WeatherStations.ClassLib\UCLL.Projects.WeatherStations.ClassLib.csproj" />
+      <ProjectReference Include="..\UCLL.Projects.WeatherStations.WebApi\UCLL.Projects.WeatherStations.WebApi.csproj" />
     </ItemGroup>
 
 </Project>

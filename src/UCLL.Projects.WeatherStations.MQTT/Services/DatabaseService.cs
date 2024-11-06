@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using UCLL.Projects.WeatherStations.ClassLib;
+using UCLL.Projects.WeatherStations.MQTT.Interfaces;
 
 namespace UCLL.Projects.WeatherStations.MQTT.Services
 {
@@ -15,13 +17,15 @@ namespace UCLL.Projects.WeatherStations.MQTT.Services
     {
         private readonly ILogger<DatabaseService> _logger;
         private readonly Channel<MqttMessage> _channel;
-        private readonly string _connectionString;
+        private readonly IMeasurementRepository _measurementRepository;
+        //private readonly string _connectionString;
 
-        public DatabaseService(ILogger<DatabaseService> logger, Channel<MqttMessage> channel)
+        public DatabaseService(ILogger<DatabaseService> logger, Channel<MqttMessage> channel, IMeasurementRepository measurementRepository)
         {
             _logger = logger;
             _channel = channel;
-            _connectionString = "Server=your_server;Database=your_database;User Id=your_user;Password=your_password;";
+            _measurementRepository = measurementRepository;
+            //_connectionString = "Server=;Database=;User Id=;Password=;";
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -32,27 +36,17 @@ namespace UCLL.Projects.WeatherStations.MQTT.Services
                 _logger.LogInformation($"db service message: {message.Topic}");
                 _logger.LogInformation($"db service message: {message.StationId}");
                 _logger.LogInformation($"db service message: {message.Payload}");
-                //try
-                //{
-                //    // Sla het bericht op in de database
-                //    using (var connection = new SqlConnection(_connectionString))
-                //    {
-                //        await connection.OpenAsync(stoppingToken);
-                //        string query = "INSERT INTO Messages (Content, ReceivedAt) VALUES (@content, @receivedAt)";
-                //        using (SqlCommand command = new SqlCommand(query, connection))
-                //        {
-                //            command.Parameters.AddWithValue("@content", message);
-                //            command.Parameters.AddWithValue("@receivedAt", DateTime.Now);
 
-                //            await command.ExecuteNonQueryAsync(stoppingToken);
-                //            _logger.LogInformation("Bericht opgeslagen in database: " + message);
-                //        }
-                //    }
-                //}
-                //catch (Exception ex)
-                //{
-                //    _logger.LogError("Fout bij opslaan in database: " + ex.Message);
-                //}
+                switch (message.Topic)
+                {
+                    case "measurement":
+                        _measurementRepository.AddMeasurements(message.StationId, message.Payload);
+                        break;
+                    case "Station":
+                        //
+                    break;
+                }
+
             }
         }
     }

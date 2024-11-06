@@ -42,7 +42,7 @@ public class StationController : Controller
     [HttpGet("Latest")]
     [ProducesResponseType(200, Type = typeof(IEnumerable<StationDto>))] // Good response
     [ProducesResponseType(404)] // Not found
-    public IActionResult GetLatestMeasurementsByStationId([FromQuery] List<int> stationIds, [FromQuery] int measurementAmount = 1)
+    public IActionResult GetLatestMeasurementsByStationId([FromQuery] List<string> stationIds, [FromQuery] int measurementAmount = 1)
     {
         IEnumerable<StationDto>? stationsWithMeasurements = _stationRepository.GetStationsLatestMeasurements(stationIds, measurementAmount);
 

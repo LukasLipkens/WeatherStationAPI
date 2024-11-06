@@ -2,7 +2,7 @@
 
 public class Station_Sensor
 {
-    public int StationId { get; set; }
+    public string StationId { get; set; }
 
     public int SensorId { get; set; }
 

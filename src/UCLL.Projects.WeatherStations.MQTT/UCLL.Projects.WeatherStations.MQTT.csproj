@@ -31,7 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\UCLL.Projects.WeatherStations.ClassLib\UCLL.Projects.WeatherStations.ClassLib.csproj" />
+      <ProjectReference Include="..\UCLL.Projects.WeatherStations.ClassLib\UCLL.Projects.WeatherStations.ClassLib.csproj" />
     </ItemGroup>
 
 </Project>

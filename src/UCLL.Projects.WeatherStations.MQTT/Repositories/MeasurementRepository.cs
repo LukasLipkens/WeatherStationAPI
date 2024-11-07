@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using UCLL.Projects.WeatherStations.ClassLib;
 using UCLL.Projects.WeatherStations.MQTT.Interfaces;
 using UCLL.Projects.WeatherStations.MQTT.Services;
 using UCLL.Projects.WeatherStations.MQTT.Data;
+using UCLL.Projects.WeatherStations.Shared;
 
 namespace UCLL.Projects.WeatherStations.MQTT.Repositories
 {

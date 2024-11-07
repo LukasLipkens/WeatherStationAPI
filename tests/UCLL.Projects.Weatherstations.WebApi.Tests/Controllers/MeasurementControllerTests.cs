@@ -5,7 +5,7 @@ using UCLL.Projects.WeatherStations.WebApi.Dto;
 using UCLL.Projects.WeatherStations.WebApi.Interfaces;
 using UCLL.Projects.WeatherStations.WebApi.Models;
 
-namespace UCLL.Projects.WeatherStations.WebApi.Tests.Controllers;
+namespace UCLL.Projects.Weatherstations.WebApi.Tests.Controllers;
 
 public class MeasurementControllerTests
 {

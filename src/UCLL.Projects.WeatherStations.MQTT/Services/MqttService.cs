@@ -4,7 +4,7 @@ using MQTTnet;
 using MQTTnet.Client;
 using System.Text;
 using System.Threading.Channels;
-using UCLL.Projects.WeatherStations.ClassLib;
+using UCLL.Projects.WeatherStations.Shared;
 
 namespace UCLL.Projects.WeatherStations.MQTT.Services
 {
@@ -45,7 +45,7 @@ namespace UCLL.Projects.WeatherStations.MQTT.Services
                 _logger.LogInformation("Subscribed to topic: weatherstations/data/#");
             };
 
-            //handler when disconnected from broker 
+            //handler when disconnected from broker
             _mqttClient.DisconnectedAsync += e =>
             {
                 _logger.LogWarning("Disconnected from MQTT broker");
@@ -66,11 +66,11 @@ namespace UCLL.Projects.WeatherStations.MQTT.Services
                 mqttmessage.StationId = topicParts[^2];
                 mqttmessage.Topic = topicParts[^1];
                 mqttmessage.Payload = message;
-                
+
 
                 // hier zou je de data in de queue moeten stoppen
                 _channel.Writer.TryWrite(mqttmessage);
-                
+
                 //_channel.Reader.TryRead(out var data);
 
                 //_logger.LogInformation($"\u001b[34mData in queue: {data}\u001b[0m");

@@ -4,6 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>UCLL.Projects.WeatherStations.Shared</AssemblyName>
+    <RootNamespace>UCLL.Projects.WeatherStations.Shared</RootNamespace>
   </PropertyGroup>
 
 </Project>

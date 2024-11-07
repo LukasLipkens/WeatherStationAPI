@@ -1,7 +1,7 @@
 ﻿#region
 
 using Microsoft.EntityFrameworkCore;
-using UCLL.Projects.WeatherStations.ClassLib;
+using UCLL.Projects.WeatherStations.Shared;
 
 #endregion
 

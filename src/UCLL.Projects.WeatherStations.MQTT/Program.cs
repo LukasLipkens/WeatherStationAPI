@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Threading.Channels;
-using UCLL.Projects.WeatherStations.ClassLib;
 using UCLL.Projects.WeatherStations.MQTT.Interfaces;
 using UCLL.Projects.WeatherStations.MQTT.Repositories;
 
@@ -15,6 +14,7 @@ using UCLL.Projects.WeatherStations.MQTT.Repositories;
 //using UCLL.Projects.WeatherStations.MQTT.Data;
 using UCLL.Projects.WeatherStations.MQTT.Services;
 using UCLL.Projects.WeatherStations.MQTT.Data;
+using UCLL.Projects.WeatherStations.Shared;
 
 
 /*

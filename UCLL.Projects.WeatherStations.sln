@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{6F77E1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-data", "docker-data", "{2725C35D-EEC9-4E51-98BD-E791C7234828}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.WeatherStations.ClassLib", "src\UCLL.Projects.WeatherStations.ClassLib\UCLL.Projects.WeatherStations.ClassLib.csproj", "{C440E6FD-C294-49F8-B007-6FA01185C9EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.WeatherStations.Shared", "src\UCLL.Projects.WeatherStations.Shared\UCLL.Projects.WeatherStations.Shared.csproj", "{C440E6FD-C294-49F8-B007-6FA01185C9EB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.WeatherStations.WebApi", "src\UCLL.Projects.WeatherStations.WebApi\UCLL.Projects.WeatherStations.WebApi.csproj", "{C057591D-6F9A-4E08-B687-CD301892F213}"
 EndProject

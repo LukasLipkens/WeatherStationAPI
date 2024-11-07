@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UCLL.Projects.WeatherStations.ClassLib
+namespace UCLL.Projects.WeatherStations.Shared
 {
     public class Station
     {

@@ -10,6 +10,7 @@ using UCLL.Projects.WeatherStations.MQTT.Interfaces;
 using UCLL.Projects.WeatherStations.MQTT.Services;
 using UCLL.Projects.WeatherStations.MQTT.Data;
 using UCLL.Projects.WeatherStations.Shared;
+using UCLL.Projects.WeatherStations.Shared.Models;
 
 namespace UCLL.Projects.WeatherStations.MQTT.Repositories
 {

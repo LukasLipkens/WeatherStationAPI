@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UCLL.Projects.WeatherStations.Shared
+namespace UCLL.Projects.WeatherStations.Shared.Models
 {
     public class Sensor
     {

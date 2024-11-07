@@ -1,4 +1,4 @@
-﻿namespace UCLL.Projects.WeatherStations.Shared;
+﻿namespace UCLL.Projects.WeatherStations.Shared.Models;
 
 public class Station_Sensor
 {

@@ -2,6 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using UCLL.Projects.WeatherStations.Shared;
+using UCLL.Projects.WeatherStations.Shared.Models;
 
 #endregion
 

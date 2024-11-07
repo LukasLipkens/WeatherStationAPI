@@ -30,4 +30,8 @@
         <Folder Include="Helpers\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\UCLL.Projects.WeatherStations.Shared\UCLL.Projects.WeatherStations.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using UCLL.Projects.WeatherStations.WebApi.Data;
+using UCLL.Projects.WeatherStations.Shared.Data;
 
 #nullable disable
 

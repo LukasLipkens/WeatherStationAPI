@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
+using UCLL.Projects.WeatherStations.Shared.Models;
 using UCLL.Projects.WeatherStations.WebApi.Controllers;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
 using UCLL.Projects.WeatherStations.WebApi.Interfaces;
-using UCLL.Projects.WeatherStations.WebApi.Models;
 
 namespace UCLL.Projects.Weatherstations.WebApi.Tests.Controllers;
 

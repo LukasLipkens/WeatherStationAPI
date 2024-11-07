@@ -1,9 +1,9 @@
 ﻿#region
 
 using Microsoft.AspNetCore.Mvc;
+using UCLL.Projects.WeatherStations.Shared.Models;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
 using UCLL.Projects.WeatherStations.WebApi.Interfaces;
-using UCLL.Projects.WeatherStations.WebApi.Models;
 
 #endregion
 
@@ -29,7 +29,7 @@ public class MeasurementController : Controller
         List<Measurement>? measurements = _measurementRepository.GetAllMeasurementsFromStationSensor(stationId, sensorId);
 
         // Controleer of er resultaten zijn
-        if (measurements == null || !measurements.Any()) return NotFound("Geen metingen gevonden voor het opgegeven station en sensor.");
+        if (!measurements.Any()) return NotFound("Geen metingen gevonden voor het opgegeven station en sensor.");
 
         // Retourneer de metingen
         return Ok(measurements);
@@ -49,7 +49,7 @@ public class MeasurementController : Controller
         List<SensorDto>? measurements = _measurementRepository.GetMeasurementsFromSensorInTimeRange(stationId, start, end, sensors);
 
         //kijkt of er waardes in measurements zit
-        if (measurements == null || !measurements.Any()) return NotFound("Geen metingen gevonden voor dit station");
+        if (!measurements.Any()) return NotFound("Geen metingen gevonden voor dit station");
 
         return Ok(measurements);
     }

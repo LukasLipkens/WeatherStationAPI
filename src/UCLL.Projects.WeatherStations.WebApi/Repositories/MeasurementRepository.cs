@@ -1,9 +1,9 @@
 ﻿#region
 
-using UCLL.Projects.WeatherStations.WebApi.Data;
+using UCLL.Projects.WeatherStations.Shared.Data;
+using UCLL.Projects.WeatherStations.Shared.Models;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
 using UCLL.Projects.WeatherStations.WebApi.Interfaces;
-using UCLL.Projects.WeatherStations.WebApi.Models;
 
 #endregion
 

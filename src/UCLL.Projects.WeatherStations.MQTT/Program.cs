@@ -13,9 +13,8 @@ using UCLL.Projects.WeatherStations.MQTT.Repositories;
 
 //using UCLL.Projects.WeatherStations.MQTT.Data;
 using UCLL.Projects.WeatherStations.MQTT.Services;
-using UCLL.Projects.WeatherStations.MQTT.Data;
 using UCLL.Projects.WeatherStations.MQTT.Models;
-using UCLL.Projects.WeatherStations.Shared;
+using UCLL.Projects.WeatherStations.Shared.Data;
 
 
 /*

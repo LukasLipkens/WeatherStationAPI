@@ -24,7 +24,7 @@ namespace UCLL.Projects.WeatherStations.WebApi.Tests.Controllers
         {
             _measurementRepositoryMock = new Mock<IMeasurementRepository>();
             //Dit Object-eigenschap is de gesimuleerde versie van de repository, die de controller gebruikt alsof het de echte implementatie is
-            _measurementController = new MeasurementController(_measurementRepositoryMock.Object); 
+            _measurementController = new MeasurementController(_measurementRepositoryMock.Object);
         }
 
         [Fact]
@@ -110,7 +110,7 @@ namespace UCLL.Projects.WeatherStations.WebApi.Tests.Controllers
 
             //Act
             var result = _measurementController.GetMeasurementsFromStation(stationId, sensors, startDate, endDate) as OkObjectResult;
-            
+
             // Assert
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);

@@ -8,4 +8,8 @@
     <RootNamespace>UCLL.Projects.WeatherStations.Shared</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+  </ItemGroup>
+
 </Project>

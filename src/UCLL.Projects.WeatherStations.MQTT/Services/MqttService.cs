@@ -4,6 +4,7 @@ using MQTTnet;
 using MQTTnet.Client;
 using System.Text;
 using System.Threading.Channels;
+using UCLL.Projects.WeatherStations.MQTT.Models;
 using UCLL.Projects.WeatherStations.Shared;
 
 namespace UCLL.Projects.WeatherStations.MQTT.Services

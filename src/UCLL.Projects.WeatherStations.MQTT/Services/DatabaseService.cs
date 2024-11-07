@@ -12,6 +12,7 @@ using System.Text.Json;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using UCLL.Projects.WeatherStations.MQTT.Interfaces;
+using UCLL.Projects.WeatherStations.MQTT.Models;
 using UCLL.Projects.WeatherStations.Shared;
 
 namespace UCLL.Projects.WeatherStations.MQTT.Services

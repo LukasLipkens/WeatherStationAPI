@@ -1,4 +1,4 @@
-﻿namespace UCLL.Projects.WeatherStations.Shared
+﻿namespace UCLL.Projects.WeatherStations.MQTT.Models
 {
     public class MqttMessage
     {

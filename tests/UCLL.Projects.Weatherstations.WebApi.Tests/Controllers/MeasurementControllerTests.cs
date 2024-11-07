@@ -72,7 +72,7 @@ public class MeasurementControllerTests
         DateTime startDate = DateTime.UtcNow.AddDays(-7);
         DateTime endDate = DateTime.UtcNow;
 
-        List<SensorDto> measurements = new List<SensorDto>
+        List<SensorDto> measurements = new()
         {
             new()
             {

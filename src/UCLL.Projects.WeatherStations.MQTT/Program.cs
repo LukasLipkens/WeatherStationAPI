@@ -1,20 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Channels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.Threading.Channels;
 using UCLL.Projects.WeatherStations.MQTT.Interfaces;
-using UCLL.Projects.WeatherStations.MQTT.Repositories;
-
-
-
-
-
-//using UCLL.Projects.WeatherStations.MQTT.Data;
-using UCLL.Projects.WeatherStations.MQTT.Services;
 using UCLL.Projects.WeatherStations.MQTT.Models;
+using UCLL.Projects.WeatherStations.MQTT.Repositories;
+using UCLL.Projects.WeatherStations.MQTT.Services;
 using UCLL.Projects.WeatherStations.Shared.Data;
+//using UCLL.Projects.WeatherStations.MQTT.Data;
 
 
 /*
@@ -25,8 +20,6 @@ using UCLL.Projects.WeatherStations.Shared.Data;
 
 
 namespace UCLL.Projects.WeatherStations.MQTT;
-
-
 
 internal class Program
 {
@@ -44,23 +37,22 @@ internal class Program
             .ConfigureServices((context, services) =>
             {
                 services.AddSingleton(Channel.CreateUnbounded<MqttMessage>(
-                    new UnboundedChannelOptions
+                    new()
                     {
                         SingleReader = false,
-                        SingleWriter = false,
+                        SingleWriter = false
                     }
-                    )); // channel voor strings (json wordt ontvangens als een string)
+                )); // channel voor strings (json wordt ontvangens als een string)
                 services.AddHostedService<MqttService>();
                 services.AddHostedService<DatabaseService>();
                 services.AddSingleton<IMeasurementRepository, MeasurementRepository>();
                 services.AddDbContext<DataContext>(options =>
                 {
                     options.UseSqlServer(context.Configuration.GetConnectionString("WeatherStationDb"))
-                                .EnableSensitiveDataLogging(false) // Zet logging van gevoelige data uit
-                                .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddFilter((category, level) =>
-                                !category.Contains("Microsoft.EntityFrameworkCore") || level >= LogLevel.Warning))); // Filter EF Core logs;
+                        .EnableSensitiveDataLogging(false) // Zet logging van gevoelige data uit
+                        .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddFilter((category, level) =>
+                            !category.Contains("Microsoft.EntityFrameworkCore") || level >= LogLevel.Warning))); // Filter EF Core logs;
                 });
-
             })
             .ConfigureLogging(loggingBuilder =>
             {

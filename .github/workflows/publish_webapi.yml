@@ -6,7 +6,7 @@ on:
     branches:
       - 'live'
     paths:
-      - 'src/UCLL.Projects.WeatherStations.WebApi'
+      - 'src/UCLL.Projects.WeatherStations.WebApi/'
 
 permissions:
   contents: read

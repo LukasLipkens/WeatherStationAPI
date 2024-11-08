@@ -37,7 +37,7 @@ jobs:
         name: Log out from Docker Hub
         run: docker logout
 
- build-publish_mqtt:
+  build-publish_mqtt:
     runs_on: ubuntu-latest
 
     steps:

@@ -37,8 +37,8 @@ jobs:
           file: ./src/UCLL.Projects.WeatherStations.MQTT/Dockerfile
           push: true
           tags: |
-            docker.io/weatherstations/ucll.projects.weatherstations.MQTT:latest
-            docker.io/weatherstations/ucll.projects.weatherstations.MQTT:${{ github.sha }}
+            docker.io/weatherstations/ucll.projects.weatherstations.mqtt:latest
+            docker.io/weatherstations/ucll.projects.weatherstations.mqtt:${{ github.sha }}
       - # good practice (for when multiple jobs)
         name: Log out from Docker Hub
         run: docker logout

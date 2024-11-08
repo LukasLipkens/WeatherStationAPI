@@ -2,12 +2,6 @@ name: Publish WebApi
 
 on:
   workflow_dispatch: # manual trigger
-  push:
-    branches:
-      - 'live'
-    paths:
-      - 'src/UCLL.Projects.WeatherStations.WebApi/**'
-      - 'src/UCLL.Projects.WeatherStations.Shared/**'
   pull_request:
     branches:
       - 'live'

@@ -6,9 +6,9 @@ WORKDIR /app
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
-WORKDIR /
-COPY ["src/UCLL.Projects.WeatherStations.MQTT/UCLL.Projects.WeatherStations.MQTT.csproj", "UCLL.Projects.WeatherStations.MQTT/"]
-COPY ["src/UCLL.Projects.WeatherStations.Shared/UCLL.Projects.WeatherStations.Shared.csproj", "UCLL.Projects.WeatherStations.Shared/"]
+WORKDIR /src
+COPY ["src/UCLL.Projects.WeatherStations.MQTT/", "UCLL.Projects.WeatherStations.MQTT/"]
+COPY ["src/UCLL.Projects.WeatherStations.Shared/", "UCLL.Projects.WeatherStations.Shared/"]
 RUN dotnet restore "./UCLL.Projects.WeatherStations.MQTT/UCLL.Projects.WeatherStations.MQTT.csproj"
 COPY . .
 WORKDIR "/src/UCLL.Projects.WeatherStations.MQTT"

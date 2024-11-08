@@ -8,9 +8,9 @@ EXPOSE 8080
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
-WORKDIR /
-COPY ["src/UCLL.Projects.WeatherStations.WebApi/UCLL.Projects.WeatherStations.WebApi.csproj", "UCLL.Projects.WeatherStations.WebApi/"]
-COPY ["src/UCLL.Projects.WeatherStations.Shared/UCLL.Projects.WeatherStations.Shared.csproj", "UCLL.Projects.WeatherStations.Shared/"]
+WORKDIR /src
+COPY ["src/UCLL.Projects.WeatherStations.WebApi/", "UCLL.Projects.WeatherStations.WebApi/"]
+COPY ["src/UCLL.Projects.WeatherStations.Shared/", "UCLL.Projects.WeatherStations.Shared/"]
 RUN dotnet restore "./UCLL.Projects.WeatherStations.WebApi/UCLL.Projects.WeatherStations.WebApi.csproj"
 COPY . .
 WORKDIR "/src/UCLL.Projects.WeatherStations.WebApi"

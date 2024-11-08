@@ -28,11 +28,14 @@ WebApplication app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
-app.UseHttpsRedirection();
+// I like to always have the swagger documentation available
+app.UseSwagger();
+app.UseSwaggerUI();
+
+//app.UseHttpsRedirection(); // prof's wishes
 
 app.UseAuthorization();
 

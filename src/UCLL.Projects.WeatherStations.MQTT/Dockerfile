@@ -1,20 +1,25 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
+# This stage is used when running from VS in fast mode (Default for Debug configuration)
+FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
 USER $APP_UID
 WORKDIR /app
 
+# This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["UCLL.Projects.WeatherStations.MQTT/UCLL.projects.WeatherStations.MQTT.csproj", "UCLL.Projects.WeatherStations.MQTT/"]
-RUN dotnet restore "UCLL.Projects.WeatherStations.MQTT/UCLL.Projects.WeatherStations.MQTT.csproj"
+COPY ["src/UCLL.Projects.WeatherStations.MQTT/", "UCLL.Projects.WeatherStations.MQTT/"]
+COPY ["src/UCLL.Projects.WeatherStations.Shared/", "UCLL.Projects.WeatherStations.Shared/"]
+RUN dotnet restore "./UCLL.Projects.WeatherStations.MQTT/UCLL.Projects.WeatherStations.MQTT.csproj"
 COPY . .
 WORKDIR "/src/UCLL.Projects.WeatherStations.MQTT"
-RUN dotnet build "UCLL.Projects.WeatherStations.MQTT.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./UCLL.Projects.WeatherStations.MQTT.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
+# This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "UCLL.Projects.WeatherStations.MQTT.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./UCLL.Projects.WeatherStations.MQTT.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
+# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

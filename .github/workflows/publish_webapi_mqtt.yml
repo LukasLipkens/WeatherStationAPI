@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   build-publish_webapi:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
       -

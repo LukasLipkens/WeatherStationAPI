@@ -1,18 +1,13 @@
-﻿#region
+﻿using Microsoft.EntityFrameworkCore;
+using UCLL.Projects.WeatherStations.Shared.Models;
 
-using Microsoft.EntityFrameworkCore;
-using UCLL.Projects.WeatherStations.WebApi.Models;
-
-#endregion
-
-namespace UCLL.Projects.WeatherStations.WebApi.Data;
+namespace UCLL.Projects.WeatherStations.Shared.Data;
 
 public class DataContext : DbContext
 {
     public DataContext(DbContextOptions<DataContext> options)
         : base(options)
     {
-
     }
 
     public DbSet<Station> Stations { get; set; }

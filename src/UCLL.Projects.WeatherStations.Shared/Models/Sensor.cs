@@ -1,10 +1,6 @@
-﻿#region
+﻿using System.ComponentModel.DataAnnotations;
 
-using System.ComponentModel.DataAnnotations;
-
-#endregion
-
-namespace UCLL.Projects.WeatherStations.WebApi.Models;
+namespace UCLL.Projects.WeatherStations.Shared.Models;
 
 public class Sensor
 {

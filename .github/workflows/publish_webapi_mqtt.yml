@@ -38,7 +38,7 @@ jobs:
         run: docker logout
 
   build-publish_mqtt:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
       -

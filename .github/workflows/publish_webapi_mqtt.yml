@@ -2,6 +2,9 @@ name: Publish WebApi And MQTT
 
 on:
   workflow_dispatch: # manual trigger
+  created:
+    branches:
+      - 'live'
 
 permissions:
   contents: read

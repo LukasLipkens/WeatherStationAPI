@@ -6,7 +6,8 @@ on:
     branches:
       - 'live'
     paths:
-      - 'src/UCLL.Projects.WeatherStations.MQTT/'
+      - 'src/UCLL.Projects.WeatherStations.MQTT/**'
+      - 'src/UCLL.Projects.WeatherStations.Shared/**'
 
 permissions:
   contents: read

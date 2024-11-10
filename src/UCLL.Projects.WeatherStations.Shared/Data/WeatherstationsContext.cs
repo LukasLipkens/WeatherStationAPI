@@ -147,22 +147,22 @@ public class WeatherstationsContext : DbContext
 
         // Seed Station_Sensors relationships
         modelBuilder.Entity<StationSensor>().HasData(
-            new StationSensor { StationId = "1", SensorId = 1 },
-            new StationSensor { StationId = "1", SensorId = 2 },
-            new StationSensor { StationId = "2", SensorId = 1 },
-            new StationSensor { StationId = "2", SensorId = 2 }
+            new StationSensor { Id = 1, StationId = "1", SensorId = 1 },
+            new StationSensor { Id = 2, StationId = "1", SensorId = 2 },
+            new StationSensor { Id = 3, StationId = "2", SensorId = 1 },
+            new StationSensor { Id = 4, StationId = "2", SensorId = 2 }
         );
 
         // Seed Measurements
         modelBuilder.Entity<Measurement>().HasData(
-            new Measurement { StationId = "1", SensorId = 1, Value = 23.5, Timestamp = DateTime.UtcNow.AddDays(-2) },
-            new Measurement { StationId = "1", SensorId = 2, Value = 60, Timestamp = DateTime.UtcNow.AddDays(-2) },
-            new Measurement { StationId = "1", SensorId = 1, Value = 22.5, Timestamp = DateTime.UtcNow.AddDays(-1) },
-            new Measurement { StationId = "1", SensorId = 2, Value = 58, Timestamp = DateTime.UtcNow.AddDays(-1) },
-            new Measurement { StationId = "2", SensorId = 1, Value = 19.2, Timestamp = DateTime.UtcNow.AddDays(-2) },
-            new Measurement { StationId = "2", SensorId = 2, Value = 61, Timestamp = DateTime.UtcNow.AddDays(-2) },
-            new Measurement { StationId = "2", SensorId = 1, Value = 18.2, Timestamp = DateTime.UtcNow.AddHours(-6) },
-            new Measurement { StationId = "2", SensorId = 2, Value = 57, Timestamp = DateTime.UtcNow.AddHours(-6) }
+            new Measurement { StationSensorId = 1, SensorValue = "23.5", Timestamp = DateTime.UtcNow.AddDays(-2) },
+            new Measurement { StationSensorId = 2, SensorValue = "60", Timestamp = DateTime.UtcNow.AddDays(-2) },
+            new Measurement { StationSensorId = 1, SensorValue = "22.5", Timestamp = DateTime.UtcNow.AddDays(-1) },
+            new Measurement { StationSensorId = 2, SensorValue = "58", Timestamp = DateTime.UtcNow.AddDays(-1) },
+            new Measurement { StationSensorId = 3, SensorValue = "19.2", Timestamp = DateTime.UtcNow.AddDays(-2) },
+            new Measurement { StationSensorId = 4, SensorValue = "61", Timestamp = DateTime.UtcNow.AddDays(-2) },
+            new Measurement { StationSensorId = 3, SensorValue = "18.2", Timestamp = DateTime.UtcNow.AddHours(-6) },
+            new Measurement { StationSensorId = 4, SensorValue = "57", Timestamp = DateTime.UtcNow.AddHours(-6) }
         );
     }
 

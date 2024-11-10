@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UCLL.Projects.WeatherStations.Shared.Models;
+using UCLL.Projects.WeatherStations.Shared.Data.Models;
 
 namespace UCLL.Projects.WeatherStations.Shared.Data;
 

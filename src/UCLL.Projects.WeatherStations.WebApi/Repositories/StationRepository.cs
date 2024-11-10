@@ -2,7 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using UCLL.Projects.WeatherStations.Shared.Data;
-using UCLL.Projects.WeatherStations.Shared.Models;
+using UCLL.Projects.WeatherStations.Shared.Data.Models;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
 using UCLL.Projects.WeatherStations.WebApi.Interfaces;
 

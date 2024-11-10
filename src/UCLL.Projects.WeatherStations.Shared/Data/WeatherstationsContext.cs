@@ -79,7 +79,7 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
         {
             entity.ToTable("station_sensors");
 
-            entity.HasKey(stationSensor => new { stationSensor.Id, stationSensor.StationId, stationSensor.SensorId }).HasName("PK_StationSensors_Id_StationId_SensorId");
+            entity.HasKey(stationSensor => new { stationSensor.StationId, stationSensor.SensorId }).HasName("PK_StationSensors_StationId_SensorId");
 
             entity.Property(stationSensor => stationSensor.Id)
                 .HasColumnName("id")

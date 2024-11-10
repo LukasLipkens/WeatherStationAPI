@@ -4,6 +4,7 @@ using UCLL.Projects.WeatherStations.Shared.Data.Models;
 using UCLL.Projects.WeatherStations.WebApi.Controllers;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
 using UCLL.Projects.WeatherStations.WebApi.Interfaces;
+using UCLL.Projects.WeatherStations.WebApi.Interfaces.Repositories;
 
 namespace UCLL.Projects.Weatherstations.WebApi.Tests.Controllers;
 

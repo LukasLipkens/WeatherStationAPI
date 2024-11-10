@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
 using UCLL.Projects.WeatherStations.WebApi.Interfaces;
+using UCLL.Projects.WeatherStations.WebApi.Interfaces.Repositories;
 
 #endregion
 

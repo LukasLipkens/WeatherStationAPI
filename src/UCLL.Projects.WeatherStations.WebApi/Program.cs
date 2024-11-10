@@ -2,7 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using UCLL.Projects.WeatherStations.Shared.Data;
-using UCLL.Projects.WeatherStations.WebApi.Interfaces;
+using UCLL.Projects.WeatherStations.WebApi.Interfaces.Repositories;
 using UCLL.Projects.WeatherStations.WebApi.Repositories;
 
 #endregion
@@ -13,8 +13,9 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Add services to the container.
-builder.Services.AddScoped<IMeasurementRepository, MeasurementRepository>();
 builder.Services.AddScoped<IStationRepository, StationRepository>();
+builder.Services.AddScoped<IStationSensorRepository, StationSensorRepository>();
+builder.Services.AddScoped<IMeasurementRepository, MeasurementRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

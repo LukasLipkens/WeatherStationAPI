@@ -5,7 +5,7 @@ using UCLL.Projects.WeatherStations.WebApi.Dto;
 
 #endregion
 
-namespace UCLL.Projects.WeatherStations.WebApi.Interfaces;
+namespace UCLL.Projects.WeatherStations.WebApi.Interfaces.Repositories;
 
 public interface IStationRepository
 {

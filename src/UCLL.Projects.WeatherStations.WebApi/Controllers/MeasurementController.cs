@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using UCLL.Projects.WeatherStations.Shared.Data.Models;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
 using UCLL.Projects.WeatherStations.WebApi.Interfaces;
+using UCLL.Projects.WeatherStations.WebApi.Interfaces.Repositories;
 
 #endregion
 
@@ -11,22 +12,25 @@ namespace UCLL.Projects.WeatherStations.WebApi.Controllers;
 
 [Route("api/v1/[Controller]")]
 [ApiController]
-public class MeasurementController : Controller
+public class MeasurementController(IStationSensorRepository stationSensorRepository, IMeasurementRepository measurementRepository) : Controller
 {
-    private readonly IMeasurementRepository _measurementRepository;
-
-    public MeasurementController(IMeasurementRepository measurementRepository)
-    {
-        _measurementRepository = measurementRepository;
-    }
+    private readonly IStationSensorRepository _stationSensorRepository = stationSensorRepository;
+    private readonly IMeasurementRepository _measurementRepository = measurementRepository;
 
     [HttpGet("station/{stationId}/sensor/{sensorId}")]
     [ProducesResponseType(200, Type = typeof(IEnumerable<Measurement>))]
     [ProducesResponseType(400)]
     public IActionResult GetMeasurementsFromStationSensor(string stationId, int sensorId)
     {
+        StationSensor? stationSensor = _stationSensorRepository.FindStationSensor(
+            stationId: stationId,
+            sensorId: sensorId
+        );
+
+        if (stationSensor is null) return NotFound("StationSensor not found.");
+
         // Haal metingen op via de repository
-        List<Measurement>? measurements = _measurementRepository.GetAllMeasurementsFromStationSensor(stationId, sensorId);
+        List<Measurement>? measurements = _measurementRepository.GetAllMeasurementsFromStationSensor(stationSensor.Id);
 
         // Controleer of er resultaten zijn
         if (!measurements.Any()) return NotFound("Geen metingen gevonden voor het opgegeven station en sensor.");

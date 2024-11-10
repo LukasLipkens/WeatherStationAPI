@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UCLL.Projects.WeatherStations.Shared.Data;
 
@@ -11,9 +12,11 @@ using UCLL.Projects.WeatherStations.Shared.Data;
 namespace UCLL.Projects.WeatherStations.Shared.Migrations
 {
     [DbContext(typeof(WeatherstationsContext))]
-    partial class WeatherstationsContextModelSnapshot : ModelSnapshot
+    [Migration("20241110163319_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

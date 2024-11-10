@@ -18,6 +18,7 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
 
             entity.Property(station => station.Id)
                 .HasColumnName("id")
+                .HasMaxLength(100) // REMARK: check this with the MQTT topic
                 .IsRequired();
 
             entity.Property(station => station.BatteryLevel)
@@ -35,11 +36,13 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
 
             entity.Property(station => station.Name)
                 .HasColumnName("name")
+                .HasMaxLength(100) // REMARK: check this with the requests
                 .IsRequired(false)
                 .HasDefaultValue(null);
 
             entity.Property(station => station.Description)
                 .HasColumnName("description")
+                .HasMaxLength(500) // REMARK: check this with the requests
                 .IsRequired(false)
                 .HasDefaultValue(null);
 
@@ -60,10 +63,12 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
 
             entity.Property(sensor => sensor.Type)
                 .HasColumnName("type")
+                .HasMaxLength(100) // REMARK: check this with the MQTT message
                 .IsRequired();
 
             entity.Property(sensor => sensor.Unit)
                 .HasColumnName("Unit")
+                .HasMaxLength(100) // REMARK: check this with the MQTT message
                 .IsRequired();
 
             entity.Navigation(sensor => sensor.StationSensors)
@@ -83,6 +88,7 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
 
             entity.Property(stationSensor => stationSensor.StationId)
                 .HasColumnName("station_id")
+                .HasMaxLength(100) // REMARK: check this with the MQTT topic
                 .IsRequired();
 
             entity.Property(stationSensor => stationSensor.SensorId)
@@ -120,6 +126,7 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
 
             entity.Property(measurement => measurement.SensorValue)
                 .HasColumnName("sensor_value")
+                .HasMaxLength(50) // REMARK: check this with the MQTT message
                 .IsRequired();
 
             entity.HasOne(measurement => measurement.StationSensor)

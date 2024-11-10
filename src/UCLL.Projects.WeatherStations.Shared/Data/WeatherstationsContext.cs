@@ -126,10 +126,10 @@ public class WeatherstationsContext : DbContext
                 .HasColumnName("sensor_value")
                 .IsRequired();
 
-            // REMARK: maybe need to set principal key here
             entity.HasOne(measurement => measurement.StationSensor)
                 .WithMany(stationSensor => stationSensor.Measurements)
                 .HasForeignKey(measurement => measurement.StationSensorId)
+                .HasPrincipalKey(stationSensor => stationSensor.Id)
                 .HasConstraintName("FK_Measurements_StationSensorId");
         });
 

@@ -191,7 +191,7 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
         Random random = new();
         for (int daysAgo = 1; daysAgo <= 30; daysAgo++)
         {
-            for (int amount = 0; amount < 10; amount++)
+            for (int amount = 0; amount < random.Next(10, 31); amount++)
             {
                 modelBuilder.Entity<Measurement>().HasData( new Measurement
                 {

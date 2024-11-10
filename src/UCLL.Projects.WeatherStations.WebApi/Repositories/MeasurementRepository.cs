@@ -52,7 +52,7 @@ public class MeasurementRepository : IMeasurementRepository
                 Measurements = g.Select(m => new MeasurementDto
                 {
                     Timestamp = m.Timestamp,
-                    Value = m.Value
+                    SensorValue = m.Value
                 }).ToList()
             }).ToList();
     }

@@ -10,58 +10,39 @@ using UCLL.Projects.WeatherStations.WebApi.Interfaces;
 
 namespace UCLL.Projects.WeatherStations.WebApi.Repositories;
 
-public class StationRepository : IStationRepository
+public class StationRepository(WeatherstationsContext weatherstationsContext) : IStationRepository
 {
-    private readonly WeatherstationsContext _weatherstationsContext;
+    private readonly WeatherstationsContext _weatherstationsContext = weatherstationsContext;
 
-    public StationRepository(WeatherstationsContext weatherstationsContext)
-    {
-        _weatherstationsContext = weatherstationsContext;
-    }
-
-    public List<Station> GetAllStations()
-    {
-        return _weatherstationsContext.Stations
-            //.Include(s => s.Station_Sensors)
-            //.Include(s => s.Measurements)
-            .OrderBy(s => s.Id).ToList();
-    }
+    public List<Station> GetAllStations() => _weatherstationsContext.Stations.OrderBy(station => station.Id).ToList();
 
     public IEnumerable<StationDto> GetStationsLatestMeasurements(List<string> stationIds, int measurementAmount)
     {
-        IQueryable<Station> query = _weatherstationsContext.Stations
-            .Include(s => s.StationSensors) // Include the Station_Sensor navigation
-            .ThenInclude(ss => ss.Sensor) // Then include the Sensor navigation from Station_Sensor
-            .Include(s => s.Measurements) // Include Measurements directly from Station
-            .AsQueryable();
+        IQueryable<Station> databaseStations = _weatherstationsContext.Stations.AsQueryable();
 
-        // check if any station ID's are existant, if not; search for all existant ones.
-        if (stationIds != null && stationIds.Any()) query = query.Where(s => stationIds.Contains(s.Id));
+        if (stationIds.Count != 0) databaseStations = databaseStations.Where(station => stationIds.Contains(station.Id));
 
-        List<StationDto> stations = query.Select(station => new StationDto
+        return databaseStations.Select(databaseStation => new StationDto()
         {
-            Id = station.Id,
-            Name = station.Name,
-            Latitude = station.Latitude,
-            Longitude = station.Longitude,
-            Description = station.Description,
-            Sensors = station.StationSensors.Select(ss => new SensorDto
+            Id = databaseStation.Id,
+            Name = databaseStation.Name,
+            Latitude = databaseStation.Latitude,
+            Longitude = databaseStation.Longitude,
+            Description = databaseStation.Description,
+            Sensors = databaseStation.StationSensors.Select(stationSensor => new SensorDto
             {
-                Id = ss.SensorId,
-                Unit = ss.Sensor.Unit,
-                Type = ss.Sensor.Type,
-                Measurements = station.Measurements
-                    .Where(m => m.SensorId == ss.SensorId)
-                    .OrderByDescending(m => m.Timestamp)
+                Id = stationSensor.SensorId,
+                Unit = stationSensor.Sensor.Unit,
+                Type = stationSensor.Sensor.Type,
+                Measurements = stationSensor.Measurements
+                    .OrderByDescending(measurement => measurement.Timestamp)
                     .Take(measurementAmount)
-                    .Select(m => new MeasurementDto
+                    .Select(measurement => new MeasurementDto
                     {
-                        Timestamp = m.Timestamp,
-                        Value = m.Value
+                        Timestamp = measurement.Timestamp,
+                        SensorValue = measurement.SensorValue
                     }).ToList()
             }).ToList()
         }).ToList();
-
-        return stations;
     }
 }

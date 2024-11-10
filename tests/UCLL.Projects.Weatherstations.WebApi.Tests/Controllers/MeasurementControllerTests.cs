@@ -81,8 +81,8 @@ public class MeasurementControllerTests
                 Type = "Temperature",
                 Measurements = new()
                 {
-                    new() { Timestamp = startDate, Value = 7.0 },
-                    new() { Timestamp = startDate.AddHours(2), Value = 8.0 }
+                    new() { Timestamp = startDate, SensorValue = 7.0 },
+                    new() { Timestamp = startDate.AddHours(2), SensorValue = 8.0 }
                 }
             },
             new()
@@ -92,8 +92,8 @@ public class MeasurementControllerTests
                 Type = "Humidity",
                 Measurements = new()
                 {
-                    new() { Timestamp = endDate, Value = 76.0 },
-                    new() { Timestamp = endDate.AddHours(-2), Value = 72.0 }
+                    new() { Timestamp = endDate, SensorValue = 76.0 },
+                    new() { Timestamp = endDate.AddHours(-2), SensorValue = 72.0 }
                 }
             }
         };
@@ -120,9 +120,9 @@ public class MeasurementControllerTests
         Assert.Equal("Temperature", firstSensor.Type);
         Assert.Equal("Celsius", firstSensor.Unit);
         Assert.Equal(2, firstSensor.Measurements?.Count);
-        Assert.Equal(7.0, firstSensor.Measurements?[0].Value);
+        Assert.Equal(7.0, firstSensor.Measurements?[0].SensorValue);
         Assert.Equal(startDate, firstSensor.Measurements?[0].Timestamp);
-        Assert.Equal(8.0, firstSensor.Measurements?[1].Value);
+        Assert.Equal(8.0, firstSensor.Measurements?[1].SensorValue);
         Assert.Equal(startDate.AddHours(2), firstSensor.Measurements?[1].Timestamp);
 
         // Controleer details van de tweede SensorDto en zijn MeasurementDto items
@@ -131,9 +131,9 @@ public class MeasurementControllerTests
         Assert.Equal("Humidity", secondSensor.Type);
         Assert.Equal("%", secondSensor.Unit);
         Assert.Equal(2, secondSensor.Measurements?.Count);
-        Assert.Equal(76.0, secondSensor.Measurements?[0].Value);
+        Assert.Equal(76.0, secondSensor.Measurements?[0].SensorValue);
         Assert.Equal(endDate, secondSensor.Measurements?[0].Timestamp);
-        Assert.Equal(72.0, secondSensor.Measurements?[1].Value);
+        Assert.Equal(72.0, secondSensor.Measurements?[1].SensorValue);
         Assert.Equal(endDate.AddHours(-2), secondSensor.Measurements?[1].Timestamp);
     }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using UCLL.Projects.WeatherStations.Shared.Data.Models;
 
 namespace UCLL.Projects.WeatherStations.Shared.Data;
@@ -130,35 +131,76 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
 
         // Seed Stations
         modelBuilder.Entity<Station>().HasData(
-            new Station { Id = "1", Name = "Station A", Latitude = 40.7128, Longitude = -74.0060, Description = "Weather station in New York" },
-            new Station { Id = "2", Name = "Station B", Latitude = 34.0522, Longitude = -118.2437, Description = "Weather station in Los Angeles" }
+            new Station { Id = "1", BatteryLevel = 3.784, Latitude = 34.0522, Longitude = -118.2437, Name = "WSTATION_821A7C4FB923-DUMMY", Description = "Dummy weather station with random MAC addresses: 82:1A:7C:4F:B9:23" },
+            new Station { Id = "2", BatteryLevel = 4.153, Latitude = -22.9068, Longitude = -43.1729, Name = "WSTATION_D35F986B4E17-DUMMY", Description = "Dummy weather station with random MAC addresses: D3:5F:98:6B:4E:17" },
+            new Station { Id = "3", Latitude = 48.8566, Longitude = 2.3522, Name = "WSTATION_A43B915DC72A-DUMMY", Description = "Dummy weather station with random MAC addresses: A4:3B:91:5D:C7:2A" },
+            new Station { Id = "4", BatteryLevel = 4.031, Latitude = 35.6895, Longitude = 139.6917, Name = "WSTATION_1F8E5A3C7961-DUMMY", Description = "Dummy weather station with random MAC addresses: 1F:8E:5A:3C:79:61" },
+            new Station { Id = "5", Latitude = -33.8688, Longitude = 151.2093, Name = "WSTATION_5B9DE622F108-DUMMY", Description = "Dummy weather station with random MAC addresses: 5B:9D:E6:22:F1:08" }
         );
 
         // Seed Sensors
         modelBuilder.Entity<Sensor>().HasData(
-            new Sensor { Id = 1, Type = "Temperature", Unit = "Celsius" },
-            new Sensor { Id = 2, Type = "Humidity", Unit = "%" }
+            new Sensor { Id = 1, Type = "Temperature-DUMMY", Unit = "Celsius" },
+            new Sensor { Id = 2, Type = "Humidity-DUMMY", Unit = "%" },
+            new Sensor { Id = 3, Type = "Pressure-DUMMY", Unit = "hPa" },
+            new Sensor { Id = 4, Type = "Wind Speed-DUMMY", Unit = "m/s" },
+            new Sensor { Id = 5, Type = "Wind Direction-DUMMY", Unit = "Degrees" },
+            new Sensor { Id = 6, Type = "Rainfall-DUMMY", Unit = "mm" },
+            new Sensor { Id = 7, Type = "UV Index-DUMMY", Unit = "Index" },
+            new Sensor { Id = 8, Type = "Soil Moisture-DUMMY", Unit = "%" },
+            new Sensor { Id = 9, Type = "Solar Radiation-DUMMY", Unit = "W/m²" },
+            new Sensor { Id = 10, Type = "CO2-DUMMY", Unit = "ppm" },
+            new Sensor { Id = 11, Type = "NO2-DUMMY", Unit = "ppb" },
+            new Sensor { Id = 12, Type = "O3-DUMMY", Unit = "ppb" },
+            new Sensor { Id = 13, Type = "PM2.5-DUMMY", Unit = "µg/m³" },
+            new Sensor { Id = 14, Type = "PM10-DUMMY", Unit = "µg/m³" }
         );
 
         // Seed Station_Sensors relationships
         modelBuilder.Entity<StationSensor>().HasData(
             new StationSensor { Id = 1, StationId = "1", SensorId = 1 },
             new StationSensor { Id = 2, StationId = "1", SensorId = 2 },
-            new StationSensor { Id = 3, StationId = "2", SensorId = 1 },
-            new StationSensor { Id = 4, StationId = "2", SensorId = 2 }
+            new StationSensor { Id = 3, StationId = "1", SensorId = 3 },
+            new StationSensor { Id = 4, StationId = "1", SensorId = 5 },
+            new StationSensor { Id = 5, StationId = "2", SensorId = 1 },
+            new StationSensor { Id = 6, StationId = "2", SensorId = 2 },
+            new StationSensor { Id = 7, StationId = "2", SensorId = 4 },
+            new StationSensor { Id = 8, StationId = "2", SensorId = 6 },
+            new StationSensor { Id = 9, StationId = "3", SensorId = 1 },
+            new StationSensor { Id = 10, StationId = "3", SensorId = 2 },
+            new StationSensor { Id = 11, StationId = "3", SensorId = 3 },
+            new StationSensor { Id = 12, StationId = "3", SensorId = 7 },
+            new StationSensor { Id = 13, StationId = "3", SensorId = 8 },
+            new StationSensor { Id = 14, StationId = "4", SensorId = 1 },
+            new StationSensor { Id = 15, StationId = "4", SensorId = 3 },
+            new StationSensor { Id = 16, StationId = "4", SensorId = 6 },
+            new StationSensor { Id = 17, StationId = "4", SensorId = 10 },
+            new StationSensor { Id = 18, StationId = "5", SensorId = 1 },
+            new StationSensor { Id = 19, StationId = "5", SensorId = 2 },
+            new StationSensor { Id = 20, StationId = "5", SensorId = 5 },
+            new StationSensor { Id = 21, StationId = "5", SensorId = 9 },
+            new StationSensor { Id = 22, StationId = "5", SensorId = 13 },
+            new StationSensor { Id = 23, StationId = "1", SensorId = 11 },
+            new StationSensor { Id = 24, StationId = "2", SensorId = 12 },
+            new StationSensor { Id = 25, StationId = "3", SensorId = 14 },
+            new StationSensor { Id = 26, StationId = "4", SensorId = 7 },
+            new StationSensor { Id = 27, StationId = "5", SensorId = 4 }
         );
 
         // Seed Measurements
-        modelBuilder.Entity<Measurement>().HasData(
-            new Measurement { StationSensorId = 1, SensorValue = "23.5", Timestamp = DateTime.UtcNow.AddDays(-2) },
-            new Measurement { StationSensorId = 2, SensorValue = "60", Timestamp = DateTime.UtcNow.AddDays(-2) },
-            new Measurement { StationSensorId = 1, SensorValue = "22.5", Timestamp = DateTime.UtcNow.AddDays(-1) },
-            new Measurement { StationSensorId = 2, SensorValue = "58", Timestamp = DateTime.UtcNow.AddDays(-1) },
-            new Measurement { StationSensorId = 3, SensorValue = "19.2", Timestamp = DateTime.UtcNow.AddDays(-2) },
-            new Measurement { StationSensorId = 4, SensorValue = "61", Timestamp = DateTime.UtcNow.AddDays(-2) },
-            new Measurement { StationSensorId = 3, SensorValue = "18.2", Timestamp = DateTime.UtcNow.AddHours(-6) },
-            new Measurement { StationSensorId = 4, SensorValue = "57", Timestamp = DateTime.UtcNow.AddHours(-6) }
-        );
+        Random random = new();
+        for (int daysAgo = 1; daysAgo <= 30; daysAgo++)
+        {
+            for (int amount = 0; amount < 10; amount++)
+            {
+                modelBuilder.Entity<Measurement>().HasData( new Measurement
+                {
+                    Timestamp = DateTime.UtcNow.AddDays(-daysAgo),
+                    StationSensorId = random.Next(1, 28),
+                    SensorValue = (10 + (random.NextDouble() * (100 - 10))).ToString(CultureInfo.InvariantCulture),
+                } );
+            }
+        }
     }
 
     public DbSet<Station> Stations { get; set; }

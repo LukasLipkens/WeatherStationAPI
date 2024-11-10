@@ -10,48 +10,128 @@ public class WeatherstationsContext : DbContext
     {
     }
 
-    public DbSet<Station> Stations { get; set; }
-    public DbSet<Sensor> Sensors { get; set; }
-    public DbSet<StationSensor> Station_Sensors { get; set; }
-    public DbSet<Measurement> Measurements { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Relationships:
-        modelBuilder.Entity<Measurement>()
-            .HasKey(m => new { m.StationId, m.SensorId, m.Timestamp }); //3 primary keys
+        modelBuilder.Entity<Station>(entity =>
+        {
+            entity.ToTable("stations");
 
-        modelBuilder.Entity<StationSensor>()
-            .HasKey(ss => new { ss.StationId, ss.SensorId });
+            entity.HasKey(station => station.Id).HasName("PK_Stations_Id");
 
-        modelBuilder.Entity<StationSensor>()
-            .HasOne(ss => ss.Sensor)
-            .WithMany(s => s.StationSensors)
-            .HasForeignKey(ss => ss.StationId)
-            .OnDelete(DeleteBehavior.Cascade);
+            entity.Property(station => station.Id)
+                .HasColumnName("id")
+                .IsRequired();
 
-        modelBuilder.Entity<StationSensor>()
-            .HasOne(ss => ss.Sensor)
-            .WithMany(s => s.StationSensors)
-            .HasForeignKey(ss => ss.SensorId)
-            .OnDelete(DeleteBehavior.Cascade);
+            entity.Property(station => station.BatteryLevel)
+                .HasColumnName("battery_level")
+                .IsRequired(false)
+                .HasDefaultValue(null);
 
-        // Measurement relationship with Station
-        modelBuilder.Entity<Measurement>()
-            .HasOne<Station>()
-            .WithMany(s => s.Measurements)
-            .HasForeignKey(m => m.StationId)
-            .OnDelete(DeleteBehavior.Cascade); // Cascade delete if a Station is deleted
+            entity.Property(station => station.Latitude)
+                .HasColumnName("latitude")
+                .IsRequired();
 
-        // Measurement relationship with Sensor
-        modelBuilder.Entity<Measurement>()
-            .HasOne<Sensor>()
-            .WithMany(s => s.Measurements)
-            .HasForeignKey(m => m.SensorId)
-            .OnDelete(DeleteBehavior.Cascade); // Cascade delete if a Sensor is deleted
+            entity.Property(station => station.Longitude)
+                .HasColumnName("longitude")
+                .IsRequired();
 
+            entity.Property(station => station.Name)
+                .HasColumnName("name")
+                .IsRequired(false)
+                .HasDefaultValue(null);
+
+            entity.Property(station => station.Description)
+                .HasColumnName("description")
+                .IsRequired(false)
+                .HasDefaultValue(null);
+
+            entity.Navigation(station => station.StationSensors)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+        });
+
+        modelBuilder.Entity<Sensor>(entity =>
+        {
+            entity.ToTable("sensors");
+
+            entity.HasKey(sensor => sensor.Id).HasName("PK_Sensors_Id");
+
+            entity.Property(sensor => sensor.Id)
+                .HasColumnName("id")
+                .IsRequired()
+                .ValueGeneratedOnAdd();
+
+            entity.Property(sensor => sensor.Type)
+                .HasColumnName("type")
+                .IsRequired();
+
+            entity.Property(sensor => sensor.Unit)
+                .HasColumnName("Unit")
+                .IsRequired();
+
+            entity.Navigation(sensor => sensor.StationSensors)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+        });
+
+        modelBuilder.Entity<StationSensor>(entity =>
+        {
+            entity.ToTable("station_sensors");
+
+            entity.HasKey(stationSensor => new { stationSensor.Id, stationSensor.StationId, stationSensor.SensorId }).HasName("PK_StationSensors_Id_StationId_SensorId");
+
+            entity.Property(stationSensor => stationSensor.Id)
+                .HasColumnName("id")
+                .IsRequired()
+                .ValueGeneratedOnAdd();
+
+            entity.Property(stationSensor => stationSensor.StationId)
+                .HasColumnName("station_id")
+                .IsRequired();
+
+            entity.Property(stationSensor => stationSensor.SensorId)
+                .HasColumnName("sensor_id")
+                .IsRequired();
+
+            entity.HasOne(stationSensor => stationSensor.Station)
+                .WithMany(station => station.StationSensors)
+                .HasForeignKey(stationSensor => stationSensor.StationId)
+                .HasConstraintName("FK_StationSensors_StationId");
+
+            // REMARK: maybe need to set principal key here
+            entity.HasOne(stationSensor => stationSensor.Sensor)
+                .WithMany(sensor => sensor.StationSensors)
+                .HasForeignKey(stationSensor => stationSensor.SensorId)
+                .HasConstraintName("FK_StationSensors_SensorId");
+
+            entity.Navigation(stationSensor => stationSensor.Measurements)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+        });
+
+        modelBuilder.Entity<Measurement>(entity =>
+        {
+            entity.ToTable("measurements");
+
+            entity.HasKey(measurement => new { measurement.Timestamp, measurement.StationSensorId }).HasName("PK_Measurements_Timestamp_StationSensorId");
+
+            entity.Property(measurement => measurement.Timestamp)
+                .HasColumnName("timestamp")
+                .IsRequired();
+
+            entity.Property(measurement => measurement.StationSensorId)
+                .HasColumnName("station_sensor_id")
+                .IsRequired();
+
+            entity.Property(measurement => measurement.SensorValue)
+                .HasColumnName("sensor_value")
+                .IsRequired();
+
+            // REMARK: maybe need to set principal key here
+            entity.HasOne(measurement => measurement.StationSensor)
+                .WithMany(stationSensor => stationSensor.Measurements)
+                .HasForeignKey(measurement => measurement.StationSensorId)
+                .HasConstraintName("FK_Measurements_StationSensorId");
+        });
 
         // Seed Stations
         modelBuilder.Entity<Station>().HasData(
@@ -85,4 +165,9 @@ public class WeatherstationsContext : DbContext
             new Measurement { StationId = "2", SensorId = 2, Value = 57, Timestamp = DateTime.UtcNow.AddHours(-6) }
         );
     }
+
+    public DbSet<Station> Stations { get; set; }
+    public DbSet<Sensor> Sensors { get; set; }
+    public DbSet<StationSensor> StationSensors { get; set; }
+    public DbSet<Measurement> Measurements { get; set; }
 }

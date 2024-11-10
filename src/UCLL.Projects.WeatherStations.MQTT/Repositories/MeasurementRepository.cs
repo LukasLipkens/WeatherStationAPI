@@ -49,7 +49,7 @@ public class MeasurementRepository : IMeasurementRepository
         };
 
         // Voeg de Station_Sensor toe aan de database
-        _weatherstationsContext.Station_Sensors.Add(stationSensor);
+        _weatherstationsContext.StationSensors.Add(stationSensor);
         _weatherstationsContext.SaveChanges(); // Zorg ervoor dat deze wijziging ook wordt opgeslagen
 
         // Retourneer true omdat de sensor is toegevoegd

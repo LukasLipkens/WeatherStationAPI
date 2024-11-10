@@ -3,13 +3,8 @@ using UCLL.Projects.WeatherStations.Shared.Data.Models;
 
 namespace UCLL.Projects.WeatherStations.Shared.Data;
 
-public class WeatherstationsContext : DbContext
+public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> options) : DbContext(options)
 {
-    public WeatherstationsContext(DbContextOptions<WeatherstationsContext> options)
-        : base(options)
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

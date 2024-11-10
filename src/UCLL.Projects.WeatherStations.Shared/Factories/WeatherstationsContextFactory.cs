@@ -5,7 +5,7 @@ using UCLL.Projects.WeatherStations.Shared.Data;
 
 namespace UCLL.Projects.WeatherStations.Shared.Factories;
 
-public class DataContextFactory : IDesignTimeDbContextFactory<WeatherstationsContext>
+public class WeatherstationsContextFactory : IDesignTimeDbContextFactory<WeatherstationsContext>
 {
     public WeatherstationsContext CreateDbContext(string[] args)
     {

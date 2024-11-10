@@ -21,7 +21,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<WeatherstationsContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("WeatherStationDb")); });
+builder.Services.AddDbContext<WeatherstationsContext>(options =>
+{
+    options
+        .UseLazyLoadingProxies()
+        .UseSqlServer(builder.Configuration.GetConnectionString("WeatherStationDb"));
+});
 
 WebApplication app = builder.Build();
 

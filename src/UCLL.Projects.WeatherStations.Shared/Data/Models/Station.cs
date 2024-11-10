@@ -1,17 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace UCLL.Projects.WeatherStations.Shared.Data.Models;
+﻿namespace UCLL.Projects.WeatherStations.Shared.Data.Models;
 
 public class Station
 {
-    [Key] public string Id { get; set; }
+    public required string Id { get; set; }
+    public double? BatteryLevel { get; set; } = null;
+    public required double Latitude { get; set; }
+    public required double Longitude { get; set; }
+    public string? Name { get; set; } = null;
+    public string? Description { get; set; } = null;
 
-    public string Name { get; set; } = "";
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
-    public string Description { get; set; } = "";
-
-    // Relationships
-    public ICollection<Station_Sensor> Station_Sensors { get; set; } = null!;
-    public ICollection<Measurement> Measurements { get; set; } = null!;
+    // navigation properties
+    public virtual ICollection<StationSensor> StationSensors { get; set; } = null!;
 }

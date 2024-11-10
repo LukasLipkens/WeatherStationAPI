@@ -2,11 +2,10 @@
 
 public class Measurement
 {
-    public DateTime Timestamp { get; set; }
+    public required DateTime Timestamp { get; set; }
+    public required int StationSensorId { get; set; }
+    public required string SensorValue { get; set; }
 
-    public string StationId { get; set; }
-
-    public int SensorId { get; set; }
-
-    public double Value { get; set; }
+    // navigation properties
+    public virtual StationSensor StationSensor { get; set; } = null!;
 }

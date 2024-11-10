@@ -12,7 +12,7 @@ public class WeatherstationsContext : DbContext
 
     public DbSet<Station> Stations { get; set; }
     public DbSet<Sensor> Sensors { get; set; }
-    public DbSet<Station_Sensor> Station_Sensors { get; set; }
+    public DbSet<StationSensor> Station_Sensors { get; set; }
     public DbSet<Measurement> Measurements { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,18 +23,18 @@ public class WeatherstationsContext : DbContext
         modelBuilder.Entity<Measurement>()
             .HasKey(m => new { m.StationId, m.SensorId, m.Timestamp }); //3 primary keys
 
-        modelBuilder.Entity<Station_Sensor>()
+        modelBuilder.Entity<StationSensor>()
             .HasKey(ss => new { ss.StationId, ss.SensorId });
 
-        modelBuilder.Entity<Station_Sensor>()
+        modelBuilder.Entity<StationSensor>()
             .HasOne(ss => ss.Sensor)
-            .WithMany(s => s.Station_Sensors)
+            .WithMany(s => s.StationSensors)
             .HasForeignKey(ss => ss.StationId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<Station_Sensor>()
+        modelBuilder.Entity<StationSensor>()
             .HasOne(ss => ss.Sensor)
-            .WithMany(s => s.Station_Sensors)
+            .WithMany(s => s.StationSensors)
             .HasForeignKey(ss => ss.SensorId)
             .OnDelete(DeleteBehavior.Cascade);
 
@@ -66,11 +66,11 @@ public class WeatherstationsContext : DbContext
         );
 
         // Seed Station_Sensors relationships
-        modelBuilder.Entity<Station_Sensor>().HasData(
-            new Station_Sensor { StationId = "1", SensorId = 1 },
-            new Station_Sensor { StationId = "1", SensorId = 2 },
-            new Station_Sensor { StationId = "2", SensorId = 1 },
-            new Station_Sensor { StationId = "2", SensorId = 2 }
+        modelBuilder.Entity<StationSensor>().HasData(
+            new StationSensor { StationId = "1", SensorId = 1 },
+            new StationSensor { StationId = "1", SensorId = 2 },
+            new StationSensor { StationId = "2", SensorId = 1 },
+            new StationSensor { StationId = "2", SensorId = 2 }
         );
 
         // Seed Measurements

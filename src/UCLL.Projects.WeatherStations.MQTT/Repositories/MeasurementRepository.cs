@@ -42,7 +42,7 @@ public class MeasurementRepository : IMeasurementRepository
         _weatherstationsContext.SaveChanges(); // Zorg ervoor dat de wijzigingen worden opgeslagen en de sensor een ID krijgt
 
         // Maak een nieuwe Station_Sensor aan en koppel de nieuwe sensor
-        Station_Sensor stationSensor = new Station_Sensor
+        StationSensor stationSensor = new StationSensor
         {
             StationId = stationId,
             SensorId = sensor.Id

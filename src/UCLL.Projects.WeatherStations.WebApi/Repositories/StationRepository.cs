@@ -30,7 +30,7 @@ public class StationRepository : IStationRepository
     public IEnumerable<StationDto> GetStationsLatestMeasurements(List<string> stationIds, int measurementAmount)
     {
         IQueryable<Station> query = _weatherstationsContext.Stations
-            .Include(s => s.Station_Sensors) // Include the Station_Sensor navigation
+            .Include(s => s.StationSensors) // Include the Station_Sensor navigation
             .ThenInclude(ss => ss.Sensor) // Then include the Sensor navigation from Station_Sensor
             .Include(s => s.Measurements) // Include Measurements directly from Station
             .AsQueryable();
@@ -45,7 +45,7 @@ public class StationRepository : IStationRepository
             Latitude = station.Latitude,
             Longitude = station.Longitude,
             Description = station.Description,
-            Sensors = station.Station_Sensors.Select(ss => new SensorDto
+            Sensors = station.StationSensors.Select(ss => new SensorDto
             {
                 Id = ss.SensorId,
                 Unit = ss.Sensor.Unit,

@@ -11,23 +11,23 @@ namespace UCLL.Projects.WeatherStations.WebApi.Repositories;
 
 public class MeasurementRepository : IMeasurementRepository
 {
-    private readonly DataContext _dataContext;
+    private readonly WeatherstationsContext _weatherstationsContext;
 
-    public MeasurementRepository(DataContext dataContext)
+    public MeasurementRepository(WeatherstationsContext weatherstationsContext)
     {
-        _dataContext = dataContext;
+        _weatherstationsContext = weatherstationsContext;
     }
 
 
     public List<Measurement> GetAllMeasurementsFromStationSensor(string stationId, int sensorId)
     {
-        return _dataContext.Measurements.Where(m => m.StationId == stationId && m.SensorId == sensorId).ToList();
+        return _weatherstationsContext.Measurements.Where(m => m.StationId == stationId && m.SensorId == sensorId).ToList();
     }
 
     public List<SensorDto> GetMeasurementsFromSensorInTimeRange(string stationId, DateTime start, DateTime end, List<int>? sensorIds = null)
     {
         // Basisquery voor het filteren van metingen op basis van datumbereik en station
-        IQueryable<Measurement> query = _dataContext.Measurements
+        IQueryable<Measurement> query = _weatherstationsContext.Measurements
             .Where(m => m.Timestamp >= start && m.Timestamp <= end && m.StationId == stationId);
 
         // Filteren op specifieke sensor-ID's als die zijn opgegeven
@@ -37,7 +37,7 @@ public class MeasurementRepository : IMeasurementRepository
         List<int> sensorIdsFromQuery = query.Select(m => m.SensorId).Distinct().ToList();
 
         // Haal de sensoren op die overeenkomen met deze sensor-ID's
-        Dictionary<int, Sensor> sensors = _dataContext.Sensors
+        Dictionary<int, Sensor> sensors = _weatherstationsContext.Sensors
             .Where(s => sensorIdsFromQuery.Contains(s.Id))
             .ToDictionary(s => s.Id, s => s); // Koppel de sensoren aan hun SensorId
 

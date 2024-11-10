@@ -3,9 +3,9 @@ using UCLL.Projects.WeatherStations.Shared.Data.Models;
 
 namespace UCLL.Projects.WeatherStations.Shared.Data;
 
-public class DataContext : DbContext
+public class WeatherstationsContext : DbContext
 {
-    public DataContext(DbContextOptions<DataContext> options)
+    public WeatherstationsContext(DbContextOptions<WeatherstationsContext> options)
         : base(options)
     {
     }

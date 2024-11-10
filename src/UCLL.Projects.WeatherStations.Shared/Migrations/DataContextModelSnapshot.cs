@@ -10,7 +10,7 @@ using UCLL.Projects.WeatherStations.Shared.Data;
 
 namespace UCLL.Projects.WeatherStations.WebApi.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(WeatherstationsContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

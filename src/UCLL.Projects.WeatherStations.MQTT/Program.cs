@@ -46,7 +46,7 @@ internal class Program
                 services.AddHostedService<MqttService>();
                 services.AddHostedService<DatabaseService>();
                 services.AddSingleton<IMeasurementRepository, MeasurementRepository>();
-                services.AddDbContext<DataContext>(options =>
+                services.AddDbContext<WeatherstationsContext>(options =>
                 {
                     options.UseSqlServer(context.Configuration.GetConnectionString("WeatherStationDb"))
                         .EnableSensitiveDataLogging(false) // Zet logging van gevoelige data uit

@@ -11,7 +11,7 @@ using UCLL.Projects.WeatherStations.Shared.Data;
 
 namespace UCLL.Projects.WeatherStations.WebApi.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(WeatherstationsContext))]
     [Migration("20241106122222_init")]
     partial class init
     {

@@ -12,16 +12,16 @@ namespace UCLL.Projects.WeatherStations.WebApi.Repositories;
 
 public class StationRepository : IStationRepository
 {
-    private readonly DataContext _dataContext;
+    private readonly WeatherstationsContext _weatherstationsContext;
 
-    public StationRepository(DataContext dataContext)
+    public StationRepository(WeatherstationsContext weatherstationsContext)
     {
-        _dataContext = dataContext;
+        _weatherstationsContext = weatherstationsContext;
     }
 
     public List<Station> GetAllStations()
     {
-        return _dataContext.Stations
+        return _weatherstationsContext.Stations
             //.Include(s => s.Station_Sensors)
             //.Include(s => s.Measurements)
             .OrderBy(s => s.Id).ToList();
@@ -29,7 +29,7 @@ public class StationRepository : IStationRepository
 
     public IEnumerable<StationDto> GetStationsLatestMeasurements(List<string> stationIds, int measurementAmount)
     {
-        IQueryable<Station> query = _dataContext.Stations
+        IQueryable<Station> query = _weatherstationsContext.Stations
             .Include(s => s.Station_Sensors) // Include the Station_Sensor navigation
             .ThenInclude(ss => ss.Sensor) // Then include the Sensor navigation from Station_Sensor
             .Include(s => s.Measurements) // Include Measurements directly from Station

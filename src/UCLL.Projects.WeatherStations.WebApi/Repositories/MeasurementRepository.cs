@@ -1,5 +1,6 @@
 ﻿#region
 
+using Microsoft.EntityFrameworkCore;
 using UCLL.Projects.WeatherStations.Shared.Data;
 using UCLL.Projects.WeatherStations.Shared.Data.Models;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
@@ -9,50 +10,31 @@ using UCLL.Projects.WeatherStations.WebApi.Interfaces;
 
 namespace UCLL.Projects.WeatherStations.WebApi.Repositories;
 
-public class MeasurementRepository : IMeasurementRepository
+public class MeasurementRepository(WeatherstationsContext weatherstationsContext) : IMeasurementRepository
 {
-    private readonly WeatherstationsContext _weatherstationsContext;
+    private readonly WeatherstationsContext _weatherstationsContext = weatherstationsContext;
 
-    public MeasurementRepository(WeatherstationsContext weatherstationsContext)
-    {
-        _weatherstationsContext = weatherstationsContext;
-    }
-
-
-    public List<Measurement> GetAllMeasurementsFromStationSensor(string stationId, int sensorId)
-    {
-        return _weatherstationsContext.Measurements.Where(m => m.StationId == stationId && m.SensorId == sensorId).ToList();
-    }
+    public List<Measurement> GetAllMeasurementsFromStationSensor(int stationSensorId) => _weatherstationsContext.Measurements.Where(measurement => measurement.StationSensorId == stationSensorId).ToList();
 
     public List<SensorDto> GetMeasurementsFromSensorInTimeRange(string stationId, DateTime start, DateTime end, List<int>? sensorIds = null)
     {
-        // Basisquery voor het filteren van metingen op basis van datumbereik en station
-        IQueryable<Measurement> query = _weatherstationsContext.Measurements
-            .Where(m => m.Timestamp >= start && m.Timestamp <= end && m.StationId == stationId);
+        IQueryable<Measurement> databaseMeasurements = _weatherstationsContext.Measurements.AsQueryable();
 
-        // Filteren op specifieke sensor-ID's als die zijn opgegeven
-        if (sensorIds != null && sensorIds.Any()) query = query.Where(m => sensorIds.Contains(m.SensorId));
+        databaseMeasurements = databaseMeasurements.Where(measurement => measurement.StationSensor.StationId == stationId);
+        if (sensorIds is not null && sensorIds.Count != 0) databaseMeasurements = databaseMeasurements.Where(measurement => sensorIds.Contains(measurement.StationSensor.SensorId));
+        databaseMeasurements = databaseMeasurements.Where(measurement => measurement.Timestamp >= start && measurement.Timestamp <= end);
 
-        // Haal alle relevante sensor-ID's op uit de queryresultaten
-        List<int> sensorIdsFromQuery = query.Select(m => m.SensorId).Distinct().ToList();
-
-        // Haal de sensoren op die overeenkomen met deze sensor-ID's
-        Dictionary<int, Sensor> sensors = _weatherstationsContext.Sensors
-            .Where(s => sensorIdsFromQuery.Contains(s.Id))
-            .ToDictionary(s => s.Id, s => s); // Koppel de sensoren aan hun SensorId
-
-        // Groeperen op SensorId en projecteren naar SensorDto
-        return query
-            .GroupBy(m => m.SensorId)
-            .Select(g => new SensorDto
+        return databaseMeasurements
+            .GroupBy(measurement => measurement.StationSensor)
+            .Select(x => new SensorDto()
             {
-                Id = g.Key,
-                Unit = sensors.ContainsKey(g.Key) ? sensors[g.Key].Unit : "", // Zoek Unit op
-                Type = sensors.ContainsKey(g.Key) ? sensors[g.Key].Type : "", // Zoek Type op
-                Measurements = g.Select(m => new MeasurementDto
+                Id = x.Key.SensorId,
+                Unit = x.Key.Sensor.Unit,
+                Type = x.Key.Sensor.Type,
+                Measurements = x.Select(measurement => new MeasurementDto()
                 {
-                    Timestamp = m.Timestamp,
-                    SensorValue = m.Value
+                    Timestamp = measurement.Timestamp,
+                    SensorValue = measurement.SensorValue
                 }).ToList()
             }).ToList();
     }

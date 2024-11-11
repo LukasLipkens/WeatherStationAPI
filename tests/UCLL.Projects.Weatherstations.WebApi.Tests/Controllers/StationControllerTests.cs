@@ -1,15 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UCLL.Projects.WeatherStations.WebApi.Controllers;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
-using UCLL.Projects.WeatherStations.WebApi.Interfaces;
-using UCLL.Projects.WeatherStations.WebApi.Models;
 
 namespace UCLL.Projects.WeatherStations.WebApi.Tests.Controllers
 {

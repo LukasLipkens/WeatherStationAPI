@@ -10,14 +10,16 @@ namespace UCLL.Projects.Weatherstations.WebApi.Tests.Controllers;
 
 public class MeasurementControllerTests
 {
-    private readonly MeasurementController _measurementController;
-    private readonly Mock<IMeasurementRepository> _measurementRepositoryMock; //Mock simuleert een moch versie van de interface
+    private readonly Mock<IStationSensorRepository> _stationSensorRepositoryMock; // Mock simuleert een mock versie van de interface
+    private readonly Mock<IMeasurementRepository> _measurementRepositoryMock; // Mock simuleert een mock versie van de interface
+    private readonly MeasurementController _measurementController; //Dit Object-eigenschap is de gesimuleerde versie van de repository, die de controller gebruikt alsof het de echte implementatie is
 
     public MeasurementControllerTests()
     {
+        _stationSensorRepositoryMock = new();
         _measurementRepositoryMock = new();
         //Dit Object-eigenschap is de gesimuleerde versie van de repository, die de controller gebruikt alsof het de echte implementatie is
-        _measurementController = new(_measurementRepositoryMock.Object);
+        _measurementController = new(_stationSensorRepositoryMock.Object, _measurementRepositoryMock.Object);
     }
 
     [Fact]
@@ -26,19 +28,24 @@ public class MeasurementControllerTests
         //Arrange
         string stationId = "station123";
         int sensorId = 1;
-        List<Measurement> measurements = new()
-        {
-            new() { Timestamp = DateTime.Now.AddDays(-4), SensorId = sensorId, StationId = stationId, Value = 25.5 },
-            new() { Timestamp = DateTime.Now, SensorId = sensorId, StationId = stationId, Value = 30.0 }
-        };
+        int stationSensorId = 1;
+        List<Measurement> measurements =
+        [
+            new() { Timestamp = DateTime.Now.AddDays(-4), StationSensorId = stationSensorId, SensorValue = "25.5" },
+            new() { Timestamp = DateTime.Now, StationSensorId = stationSensorId, SensorValue = "30.0" }
+        ];
 
         //Deze simuleert het aanroepen van GetAllMeasurementsFromStationSensor met zijn parameters maar retourneert automatisch de measurements
-        _measurementRepositoryMock.Setup(repo => repo.GetAllMeasurementsFromStationSensor(stationId, sensorId)).Returns(measurements);
+        _measurementRepositoryMock.Setup(repo => repo.GetAllMeasurementsFromStationSensor(stationSensorId)).Returns(measurements);
+        _stationSensorRepositoryMock.Setup(repo => repo.FindStationSensor(stationId, sensorId)).Returns(new StationSensor
+        {
+            Id = stationSensorId,
+            StationId = "station123",
+            SensorId = 1
+        });
 
         //Act
-
-        //OkObjectResult geeft toegang tot statusCode en values van result
-        OkObjectResult? result = _measurementController.GetMeasurementsFromStationSensor(stationId, sensorId) as OkObjectResult;
+        OkObjectResult? result = _measurementController.GetMeasurementsFromStationSensor(stationId, sensorId) as OkObjectResult; //OkObjectResult geeft toegang tot statusCode en values van result
 
         //Assert
         Assert.NotNull(result); //valideert dus als het OkObject is
@@ -52,8 +59,15 @@ public class MeasurementControllerTests
         //Arrange
         string stationId = "station123";
         int sensorId = 1;
+        int stationSensorId = 1;
 
-        _measurementRepositoryMock.Setup(repo => repo.GetAllMeasurementsFromStationSensor(stationId, sensorId)).Returns((List<Measurement>)null);
+        _measurementRepositoryMock.Setup(repo => repo.GetAllMeasurementsFromStationSensor(stationSensorId)).Returns([]);
+        _stationSensorRepositoryMock.Setup(repo => repo.FindStationSensor(stationId, sensorId)).Returns(new StationSensor
+        {
+            Id = stationSensorId,
+            StationId = "station123",
+            SensorId = 1
+        });
 
         //Act
         NotFoundObjectResult? result = _measurementController.GetMeasurementsFromStationSensor(stationId, sensorId) as NotFoundObjectResult;
@@ -69,12 +83,11 @@ public class MeasurementControllerTests
     {
         //Arrange
         string stationId = "station123";
-        List<int> sensors = new() { 1, 2 };
+        List<int> sensors = [1, 2];
         DateTime startDate = DateTime.UtcNow.AddDays(-7);
         DateTime endDate = DateTime.UtcNow;
 
-        List<SensorDto> measurements = new()
-        {
+        List<SensorDto> measurements = [
             new()
             {
                 Id = 1,
@@ -82,8 +95,8 @@ public class MeasurementControllerTests
                 Type = "Temperature",
                 Measurements = new()
                 {
-                    new() { Timestamp = startDate, SensorValue = 7.0 },
-                    new() { Timestamp = startDate.AddHours(2), SensorValue = 8.0 }
+                    new() { Timestamp = startDate, SensorValue = "7.0" },
+                    new() { Timestamp = startDate.AddHours(2), SensorValue = "8.0" }
                 }
             },
             new()
@@ -93,14 +106,13 @@ public class MeasurementControllerTests
                 Type = "Humidity",
                 Measurements = new()
                 {
-                    new() { Timestamp = endDate, SensorValue = 76.0 },
-                    new() { Timestamp = endDate.AddHours(-2), SensorValue = 72.0 }
+                    new() { Timestamp = endDate, SensorValue = "76.0" },
+                    new() { Timestamp = endDate.AddHours(-2), SensorValue = "72.0" }
                 }
             }
-        };
+        ];
 
-        _measurementRepositoryMock.Setup(repo => repo.GetMeasurementsFromSensorInTimeRange(stationId, startDate, endDate, sensors))
-            .Returns(measurements);
+        _measurementRepositoryMock.Setup(repo => repo.GetMeasurementsFromSensorInTimeRange(stationId, startDate, endDate, sensors)).Returns(measurements);
 
         //Act
         OkObjectResult? result = _measurementController.GetMeasurementsFromStation(stationId, sensors, startDate, endDate) as OkObjectResult;
@@ -121,9 +133,9 @@ public class MeasurementControllerTests
         Assert.Equal("Temperature", firstSensor.Type);
         Assert.Equal("Celsius", firstSensor.Unit);
         Assert.Equal(2, firstSensor.Measurements?.Count);
-        Assert.Equal(7.0, firstSensor.Measurements?[0].SensorValue);
+        Assert.Equal("7.0", firstSensor.Measurements?[0].SensorValue);
         Assert.Equal(startDate, firstSensor.Measurements?[0].Timestamp);
-        Assert.Equal(8.0, firstSensor.Measurements?[1].SensorValue);
+        Assert.Equal("8.0", firstSensor.Measurements?[1].SensorValue);
         Assert.Equal(startDate.AddHours(2), firstSensor.Measurements?[1].Timestamp);
 
         // Controleer details van de tweede SensorDto en zijn MeasurementDto items
@@ -132,9 +144,9 @@ public class MeasurementControllerTests
         Assert.Equal("Humidity", secondSensor.Type);
         Assert.Equal("%", secondSensor.Unit);
         Assert.Equal(2, secondSensor.Measurements?.Count);
-        Assert.Equal(76.0, secondSensor.Measurements?[0].SensorValue);
+        Assert.Equal("76.0", secondSensor.Measurements?[0].SensorValue);
         Assert.Equal(endDate, secondSensor.Measurements?[0].Timestamp);
-        Assert.Equal(72.0, secondSensor.Measurements?[1].SensorValue);
+        Assert.Equal("72.0", secondSensor.Measurements?[1].SensorValue);
         Assert.Equal(endDate.AddHours(-2), secondSensor.Measurements?[1].Timestamp);
     }
 
@@ -147,8 +159,7 @@ public class MeasurementControllerTests
         DateTime startDate = DateTime.UtcNow.AddDays(-7);
         DateTime endDate = DateTime.UtcNow;
 
-        _measurementRepositoryMock.Setup(repo => repo.GetMeasurementsFromSensorInTimeRange(stationId, startDate, endDate, sensors))
-            .Returns((List<SensorDto>)null);
+        _measurementRepositoryMock.Setup(repo => repo.GetMeasurementsFromSensorInTimeRange(stationId, startDate, endDate, sensors)).Returns([]);
 
         //Act
         NotFoundObjectResult? result =

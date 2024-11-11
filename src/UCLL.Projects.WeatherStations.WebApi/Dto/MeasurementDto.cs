@@ -2,6 +2,6 @@
 
 public class MeasurementDto
 {
-    public DateTime Timestamp { get; set; }
-    public double Value { get; set; }
+    public required DateTime Timestamp { get; set; }
+    public required string SensorValue { get; set; }
 }

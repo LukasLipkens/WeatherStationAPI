@@ -1,14 +1,14 @@
 ﻿#region
 
-using UCLL.Projects.WeatherStations.Shared.Models;
+using UCLL.Projects.WeatherStations.Shared.Data.Models;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
 
 #endregion
 
-namespace UCLL.Projects.WeatherStations.WebApi.Interfaces;
+namespace UCLL.Projects.WeatherStations.WebApi.Interfaces.Repositories;
 
 public interface IMeasurementRepository
 {
-    List<Measurement> GetAllMeasurementsFromStationSensor(string stationId, int sensorId);
+    List<Measurement> GetAllMeasurementsFromStationSensor(int stationSensorId);
     List<SensorDto> GetMeasurementsFromSensorInTimeRange(string stationId, DateTime start, DateTime end, List<int>? sensorIds = null);
 }

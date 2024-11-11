@@ -1,7 +1,7 @@
 ﻿#region
 
 using AutoMapper;
-using UCLL.Projects.WeatherStations.Shared.Models;
+using UCLL.Projects.WeatherStations.Shared.Data.Models;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
 
 #endregion

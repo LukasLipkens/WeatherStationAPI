@@ -44,6 +44,13 @@ builder.Services.AddDbContext<WeatherstationsContext>(options =>
 
 WebApplication app = builder.Build();
 
+// Apply any pending migrations automatically at startup
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    WeatherstationsContext context = scope.ServiceProvider.GetRequiredService<WeatherstationsContext>();
+    await context.Database.MigrateAsync();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

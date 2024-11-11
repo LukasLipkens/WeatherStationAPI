@@ -76,6 +76,13 @@ internal class Program
             })
             .Build();
 
+        // Apply any pending migrations automatically at startup
+        using (IServiceScope scope = host.Services.CreateScope())
+        {
+            WeatherstationsContext context = scope.ServiceProvider.GetRequiredService<WeatherstationsContext>();
+            await context.Database.MigrateAsync();
+        }
+
         await host.RunAsync();
     }
 }

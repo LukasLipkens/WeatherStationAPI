@@ -46,12 +46,25 @@ internal class Program
                 services.AddHostedService<MqttService>();
                 services.AddHostedService<DatabaseService>();
                 services.AddSingleton<IMeasurementRepository, MeasurementRepository>();
+
+                string databaseConnectionString = context.Configuration.GetConnectionString("WeatherStationDb")
+                    ?? throw new("ConnectionString 'WeatherStationDb' not found.");
+
                 services.AddDbContext<WeatherstationsContext>(options =>
                 {
-                    options.UseSqlServer(context.Configuration.GetConnectionString("WeatherStationDb"))
-                        .EnableSensitiveDataLogging(false) // Zet logging van gevoelige data uit
-                        .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddFilter((category, level) =>
-                            !category.Contains("Microsoft.EntityFrameworkCore") || level >= LogLevel.Warning))); // Filter EF Core logs;
+                    options
+                        .UseLazyLoadingProxies()
+                        .UseSqlServer(databaseConnectionString)
+                        .EnableSensitiveDataLogging(false) // Don't log sensitive data
+                        .UseLoggerFactory(LoggerFactory.Create(loggingBuilder =>
+                        {
+                            loggingBuilder // log only warning level and above for EF SQL commands
+                                .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
+
+                            loggingBuilder // log debug and information levels for SQL commands to debug output
+                                .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Debug)
+                                .AddDebug();
+                        }));
                 });
             })
             .ConfigureLogging(loggingBuilder =>

@@ -22,11 +22,24 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+string databaseConnectionString = builder.Configuration.GetConnectionString("WeatherStationDb")
+    ?? throw new("ConnectionString 'WeatherStationDb' not found.");
+
 builder.Services.AddDbContext<WeatherstationsContext>(options =>
 {
     options
         .UseLazyLoadingProxies()
-        .UseSqlServer(builder.Configuration.GetConnectionString("WeatherStationDb"));
+        .UseSqlServer(databaseConnectionString)
+        .EnableSensitiveDataLogging(false) // Don't log sensitive data
+        .UseLoggerFactory(LoggerFactory.Create(loggingBuilder =>
+        {
+            loggingBuilder // log only warning level and above for EF SQL commands
+                .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
+
+            loggingBuilder // log debug and information levels for SQL commands to debug output
+                .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Debug)
+                .AddDebug();
+        }));
 });
 
 WebApplication app = builder.Build();

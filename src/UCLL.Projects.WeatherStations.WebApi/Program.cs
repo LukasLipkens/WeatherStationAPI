@@ -9,6 +9,8 @@ using UCLL.Projects.WeatherStations.WebApi.Repositories;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables(prefix: "WEATHERSTATIONS_WEBAPI_");
+
 // add automapper for the Dto's
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

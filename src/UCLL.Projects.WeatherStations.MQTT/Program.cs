@@ -9,15 +9,6 @@ using UCLL.Projects.WeatherStations.MQTT.Models;
 using UCLL.Projects.WeatherStations.MQTT.Repositories;
 using UCLL.Projects.WeatherStations.MQTT.Services;
 using UCLL.Projects.WeatherStations.Shared.Data;
-//using UCLL.Projects.WeatherStations.MQTT.Data;
-
-
-/*
-    dit is een manier om mqtt te gebruiken in c#
-    ik ben niet zeker dat dit een goede manier is om dit te doen
-        er is namelijk niet veel structuur, hier ben ik nog mee bezig
- */
-
 
 namespace UCLL.Projects.WeatherStations.MQTT;
 
@@ -28,11 +19,19 @@ internal class Program
         IHost host = Host.CreateDefaultBuilder()
             .ConfigureHostConfiguration(hostConfigBuilder =>
             {
-                //configHost.AddJsonFile("appsettings.json", optional: true);
+                //hostConfigBuilder.SetBasePath(Directory.GetCurrentDirectory());
             })
             .ConfigureAppConfiguration((hostBuilderContext, appConfigBuilder) =>
             {
-                //appConfigBuilder.AddJsonFile("appsettings.json", optional: true);
+                IHostEnvironment environment = hostBuilderContext.HostingEnvironment;
+
+                appConfigBuilder.Sources.Clear();
+
+                //appConfigBuilder.SetBasePath(environment.ContentRootPath);
+                appConfigBuilder.AddConfiguration(hostBuilderContext.Configuration);
+                appConfigBuilder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                appConfigBuilder.AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                appConfigBuilder.AddEnvironmentVariables(prefix: "WEATHERSTATIONS_MQTT_");
             })
             .ConfigureServices((context, services) =>
             {

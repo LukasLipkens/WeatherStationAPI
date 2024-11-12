@@ -103,7 +103,7 @@
     image: ucll.projects.weatherstations.mqtt:dev
     container_name: weatherstations_mqtt_service
     build:
-      context: ../src/UCLL.Projects.WeatherStations.MQTT.
+      context: ../src/UCLL.Projects.WeatherStations.MQTT
       dockerfile: ./Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Production

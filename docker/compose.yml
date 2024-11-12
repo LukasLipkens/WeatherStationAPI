@@ -88,7 +88,7 @@
       - ASPNETCORE_ENVIRONMENT=Production
       #- ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_HTTP_PORTS=8080
-      - WEATHERSTATIONS_WEBAPI_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;
+      - WEATHERSTATIONS_WEBAPI_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
     ports:
       #- "443:8081"
       - "80:8080"
@@ -107,7 +107,7 @@
       dockerfile: ./Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - WEATHERSTATIONS_MQTT_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;
+      - WEATHERSTATIONS_MQTT_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
     networks:
       - default
     depends_on:

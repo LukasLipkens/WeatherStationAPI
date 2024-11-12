@@ -12,6 +12,7 @@ on:
       - 'src/UCLL.Projects.WeatherStations.Shared/**'
 
 permissions:
+  id-token: write
   contents: read
 
 jobs:

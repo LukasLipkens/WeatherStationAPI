@@ -8,6 +8,7 @@ using UCLL.Projects.WeatherStations.MQTT.Interfaces;
 using UCLL.Projects.WeatherStations.MQTT.Models;
 using UCLL.Projects.WeatherStations.MQTT.Repositories;
 using UCLL.Projects.WeatherStations.MQTT.Services;
+using UCLL.Projects.WeatherStations.MQTT.Settings;
 using UCLL.Projects.WeatherStations.Shared.Data;
 
 namespace UCLL.Projects.WeatherStations.MQTT;
@@ -33,8 +34,11 @@ internal class Program
                 appConfigBuilder.AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
                 appConfigBuilder.AddEnvironmentVariables(prefix: "WEATHERSTATIONS_MQTT_");
             })
-            .ConfigureServices((context, services) =>
+            .ConfigureServices((hostBuilderContext, services) =>
             {
+                IConfiguration configuration = hostBuilderContext.Configuration;
+                services.Configure<MqttSettings>(configuration.GetSection("MQTT"));
+
                 services.AddSingleton(Channel.CreateUnbounded<MqttMessage>(
                     new()
                     {
@@ -46,7 +50,7 @@ internal class Program
                 services.AddHostedService<DatabaseService>();
                 services.AddSingleton<IMeasurementRepository, MeasurementRepository>();
 
-                string databaseConnectionString = context.Configuration.GetConnectionString("WeatherStationsDb")
+                string databaseConnectionString = hostBuilderContext.Configuration.GetConnectionString("WeatherStationsDb")
                     ?? throw new("ConnectionString 'WeatherStationsDb' not found.");
 
                 services.AddDbContext<WeatherstationsContext>(options =>

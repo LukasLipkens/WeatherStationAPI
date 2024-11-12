@@ -2,6 +2,7 @@ name: Publish WebApi
 
 on:
   workflow_dispatch: # manual trigger
+  workflow_call: # call from other workflow
   pull_request:
     types: [closed]
     branches:

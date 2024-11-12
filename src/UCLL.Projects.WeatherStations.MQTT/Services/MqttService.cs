@@ -27,7 +27,6 @@ public class MqttService : IHostedService
 
         _mqttClient = factory.CreateMqttClient();
 
-        // dit kan eventueel beter in een appsettings.json
         _mqttOptions = new MqttClientOptionsBuilder()
             .WithClientId("MqttProcessing")
             .WithTcpServer(_mqttSettings.Host, _mqttSettings.Port)

@@ -2,32 +2,35 @@
 using System.Threading.Channels;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client;
 using UCLL.Projects.WeatherStations.MQTT.Models;
+using UCLL.Projects.WeatherStations.MQTT.Settings;
 
 namespace UCLL.Projects.WeatherStations.MQTT.Services;
 
 public class MqttService : IHostedService
 {
+    private readonly MqttSettings _mqttSettings;
     private readonly Channel<MqttMessage> _channel;
     private readonly ILogger<MqttService> _logger;
     private readonly IMqttClient _mqttClient;
     private readonly MqttClientOptions _mqttOptions;
 
-    public MqttService(ILogger<MqttService> logger, Channel<MqttMessage> channel)
+    public MqttService(ILogger<MqttService> logger, IOptions<MqttSettings> mqttOptions, Channel<MqttMessage> channel)
     {
+        _mqttSettings = mqttOptions.Value;
         _logger = logger;
         _channel = channel;
-        MqttFactory factory = new MqttFactory();
+        MqttFactory factory = new();
 
         _mqttClient = factory.CreateMqttClient();
 
-        // dit kan eventueel beter in een appsettings.json
         _mqttOptions = new MqttClientOptionsBuilder()
             .WithClientId("MqttProcessing")
-            .WithTcpServer("k106.ucll-labo.be", 1883)
-            .WithCredentials("project", "eloict1234")
+            .WithTcpServer(_mqttSettings.Host, _mqttSettings.Port)
+            .WithCredentials(_mqttSettings.Username, _mqttSettings.Password)
             .WithCleanSession()
             .Build();
     }
@@ -39,9 +42,9 @@ public class MqttService : IHostedService
             _logger.LogInformation("Connected to MQTT broker");
 
             // subscribe to all topics
-            await _mqttClient.SubscribeAsync("weatherstations/#");
+            await _mqttClient.SubscribeAsync(_mqttSettings.SubscribeTopic);
 
-            _logger.LogInformation("Subscribed to topic: weatherstations/data/#");
+            _logger.LogInformation($"Subscribed to topic: {_mqttSettings.SubscribeTopic}");
         };
 
         //handler when disconnected from broker

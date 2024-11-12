@@ -4,8 +4,8 @@ public class Station
 {
     public required string Id { get; set; }
     public double? BatteryLevel { get; set; } = null;
-    public required double Latitude { get; set; }
-    public required double Longitude { get; set; }
+    public double? Latitude { get; set; } = null;
+    public double? Longitude { get; set; } = null;
     public string? Name { get; set; } = null;
     public string? Description { get; set; } = null;
 

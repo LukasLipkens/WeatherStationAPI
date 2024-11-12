@@ -34,35 +34,45 @@ public class DatabaseService : IHostedService
 
             string type;
             string unit;
-            double value;
+            string value;
+
+            _measurementRepository.CheckStaitonExists(message.StationId);
 
             switch (message.Topic)
             {
                 case "measurement":
+
+
                     string[] measurement = message.Payload.Trim('{', '}').Split(",");
                     for (int i = 0; i < measurement.Length; i++)
                     {
                         string[] deeltjes = measurement[i].Split(":");
-                        value = double.Parse(deeltjes[1].Trim('"'), CultureInfo.InvariantCulture);
+                        value = deeltjes[1].Trim('"');
 
                         string[] typeUnit = deeltjes[0].Split("(");
 
                         type = typeUnit[0].Trim('"');
                         unit = typeUnit[1].Trim(')', '"');
 
-                        if (_measurementRepository.CheckSensorExists(type, unit, message.StationId))
-                            _logger.LogInformation("Found");
-                        else
-                            _logger.LogInformation("Not found");
 
-                        //_logger.LogInformation($"{type}");
-                        //_logger.LogInformation($"{unit}");
-                        //_logger.LogInformation($"{value}");
+                        _measurementRepository.AddMeasurement(message.StationId, value, type, unit);
+
+                        //if (_measurementRepository.CheckSensorExists(type, unit, message.StationId))
+                        //    _logger.LogInformation("Found");
+                        //else
+                        //    _logger.LogInformation("Not found");
+
+                        _logger.LogInformation($"{type}");
+                        _logger.LogInformation($"{unit}");
+                        _logger.LogInformation($"{value}");
                     }
 
                     break;
-                case "Station":
-                    //
+                case "location":
+                    _logger.LogInformation($"{message.Topic}");
+                    break;
+
+                default: 
                     break;
             }
         }

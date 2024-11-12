@@ -15,7 +15,7 @@ public class WeatherstationsContextFactory : IDesignTimeDbContextFactory<Weather
             .Build();
 
         DbContextOptionsBuilder<WeatherstationsContext> optionsBuilder = new();
-        optionsBuilder.UseSqlServer(configuration.GetConnectionString("WeatherStationDb"));
+        optionsBuilder.UseSqlServer(configuration.GetConnectionString("WeatherStationsDb"));
 
         return new(optionsBuilder.Options);
     }

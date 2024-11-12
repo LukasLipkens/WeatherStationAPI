@@ -4,5 +4,9 @@ public interface IMeasurementRepository
 {
     bool AddMeasurements(string StationId, string Payload);
 
-    bool CheckSensorExists(string type, string unit, string stationId);
+    int CheckSensorExists(string type, string unit);
+
+    bool CheckStaitonExists(string StationId);
+    bool AddMeasurement(string stationId, string value, string type, string unit);
+
 }

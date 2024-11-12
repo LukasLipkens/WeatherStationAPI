@@ -36,4 +36,10 @@
         <ProjectReference Include="..\UCLL.Projects.WeatherStations.Shared\UCLL.Projects.WeatherStations.Shared.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

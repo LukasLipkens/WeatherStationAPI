@@ -1,14 +1,20 @@
 #!/bin/bash
 
-# Start sql serve
-/opt/mssql/bin/sqlservr &
-
 # Wait for SQL Server to start by checking the status
 echo "Waiting for SQL Server to start..."
 until /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -C -Q "SELECT 1" &> /dev/null; do
     sleep 1
 done
-echo "SQL Server is up. Proceeding with database setup."
+echo "SQL Server is up. Checking databases."
+
+# Check if database setup is needed
+/healthcheck/script.sh
+if [ $? -eq 0 ]; then
+    echo "Databases setup is not needed."
+    exit 0
+fi
+
+echo "Proceeding with database setup."
 
 # Create databases
 /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -C -Q "
@@ -43,5 +49,4 @@ CREATE USER [$DB_USER_RW] FOR LOGIN [$DB_USER_RW];
 ALTER ROLE db_datawriter ADD MEMBER [$DB_USER_RW];
 "
 
-# Wait to keep the container running
-wait
+echo "SQL Server database setup completed."

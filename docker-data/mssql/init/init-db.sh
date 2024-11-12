@@ -37,8 +37,7 @@ USE [${DB_NAME}_prod];
 CREATE USER [$DB_USER_R] FOR LOGIN [$DB_USER_R];
 ALTER ROLE db_datareader ADD MEMBER [$DB_USER_R];
 CREATE USER [$DB_USER_RW] FOR LOGIN [$DB_USER_RW];
-ALTER ROLE db_ddladmin ADD MEMBER [$DB_USER_RW];
-ALTER ROLE db_datawriter ADD MEMBER [$DB_USER_RW];
+ALTER ROLE db_owner ADD MEMBER [$DB_USER_RW];
 "
 
 # Add users with perms to dev databases
@@ -47,8 +46,7 @@ USE [${DB_NAME}_dev];
 CREATE USER [$DB_USER_R] FOR LOGIN [$DB_USER_R];
 ALTER ROLE db_datareader ADD MEMBER [$DB_USER_R];
 CREATE USER [$DB_USER_RW] FOR LOGIN [$DB_USER_RW];
-ALTER ROLE db_ddladmin ADD MEMBER [$DB_USER_RW];
-ALTER ROLE db_datawriter ADD MEMBER [$DB_USER_RW];
+ALTER ROLE db_owner ADD MEMBER [$DB_USER_RW];
 "
 
 echo "SQL Server database setup completed."

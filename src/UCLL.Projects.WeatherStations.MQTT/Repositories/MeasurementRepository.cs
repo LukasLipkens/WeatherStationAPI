@@ -96,7 +96,7 @@ public class MeasurementRepository : IMeasurementRepository
         Measurement measurement = new Measurement
         {
             SensorValue = value,
-            Timestamp = DateTime.Now,
+            Timestamp = DateTime.UtcNow,
             StationSensorId = linkId,
 
         };

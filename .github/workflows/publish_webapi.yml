@@ -37,7 +37,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./src/UCLL.Projects.WeatherStations.WebApi
-          file: ./Dockerfile
+          file: ./src/UCLL.Projects.WeatherStations.WebApi/Dockerfile
           push: true
           tags: |
             docker.io/weatherstations/ucll.projects.weatherstations.webapi:latest

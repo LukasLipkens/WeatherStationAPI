@@ -37,7 +37,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./src/UCLL.Projects.WeatherStations.MQTT
-          file: ./Dockerfile
+          file: ./src/UCLL.Projects.WeatherStations.MQTT/Dockerfile
           push: true
           tags: |
             docker.io/weatherstations/ucll.projects.weatherstations.mqtt:latest

@@ -90,8 +90,8 @@
       - ASPNETCORE_HTTP_PORTS=8080
       - WEATHERSTATIONS_WEBAPI_CONNECTIONSTRINGS__WeatherStationsDb="Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};"
     ports:
-      #- "8081:8081"
-      - "8080:8080"
+      #- "443:8081"
+      - "80:8080"
     networks:
       - default
     depends_on:

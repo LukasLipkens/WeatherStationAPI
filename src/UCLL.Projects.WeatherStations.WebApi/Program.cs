@@ -24,8 +24,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-string databaseConnectionString = builder.Configuration.GetConnectionString("WeatherStationDb")
-    ?? throw new("ConnectionString 'WeatherStationDb' not found.");
+string databaseConnectionString = builder.Configuration.GetConnectionString("WeatherStationsDb")
+    ?? throw new("ConnectionString 'WeatherStationsDb' not found.");
 
 builder.Services.AddDbContext<WeatherstationsContext>(options =>
 {

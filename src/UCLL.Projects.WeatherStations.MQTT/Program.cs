@@ -46,8 +46,8 @@ internal class Program
                 services.AddHostedService<DatabaseService>();
                 services.AddSingleton<IMeasurementRepository, MeasurementRepository>();
 
-                string databaseConnectionString = context.Configuration.GetConnectionString("WeatherStationDb")
-                    ?? throw new("ConnectionString 'WeatherStationDb' not found.");
+                string databaseConnectionString = context.Configuration.GetConnectionString("WeatherStationsDb")
+                    ?? throw new("ConnectionString 'WeatherStationsDb' not found.");
 
                 services.AddDbContext<WeatherstationsContext>(options =>
                 {

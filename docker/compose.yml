@@ -22,7 +22,11 @@
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: weatherstations_db_mssql
     user: root # don't like this but no other fix at the moment
-    command: /bin/bash -c "sed -i 's/\r$//' /init/init-db.sh && chmod +x /init/init-db.sh && /bin/bash /init/init-db.sh"
+    command: /bin/bash -c "
+        sed -i 's/\r$//' /init/init.sh &&
+        chmod +x /init/init.sh &&
+        /bin/bash /init/init.sh
+      "
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=${MSSQL_SERVERADMIN_PASSWORD}
@@ -38,43 +42,44 @@
     volumes:
       - mssqldata:/var/opt/mssql
       - ../docker-data/mssql/init:/init:rw
+      - ../docker-data/mssql/healthcheck:/healthcheck:rw
       - ../docker-data/mssql/log:/var/opt/mssql/log:rw
     healthcheck:
-      test: [ "CMD", "pidof", "sqlservr" ]
+      test: [ "CMD", "/bin/bash", "/healthcheck/script.sh" ]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
     restart: unless-stopped
 
-  db_pg:
-    image: timescale/timescaledb:latest-pg16
-    container_name: weatherstations_db_pg
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}_prod
-      - DB_NAME=${DB_NAME}
-      - DB_USER_R=${DB_USER_R}
-      - DB_USER_R_PASSWORD=${DB_USER_R_PASSWORD}
-      - DB_USER_RW=${DB_USER_RW}
-      - DB_USER_RW_PASSWORD=${DB_USER_RW_PASSWORD}
-    ports:
-      - "5432:5432"
-    networks:
-      - default
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ../docker-data/timescaledb/init:/docker-entrypoint-initdb.d/:rw
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
+  #db_pg:
+  #  image: timescale/timescaledb:latest-pg16
+  #  container_name: weatherstations_db_pg
+  #  environment:
+  #    - POSTGRES_USER=${POSTGRES_USER}
+  #    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #    - POSTGRES_DB=${DB_NAME}_prod
+  #    - DB_NAME=${DB_NAME}
+  #    - DB_USER_R=${DB_USER_R}
+  #    - DB_USER_R_PASSWORD=${DB_USER_R_PASSWORD}
+  #    - DB_USER_RW=${DB_USER_RW}
+  #    - DB_USER_RW_PASSWORD=${DB_USER_RW_PASSWORD}
+  #  ports:
+  #    - "5432:5432"
+  #  networks:
+  #    - default
+  #  volumes:
+  #    - pgdata:/var/lib/postgresql/data
+  #    - ../docker-data/timescaledb/init:/docker-entrypoint-initdb.d/:rw
+  #  healthcheck:
+  #    test: [ "CMD-SHELL", "su", "postgres", "-c", "'pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}'" ]
+  #    interval: 10s
+  #    timeout: 5s
+  #    retries: 5
+  #  restart: unless-stopped
 
   webapi:
-    image: weatherstations_webapi:latest
+    image: ucll.projects.weatherstations.webapi:dev
     container_name: weatherstations_webapi
     build:
       context: ../src/UCLL.Projects.WeatherStations.WebApi
@@ -83,15 +88,32 @@
       - ASPNETCORE_ENVIRONMENT=Production
       #- ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_HTTP_PORTS=8080
+      - WEATHERSTATIONS_WEBAPI_CONNECTIONSTRINGS__WeatherStationsDb="Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};"
     ports:
-      - "8081:8081"
+      #- "8081:8081"
       - "8080:8080"
+    networks:
+      - default
+    depends_on:
+      - db_mssql
+      #- db_pg
+    restart: unless-stopped
+
+  mqtt_service:
+    image: ucll.projects.weatherstations.mqtt:dev
+    container_name: weatherstations_mqtt_service
+    build:
+      context: ../src/UCLL.Projects.WeatherStations.MQTT.
+      dockerfile: ./Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - WEATHERSTATIONS_MQTT_CONNECTIONSTRINGS__WeatherStationsDb="Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};"
     networks:
       - default
     depends_on:
       - mqtt
       - db_mssql
-      - db_pg
+      #- db_pg
     restart: unless-stopped
 
 

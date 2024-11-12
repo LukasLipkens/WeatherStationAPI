@@ -9,6 +9,8 @@ using UCLL.Projects.WeatherStations.WebApi.Repositories;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables(prefix: "WEATHERSTATIONS_WEBAPI_");
+
 // add automapper for the Dto's
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -22,8 +24,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-string databaseConnectionString = builder.Configuration.GetConnectionString("WeatherStationDb")
-    ?? throw new("ConnectionString 'WeatherStationDb' not found.");
+string databaseConnectionString = builder.Configuration.GetConnectionString("WeatherStationsDb")
+    ?? throw new("ConnectionString 'WeatherStationsDb' not found.");
 
 builder.Services.AddDbContext<WeatherstationsContext>(options =>
 {

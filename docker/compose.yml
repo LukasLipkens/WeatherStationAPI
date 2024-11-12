@@ -108,6 +108,12 @@
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - WEATHERSTATIONS_MQTT_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
+      - WEATHERSTATIONS_MQTT_MQTT__Host=mqtt
+      - WEATHERSTATIONS_MQTT_MQTT__Port=1883
+      - WEATHERSTATIONS_MQTT_MQTT__Username=${MQTT_USER}
+      - WEATHERSTATIONS_MQTT_MQTT__Password=${MQTT_USER_PASSWORD}
+      - WEATHERSTATIONS_MQTT_MQTT__ReceiveMaximumCount=1000
+      - WEATHERSTATIONS_MQTT_MQTT__SubscribeTopic=weatherstations/#
     networks:
       - default
     depends_on:

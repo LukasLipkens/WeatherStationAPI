@@ -45,7 +45,7 @@ public class MqttService : IHostedService
             // subscribe to all topics
             await _mqttClient.SubscribeAsync(_mqttSettings.SubscribeTopic);
 
-            _logger.LogInformation("Subscribed to topic: weatherstations/data/#");
+            _logger.LogInformation($"Subscribed to topic: {_mqttSettings.SubscribeTopic}");
         };
 
         //handler when disconnected from broker

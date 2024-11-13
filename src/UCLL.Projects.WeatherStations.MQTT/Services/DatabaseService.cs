@@ -76,7 +76,7 @@ public class DatabaseService : IHostedService
                         try
                         {
                             string[] status = message.Payload.Trim('{', '}').Split(",");
-                            double batteryLevel = Convert.ToDouble(status[0].Split(":")[1].Trim('"'));
+                            double batteryLevel = Convert.ToDouble(status[0].Split(":")[1].Trim('"'), CultureInfo.InvariantCulture);
 
                             // Voeg batterijpercentage toe aan de repository
                             _stationRepository.AddBatteryPercentage(message.StationId, batteryLevel);

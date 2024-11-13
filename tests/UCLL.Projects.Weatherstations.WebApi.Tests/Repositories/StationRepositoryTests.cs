@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,31 +10,29 @@ using UCLL.Projects.WeatherStations.WebApi.Repositories;
 
 namespace UCLL.Projects.Weatherstations.WebApi.Tests.Repositories
 {
-    public class MeasurementRepositoryTests : IDisposable
+    public class StationRepositoryTests : IDisposable
     {
+        private readonly StationRepository _stationRepository;
         private readonly WeatherstationsContext _context;
-        private readonly MeasurementRepository _measurementRepository;
 
-        public MeasurementRepositoryTests()
+        public StationRepositoryTests()
         {
-            //Aanmaken van een in-memory database, isoleren zo de repository
             var options = new DbContextOptionsBuilder<WeatherstationsContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
-            
+
             _context = new WeatherstationsContext(options);
 
-            //seed db
             SeedDatabase();
 
-            //measurementRepository initialiseren
-            _measurementRepository = new MeasurementRepository(_context);
+            _stationRepository = new StationRepository(_context);
         }
 
         private void SeedDatabase()
         {
-            // Voeg het station toe
+            // Voeg stations toe
             _context.Stations.Add(new Station { Id = "1", Latitude = 34.0522, Longitude = -118.2437 });
+            _context.Stations.Add(new Station { Id = "2", Latitude = 67.5768, Longitude = 12.9878 });
 
             // Voeg de sensoren toe
             _context.Sensors.Add(new Sensor { Id = 1, Type = "Temperature", Unit = "Celsius" });
@@ -47,7 +44,11 @@ namespace UCLL.Projects.Weatherstations.WebApi.Tests.Repositories
             _context.StationSensors.Add(new StationSensor { Id = 2, StationId = "1", SensorId = 2 });
             _context.StationSensors.Add(new StationSensor { Id = 3, StationId = "1", SensorId = 3 });
 
-            // Voeg measurements toe die binnen het tijdsbereik vallen
+            _context.StationSensors.Add(new StationSensor { Id = 4, StationId = "2", SensorId = 1 });
+            _context.StationSensors.Add(new StationSensor { Id = 5, StationId = "2", SensorId = 2 });
+            _context.StationSensors.Add(new StationSensor { Id = 6, StationId = "2", SensorId = 3 });
+
+            // Voeg measurements toe
             _context.Measurements.Add(new Measurement
             {
                 Timestamp = DateTime.UtcNow.AddDays(-5),
@@ -70,59 +71,64 @@ namespace UCLL.Projects.Weatherstations.WebApi.Tests.Repositories
             _context.SaveChanges();
         }
 
-
         [Fact]
-        public void MeasurementRepository_GetAllMeasurementsFromStationSensor_ReturnsMeasurements_WhenMeasurementsExists()
+        public void StationRepository_GetAllStations_returnsAllStations_WhenStationsExist()
         {
-            //Arrange
-            int stationSensorId = 1; //deze stationSensorId is aanwezig in de database seeder
-
             //Act
-            var result = _measurementRepository.GetAllMeasurementsFromStationSensor(stationSensorId);
-
-            //Assert
-            Assert.NotNull(result); //kijkt of het niet null is
-            Assert.True(result.Count() > 0); //kijkt of er meer als 0 gegevens zijn opgehaald
-        }
-        [Fact]
-        public void MeasurementRepository_GetMeasurementsFromSensorInTimeRange_ReturnsMeasurements_WhenMeasurementsInTimeRange()
-        {
-            //Arrange
-
-            //zorg dat de parameters overeenkomen met de geseede data
-            string stationId = "1"; 
-            DateTime startDate = DateTime.UtcNow.AddDays(-10);
-            DateTime endDate = DateTime.UtcNow;
-            List<int>sensorIds = new List<int> { 1, 2, 3};
-
-            //Act
-            var result = _measurementRepository.GetMeasurementsFromSensorInTimeRange(stationId, startDate, endDate, sensorIds);
+            var result = _stationRepository.GetAllStations();
 
             //Assert
             Assert.NotNull(result);
-            Assert.True(result.Count > 0);
-            var sensorDto = result.First();
-            Assert.Contains(sensorDto.Id, sensorIds);
+            Assert.Equal(2, result.Count);
         }
 
         [Fact]
-        public void MeasurementRepository_GetMeasurementsFromSensorInTimeRange_ReturnsEmpty_WhenNoMeasurementsInTimeRange()
+        public void StationRepository_GetStationsLatestMeasurements_returnsStationMeasurements_WhenMeasurementsExist()
         {
             //Arrange
-
-            //zorg dat de parameters overeenkomen met de geseede data
-            string stationId = "1";
-            DateTime startDate = DateTime.UtcNow.AddYears(-1);
-            DateTime endDate = DateTime.UtcNow.AddYears(-1).AddDays(1);
-            List<int> sensorIds = new List<int> { 1, 2, 3 };
+            List<string>stationIds = new List<string> { "1", "2"};
+            int measurementAmount = 3;
 
             //Act
-            var result = _measurementRepository.GetMeasurementsFromSensorInTimeRange(stationId, startDate, endDate, sensorIds);
+            var result = _stationRepository.GetStationsLatestMeasurements(stationIds, measurementAmount);
 
             //Assert
-            Assert.NotNull (result);
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Count());
+            foreach (var station in result)
+            {
+                Assert.Contains(station.Id, stationIds);
+                Assert.NotNull(station.Sensors);
+
+                foreach (var sensor in station.Sensors)
+                {
+                    //controleert of er evenveel metingen zijn als er gevraagd is geweest
+                    Assert.True(sensor.Measurements?.Count() <= measurementAmount, 
+                        "Er zitten meer metingen in dan verwacht");
+
+                    //controleert of de metingen juist staan gesorteerd
+                    var timestamps = sensor.Measurements.Select(m => m.Timestamp).ToList();
+                    Assert.True(timestamps.SequenceEqual(timestamps.OrderByDescending(t => t)),
+                        $"De metingen voor sensor {sensor.Id} zijn niet correct gesorteerd.");
+                }
+            }
+
+        }
+        [Fact]
+        public void StationRepository_GetStationsLatestMeasurements_returnsEmpty_WhenNoMeasurementsExist()
+        {
+            //Arrange
+            List<string> stationIds = new List<string> { "3", "4" };
+            int measurementAmount = 3;
+
+            //Act
+            var result = _stationRepository.GetStationsLatestMeasurements(stationIds, measurementAmount);
+
+            //Assert
+            Assert.NotNull(result);
             Assert.Empty(result);
         }
+
 
         public void Dispose()
         {

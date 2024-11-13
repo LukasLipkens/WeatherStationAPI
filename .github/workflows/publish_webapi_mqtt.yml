@@ -31,7 +31,7 @@ jobs:
         name: Build and publish
         uses: docker/build-push-action@v6
         with:
-          context: ./src/UCLL.Projects.WeatherStations.WebApi
+          context: .
           file: ./src/UCLL.Projects.WeatherStations.WebApi/Dockerfile
           push: true
           tags: |
@@ -61,7 +61,7 @@ jobs:
         name: Build and publish
         uses: docker/build-push-action@v6
         with:
-          context: ./src/UCLL.Projects.WeatherStations.MQTT
+          context: .
           file: ./src/UCLL.Projects.WeatherStations.MQTT/Dockerfile
           push: true
           tags: |

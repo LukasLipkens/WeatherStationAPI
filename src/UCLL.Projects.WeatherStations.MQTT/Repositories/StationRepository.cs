@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using UCLL.Projects.WeatherStations.MQTT.Interfaces;
 using UCLL.Projects.WeatherStations.Shared.Data;
 using UCLL.Projects.WeatherStations.Shared.Data.Models;
@@ -11,70 +9,74 @@ namespace UCLL.Projects.WeatherStations.MQTT.Repositories
 {
     public class StationRepository : IStationRepository
     {
-        private readonly WeatherstationsContext _wheatherstationsContext;
+        private readonly WeatherstationsContext _weatherstationsContext;
+        private readonly ILogger<StationRepository> _logger;
 
-        public StationRepository(WeatherstationsContext wheatherstationsContect)
+        public StationRepository(WeatherstationsContext weatherstationsContext, ILogger<StationRepository> logger)
         {
-            _wheatherstationsContext = wheatherstationsContect;
+            _weatherstationsContext = weatherstationsContext;
+            _logger = logger;
         }
 
         public void AddBatteryPercentage(string stationId, double batteryPercentage)
         {
             try
             {
-                Station? station = _wheatherstationsContext.Stations.FirstOrDefault(s => s.Id == stationId);
+                Station? station = _weatherstationsContext.Stations.FirstOrDefault(s => s.Id == stationId);
 
                 if (station == null)
                 {
+                    _logger.LogError("Station with ID '{StationId}' does not exist.", stationId);
                     throw new ArgumentException("Station with the given ID does not exist.");
                 }
 
                 station.BatteryLevel = batteryPercentage;
 
-                _wheatherstationsContext.Stations.Update(station);
-                _wheatherstationsContext.SaveChanges(); // Vergeet niet om wijzigingen op te slaan
+                _weatherstationsContext.Stations.Update(station);
+                _weatherstationsContext.SaveChanges();
+                _logger.LogInformation("Battery percentage for station '{StationId}' updated to {BatteryPercentage}%.", stationId, batteryPercentage);
             }
             catch (ArgumentException ex)
             {
                 // Specifieke afhandeling voor een station dat niet bestaat
-                Console.WriteLine($"Error: {ex.Message}");
+                _logger.LogWarning(ex, "Argument exception occurred while updating battery percentage for station '{StationId}'.", stationId);
             }
             catch (Exception ex)
             {
                 // Algemene foutafhandeling
-                Console.WriteLine($"An error occurred while updating the battery percentage: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while updating the battery percentage for station '{StationId}'.", stationId);
             }
         }
-
 
         public void AddLocationStation(string stationId, double latitude, double longitude)
         {
             try
             {
-                Station? station = _wheatherstationsContext.Stations.FirstOrDefault(s => s.Id == stationId);
+                Station? station = _weatherstationsContext.Stations.FirstOrDefault(s => s.Id == stationId);
 
                 if (station == null)
                 {
+                    _logger.LogError("Station with ID '{StationId}' does not exist.", stationId);
                     throw new ArgumentException("Station with the given ID does not exist.");
                 }
 
                 station.Latitude = latitude;
                 station.Longitude = longitude;
 
-                _wheatherstationsContext.Stations.Update(station);
-                _wheatherstationsContext.SaveChanges(); // Wijzigingen opslaan in de database
+                _weatherstationsContext.Stations.Update(station);
+                _weatherstationsContext.SaveChanges();
+                _logger.LogInformation("Location for station '{StationId}' updated to Latitude: {Latitude}, Longitude: {Longitude}.", stationId, latitude, longitude);
             }
             catch (ArgumentException ex)
             {
-                // Specifieke afhandeling als het station niet bestaat
-                Console.WriteLine($"Error: {ex.Message}");
+                // Specifieke afhandeling voor een station dat niet bestaat
+                _logger.LogWarning(ex, "Argument exception occurred while updating location for station '{StationId}'.", stationId);
             }
             catch (Exception ex)
             {
                 // Algemene foutafhandeling
-                Console.WriteLine($"An error occurred while updating the station location: {ex.Message}");
+                _logger.LogError(ex, "An error occurred while updating the location for station '{StationId}'.", stationId);
             }
         }
-
     }
 }

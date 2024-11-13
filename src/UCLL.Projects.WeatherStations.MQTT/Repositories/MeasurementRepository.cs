@@ -4,107 +4,135 @@ using UCLL.Projects.WeatherStations.MQTT.Interfaces;
 using UCLL.Projects.WeatherStations.Shared.Data;
 using UCLL.Projects.WeatherStations.Shared.Data.Models;
 
-namespace UCLL.Projects.WeatherStations.MQTT.Repositories;
-
-public class MeasurementRepository : IMeasurementRepository
+namespace UCLL.Projects.WeatherStations.MQTT.Repositories
 {
-    private readonly WeatherstationsContext _weatherstationsContext;
-    private readonly ILogger<MeasurementRepository> _logger;
-
-    public MeasurementRepository(WeatherstationsContext weatherstationsContext, ILogger<MeasurementRepository> logger)
+    public class MeasurementRepository : IMeasurementRepository
     {
-        _weatherstationsContext = weatherstationsContext;
-        _logger = logger;
-    }
+        private readonly WeatherstationsContext _weatherstationsContext;
+        private readonly ILogger<MeasurementRepository> _logger;
 
-    public void AddMeasurement(string stationId, string value, string type, string unit)
-    {
-        using var transaction = _weatherstationsContext.Database.BeginTransaction();
-
-        try
+        public MeasurementRepository(WeatherstationsContext weatherstationsContext, ILogger<MeasurementRepository> logger)
         {
-            // Controleren of de sensor en station-sensorlink bestaan of toevoegen indien nodig
-            int sensorId = CheckSensorExists(type, unit);
-            int linkId = CheckStationSensorExists(stationId, sensorId);
+            _weatherstationsContext = weatherstationsContext;
+            _logger = logger;
+        }
 
-            // Meting toevoegen
-            Measurement measurement = new Measurement
+        public void AddMeasurement(string stationId, string value, string type, string unit)
+        {
+            using var transaction = _weatherstationsContext.Database.BeginTransaction();
+
+            try
             {
-                SensorValue = value,
-                Timestamp = DateTime.UtcNow,
-                StationSensorId = linkId,
-            };
+                // Controleren of de sensor en station-sensorlink bestaan of toevoegen indien nodig
+                int sensorId = CheckSensorExists(type, unit);
+                int linkId = CheckStationSensorExists(stationId, sensorId);
 
-            _weatherstationsContext.Measurements.Add(measurement);
-            _weatherstationsContext.SaveChanges();
+                // Meting toevoegen
+                Measurement measurement = new Measurement
+                {
+                    SensorValue = value,
+                    Timestamp = DateTime.UtcNow,
+                    StationSensorId = linkId,
+                };
 
-            transaction.Commit(); // Commit de transactie als alles succesvol is
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An error occurred while adding a measurement.");
-            transaction.Rollback(); // Rollback bij een fout
-            throw; // Optioneel: gooi de uitzondering verder als je dit elders wilt afhandelen
-        }
-    }
+                _weatherstationsContext.Measurements.Add(measurement);
+                _weatherstationsContext.SaveChanges();
 
-    public void CheckStationExists(string stationId)
-    {
-        // Deze methode heeft geen transactie nodig omdat alleen een enkele insert wordt uitgevoerd
-        var existingStation = _weatherstationsContext.Stations.FirstOrDefault(s => s.Id == stationId);
-
-        if (existingStation != null)
-        {
-            return; // Station bestaat, dus verder niets te doen
+                transaction.Commit(); // Commit de transactie als alles succesvol is
+                _logger.LogInformation("Measurement added successfully for station '{StationId}' with sensor '{SensorType}' of unit '{SensorUnit}'.", stationId, type, unit);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while adding a measurement for station '{StationId}' and sensor '{SensorType}' with unit '{SensorUnit}'.", stationId, type, unit);
+                transaction.Rollback(); // Rollback bij een fout
+            }
         }
 
-        Station station = new Station { Id = stationId };
-        _weatherstationsContext.Stations.Add(station);
-        _weatherstationsContext.SaveChanges(); // SaveChanges creëert een interne transactie voor de enkele insert
-    }
-
-    public int CheckSensorExists(string type, string unit)
-    {
-        // Geen transactie nodig: een enkele insert is afdoende
-        Sensor? sensor = _weatherstationsContext.Sensors.FirstOrDefault(s => s.Type == type);
-
-        if (sensor != null)
+        public void CheckStationExists(string stationId)
         {
-            return sensor.Id; // Sensor bestaat al, return het bestaande ID
+            try
+            {
+                var existingStation = _weatherstationsContext.Stations.FirstOrDefault(s => s.Id == stationId);
+
+                if (existingStation != null)
+                {
+                    return; // Station bestaat, verder niets te doen
+                }
+
+                Station station = new Station { Id = stationId };
+                _weatherstationsContext.Stations.Add(station);
+                _weatherstationsContext.SaveChanges();
+                _logger.LogInformation("New station '{StationId}' added to the system.", stationId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while checking or adding station '{StationId}'.", stationId);
+            }
         }
 
-        sensor = new Sensor
+        public int CheckSensorExists(string type, string unit)
         {
-            Type = type,
-            Unit = unit
-        };
+            try
+            {
+                // Geen transactie nodig: een enkele insert is afdoende
+                Sensor? sensor = _weatherstationsContext.Sensors.FirstOrDefault(s => s.Type == type);
 
-        _weatherstationsContext.Sensors.Add(sensor);
-        _weatherstationsContext.SaveChanges(); // SaveChanges creëert een interne transactie voor de enkele insert
+                if (sensor != null)
+                {
+                    //_logger.LogInformation("Sensor '{SensorType}' already exists with ID {SensorId}.", type, sensor.Id);
+                    return sensor.Id; // Sensor bestaat al, return het bestaande ID
+                }
 
-        return sensor.Id;
-    }
+                sensor = new Sensor
+                {
+                    Type = type,
+                    Unit = unit
+                };
 
-    public int CheckStationSensorExists(string stationId, int sensorId)
-    {
-        // Geen transactie nodig: een enkele insert is afdoende
-        var existingLink = _weatherstationsContext.StationSensors
-                             .FirstOrDefault(s => s.StationId == stationId && s.SensorId == sensorId);
+                _weatherstationsContext.Sensors.Add(sensor);
+                _weatherstationsContext.SaveChanges(); // SaveChanges creëert een interne transactie voor de enkele insert
 
-        if (existingLink != null)
-        {
-            return existingLink.Id; // Link bestaat, return het bestaande ID
+                //_logger.LogInformation("New sensor '{SensorType}' of unit '{SensorUnit}' added to the system with ID {SensorId}.", type, unit, sensor.Id);
+                return sensor.Id;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while checking or adding sensor '{SensorType}' with unit '{SensorUnit}'.", type, unit);
+                throw; // Gooi de uitzondering opnieuw zodat de caller weet dat er een fout is opgetreden
+            }
         }
 
-        StationSensor stationSensor = new StationSensor
+        public int CheckStationSensorExists(string stationId, int sensorId)
         {
-            SensorId = sensorId,
-            StationId = stationId
-        };
+            try
+            {
+                // Geen transactie nodig: een enkele insert is afdoende
+                var existingLink = _weatherstationsContext.StationSensors
+                                 .FirstOrDefault(s => s.StationId == stationId && s.SensorId == sensorId);
 
-        _weatherstationsContext.StationSensors.Add(stationSensor);
-        _weatherstationsContext.SaveChanges(); // SaveChanges creëert een interne transactie voor de enkele insert
+                if (existingLink != null)
+                {
+                    //_logger.LogInformation("Station-Sensor link for station '{StationId}' and sensor ID {SensorId} already exists.", stationId, sensorId);
+                    return existingLink.Id; // Link bestaat, return het bestaande ID
+                }
 
-        return stationSensor.Id;
+                StationSensor stationSensor = new StationSensor
+                {
+                    SensorId = sensorId,
+                    StationId = stationId
+                };
+
+                _weatherstationsContext.StationSensors.Add(stationSensor);
+                _weatherstationsContext.SaveChanges(); // SaveChanges creëert een interne transactie voor de enkele insert
+
+                //_logger.LogInformation("New station-sensor link created for station '{StationId}' and sensor ID {SensorId}.", stationId, sensorId);
+                return stationSensor.Id;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while checking or adding station-sensor link for station '{StationId}' and sensor ID {SensorId}.", stationId, sensorId);
+                throw; // Gooi de uitzondering opnieuw zodat de caller weet dat er een fout is opgetreden
+            }
+        }
     }
 }

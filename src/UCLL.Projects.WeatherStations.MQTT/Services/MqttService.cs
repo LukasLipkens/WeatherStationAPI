@@ -37,57 +37,87 @@ public class MqttService : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        _mqttClient.ConnectedAsync += async e =>
+        try
         {
-            _logger.LogInformation("Connected to MQTT broker");
+            _logger.LogInformation("Attempting to connect to the MQTT broker...");
+            await _mqttClient.ConnectAsync(_mqttOptions, cancellationToken);
+            _logger.LogInformation("Connected to MQTT broker successfully.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to connect to MQTT broker. Retrying...");
+            await Task.Delay(5000, cancellationToken); // Wacht 5 seconden en probeer opnieuw
+            await StartAsync(cancellationToken); // Probeer opnieuw te starten
+        }
 
-            // subscribe to all topics
+        // Als verbinding is gemaakt, stel de callback in voor het ontvangen van berichten
+        _mqttClient.ApplicationMessageReceivedAsync += async e =>
+        {
+            try
+            {
+                string message = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+                string topic = e.ApplicationMessage.Topic;
+                _logger.LogInformation($"Received message on topic {topic}: {message}");
+
+                var topicParts = topic.Split('/');
+                var mqttMessage = new MqttMessage
+                {
+                    StationId = topicParts[^2],
+                    Topic = topicParts[^1],
+                    Payload = message
+                };
+
+                // Schrijf het bericht naar de channel
+                await _channel.Writer.WriteAsync(mqttMessage, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error handling incoming MQTT message.");
+            }
+        };
+
+        try
+        {
             await _mqttClient.SubscribeAsync(_mqttSettings.SubscribeTopic);
-
             _logger.LogInformation($"Subscribed to topic: {_mqttSettings.SubscribeTopic}");
-        };
-
-        //handler when disconnected from broker
-        _mqttClient.DisconnectedAsync += e =>
+        }
+        catch (Exception ex)
         {
-            _logger.LogWarning("Disconnected from MQTT broker");
-            return Task.CompletedTask;
-        };
-
-        //handler when message is received
-        _mqttClient.ApplicationMessageReceivedAsync += e =>
-        {
-            string message = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
-            string? topic = e.ApplicationMessage.Topic;
-            _logger.LogInformation($"\u001b[32mReceived on topic {topic} message: {message}\u001b[0m");
-
-            string[] topicParts = topic.Split('/');
-
-            MqttMessage mqttmessage = new();
-
-            mqttmessage.StationId = topicParts[^2];
-            mqttmessage.Topic = topicParts[^1];
-            mqttmessage.Payload = message;
-
-
-            // hier zou je de data in de queue moeten stoppen
-            _channel.Writer.TryWrite(mqttmessage);
-
-            //_channel.Reader.TryRead(out var data);
-
-            //_logger.LogInformation($"\u001b[34mData in queue: {data}\u001b[0m");
-
-
-            return Task.CompletedTask;
-        };
-
-        //connect to the broker
-        await _mqttClient.ConnectAsync(_mqttOptions, cancellationToken);
+            _logger.LogError(ex, "Failed to subscribe to MQTT topic.");
+        }
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-        _logger.LogWarning("Disconnected from MQTT Broker...");
-        await _mqttClient.DisconnectAsync();
+        _logger.LogWarning("Attempting to disconnect from MQTT broker...");
+        try
+        {
+            await _mqttClient.DisconnectAsync();
+            _logger.LogInformation("Disconnected from MQTT broker.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error while disconnecting from MQTT broker.");
+        }
+
+        // Verbindingsherstel
+        _mqttClient.DisconnectedAsync += async e =>
+        {
+            _logger.LogWarning("Disconnected from MQTT broker. Attempting to reconnect...");
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    await _mqttClient.ConnectAsync(_mqttOptions, cancellationToken);
+                    _logger.LogInformation("Reconnected to MQTT broker.");
+                    break; // Als de verbinding succesvol is hersteld, stop met proberen
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Reconnection failed. Trying again in 5 seconds.");
+                    await Task.Delay(5000, cancellationToken); // Wacht 5 seconden en probeer opnieuw
+                }
+            }
+        };
     }
 }

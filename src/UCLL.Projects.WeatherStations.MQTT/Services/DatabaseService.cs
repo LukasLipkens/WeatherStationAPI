@@ -14,7 +14,6 @@ public class DatabaseService : IHostedService
 
     private readonly IMeasurementRepository _measurementRepository;
     private readonly IStationRepository _stationRepository;
-    //private readonly string _connectionString;
 
     public DatabaseService(ILogger<DatabaseService> logger, Channel<MqttMessage> channel, IMeasurementRepository measurementRepository, IStationRepository stationRepository)
     {
@@ -28,60 +27,80 @@ public class DatabaseService : IHostedService
     {
         await foreach (MqttMessage message in _channel.Reader.ReadAllAsync(cancellationToken))
         {
-            _measurementRepository.CheckStationExists(message.StationId);
-
-            switch (message.Topic)
+            try
             {
-                case "measurement":
-                    string type;
-                    string unit;
-                    string value;
+                // Controleer of het station bestaat
+                _measurementRepository.CheckStationExists(message.StationId);
 
-                    string[] measurement = message.Payload.Trim('{', '}').Split(",");
-                    for (int i = 0; i < measurement.Length; i++)
-                    {
-                        string[] deeltjes = measurement[i].Split(":");
-                        value = deeltjes[1].Trim('"');
+                switch (message.Topic)
+                {
+                    case "measurement":
+                        try
+                        {
+                            string[] measurement = message.Payload.Trim('{', '}').Split(",");
+                            foreach (var item in measurement)
+                            {
+                                string[] deeltjes = item.Split(":");
+                                string value = deeltjes[1].Trim('"');
+                                string[] typeUnit = deeltjes[0].Split("(");
+                                string type = typeUnit[0].Trim('"');
+                                string unit = typeUnit[1].Trim(')', '"');
 
-                        string[] typeUnit = deeltjes[0].Split("(");
+                                // Voeg de meting toe aan de repository
+                                _measurementRepository.AddMeasurement(message.StationId, value, type, unit);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, $"Error processing 'measurement' topic for station {message.StationId}");
+                        }
+                        break;
 
-                        type = typeUnit[0].Trim('"');
-                        unit = typeUnit[1].Trim(')', '"');
+                    case "location":
+                        try
+                        {
+                            string[] location = message.Payload.Trim('{', '}').Split(",");
+                            double latitude = Convert.ToDouble(location[0].Split(":")[1].Trim('"'));
+                            double longitude = Convert.ToDouble(location[1].Split(":")[1].Trim('"'));
 
+                            // Voeg locatie toe aan de repository
+                            _stationRepository.AddLocationStation(message.StationId, latitude, longitude);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, $"Error processing 'location' topic for station {message.StationId}");
+                        }
+                        break;
 
-                        _measurementRepository.AddMeasurement(message.StationId, value, type, unit);
-                    }
+                    case "status":
+                        try
+                        {
+                            string[] status = message.Payload.Trim('{', '}').Split(",");
+                            double batteryLevel = Convert.ToDouble(status[0].Split(":")[1].Trim('"'));
 
-                    break;
-                case "location":
-                    string[] location = message.Payload.Trim('{', '}').Split(",");
-                    string[] lactionDeeltjes1 = location[0].Split(":");
-                    double latitude = Convert.ToDouble(lactionDeeltjes1[1].Trim('"'));
+                            // Voeg batterijpercentage toe aan de repository
+                            _stationRepository.AddBatteryPercentage(message.StationId, batteryLevel);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, $"Error processing 'status' topic for station {message.StationId}");
+                        }
+                        break;
 
-                    string[] lactionDeeltjes2 = location[1].Split(":");
-                    double longtitude = Convert.ToDouble(lactionDeeltjes2[1].Trim('"'));
-
-                    _stationRepository.AddLocationStation(message.StationId, latitude, longtitude);
-
-                    break;
-
-                case "status":
-                    string[] status = message.Payload.Trim('{', '}').Split(",");
-                    string[] statusDeeltjes = status[0].Split(":");
-                    double batteryLevel = Convert.ToDouble(statusDeeltjes[1].Trim('"'));
-
-                    _stationRepository.AddBatteryPercentage(message.StationId, batteryLevel);
-                    break;
-
-                default:
-                    // We hebben geen default
-                    break;
+                    default:
+                        _logger.LogWarning($"Unknown topic '{message.Topic}' received for station {message.StationId}");
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error processing message from station {message.StationId}");
             }
         }
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-        _logger.LogWarning("Stopt");
+        _logger.LogWarning("Stopping the service.");
     }
 }

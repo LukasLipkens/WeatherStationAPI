@@ -49,6 +49,7 @@ internal class Program
                 services.AddHostedService<MqttService>();
                 services.AddHostedService<DatabaseService>();
                 services.AddSingleton<IMeasurementRepository, MeasurementRepository>();
+                services.AddSingleton<IStationRepository, StationRepository>();
 
                 string databaseConnectionString = hostBuilderContext.Configuration.GetConnectionString("WeatherStationsDb")
                     ?? throw new("ConnectionString 'WeatherStationsDb' not found.");

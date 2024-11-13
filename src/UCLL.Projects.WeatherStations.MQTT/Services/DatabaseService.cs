@@ -13,13 +13,15 @@ public class DatabaseService : IHostedService
     private readonly ILogger<DatabaseService> _logger;
 
     private readonly IMeasurementRepository _measurementRepository;
+    private readonly IStationRepository _stationRepository;
     //private readonly string _connectionString;
 
-    public DatabaseService(ILogger<DatabaseService> logger, Channel<MqttMessage> channel, IMeasurementRepository measurementRepository)
+    public DatabaseService(ILogger<DatabaseService> logger, Channel<MqttMessage> channel, IMeasurementRepository measurementRepository, IStationRepository stationRepository)
     {
         _logger = logger;
         _channel = channel;
         _measurementRepository = measurementRepository;
+        _stationRepository = stationRepository;
         //_connectionString = "Server=;Database=;User Id=;Password=;";
     }
 
@@ -27,23 +29,16 @@ public class DatabaseService : IHostedService
     {
         await foreach (MqttMessage message in _channel.Reader.ReadAllAsync(cancellationToken))
         {
-            //_logger.LogInformation($"db service opgestart");
-            //_logger.LogInformation($"db service message: {message.Topic}");
-            //_logger.LogInformation($"db service message: {message.StationId}");
-            //_logger.LogInformation($"db service message: {message.Payload}");
-
-            string type;
-            string unit;
-            string value;
-
             _measurementRepository.CheckStaitonExists(message.StationId);
 
             switch (message.Topic)
             {
                 case "measurement":
 
-
-                    string[] measurement = message.Payload.Trim('{', '}').Split(",");
+                    string type;
+                    string unit;
+                    string value;
+                    string[] measurement = message.Payload.Trim('{','}').Split(",");
                     for (int i = 0; i < measurement.Length; i++)
                     {
                         string[] deeltjes = measurement[i].Split(":");
@@ -56,20 +51,27 @@ public class DatabaseService : IHostedService
 
 
                         _measurementRepository.AddMeasurement(message.StationId, value, type, unit);
-
-                        //if (_measurementRepository.CheckSensorExists(type, unit, message.StationId))
-                        //    _logger.LogInformation("Found");
-                        //else
-                        //    _logger.LogInformation("Not found");
-
-                        _logger.LogInformation($"{type}");
-                        _logger.LogInformation($"{unit}");
-                        _logger.LogInformation($"{value}");
                     }
 
                     break;
                 case "location":
-                    _logger.LogInformation($"{message.Topic}");
+                    string[] location = message.Payload.Trim('{','}').Split(",");
+                    string[] lactionDeeltjes1 = location[0].Split(":");
+                    double latitude = Convert.ToDouble(lactionDeeltjes1[1].Trim('"'));
+
+                    string[] lactionDeeltjes2 = location[1].Split(":");
+                    double longtitude = Convert.ToDouble(lactionDeeltjes2[1].Trim('"'));
+
+                    _stationRepository.addLocationStation(message.StationId, latitude, longtitude);
+
+                    break;
+
+                case "status":
+                    string[] status = message.Payload.Trim('{','}').Split(",");
+                    string[] statusDeeltjes = status[0].Split(":");
+                    double batteryLevel = Convert.ToDouble(statusDeeltjes[1].Trim('"'));
+
+                    _stationRepository.addBatteryPercentage(message.StationId, batteryLevel);
                     break;
 
                 default: 

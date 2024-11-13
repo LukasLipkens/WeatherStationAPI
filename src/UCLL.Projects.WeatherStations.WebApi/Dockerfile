@@ -11,6 +11,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/UCLL.Projects.WeatherStations.WebApi/", "UCLL.Projects.WeatherStations.WebApi/"]
 COPY ["src/UCLL.Projects.WeatherStations.Shared/", "UCLL.Projects.WeatherStations.Shared/"]
+RUN rm -f UCLL.Projects.WeatherStations.Shared/appsettings.json
 RUN dotnet restore "./UCLL.Projects.WeatherStations.WebApi/UCLL.Projects.WeatherStations.WebApi.csproj"
 COPY . .
 WORKDIR "/src/UCLL.Projects.WeatherStations.WebApi"

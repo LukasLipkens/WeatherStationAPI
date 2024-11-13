@@ -18,23 +18,63 @@ namespace UCLL.Projects.WeatherStations.MQTT.Repositories
             _wheatherstationsContext = wheatherstationsContect;
         }
 
-        public bool addBatteryPercentage(string stationId, double batteryPercentage)
+        public void AddBatteryPercentage(string stationId, double batteryPercentage)
         {
-            Station station = _wheatherstationsContext.Stations.FirstOrDefault(s => s.Id == stationId);
-            station.BatteryLevel = batteryPercentage;
+            try
+            {
+                Station? station = _wheatherstationsContext.Stations.FirstOrDefault(s => s.Id == stationId);
 
-            _wheatherstationsContext.Stations.Update(station);
-            return true;
+                if (station == null)
+                {
+                    throw new ArgumentException("Station with the given ID does not exist.");
+                }
+
+                station.BatteryLevel = batteryPercentage;
+
+                _wheatherstationsContext.Stations.Update(station);
+                _wheatherstationsContext.SaveChanges(); // Vergeet niet om wijzigingen op te slaan
+            }
+            catch (ArgumentException ex)
+            {
+                // Specifieke afhandeling voor een station dat niet bestaat
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Algemene foutafhandeling
+                Console.WriteLine($"An error occurred while updating the battery percentage: {ex.Message}");
+            }
         }
 
-        public bool addLocationStation(string stationId, double latitude, double longitude)
+
+        public void AddLocationStation(string stationId, double latitude, double longitude)
         {
-            Station station = _wheatherstationsContext.Stations.FirstOrDefault(s => s.Id == stationId);
-            station.Latitude = latitude;
-            station.Longitude = longitude;
-      
-            _wheatherstationsContext.Stations.Update(station);
-            return true;
+            try
+            {
+                Station? station = _wheatherstationsContext.Stations.FirstOrDefault(s => s.Id == stationId);
+
+                if (station == null)
+                {
+                    throw new ArgumentException("Station with the given ID does not exist.");
+                }
+
+                station.Latitude = latitude;
+                station.Longitude = longitude;
+
+                _wheatherstationsContext.Stations.Update(station);
+                _wheatherstationsContext.SaveChanges(); // Wijzigingen opslaan in de database
+            }
+            catch (ArgumentException ex)
+            {
+                // Specifieke afhandeling als het station niet bestaat
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Algemene foutafhandeling
+                Console.WriteLine($"An error occurred while updating the station location: {ex.Message}");
+            }
         }
+
     }
 }

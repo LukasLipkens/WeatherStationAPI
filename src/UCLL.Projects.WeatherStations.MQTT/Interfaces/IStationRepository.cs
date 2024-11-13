@@ -8,7 +8,7 @@ namespace UCLL.Projects.WeatherStations.MQTT.Interfaces
 {
     public interface IStationRepository
     {
-        bool addLocationStation(string stationId, double latitude, double longitude);
-        bool addBatteryPercentage(string stationId, double batteryPercentage);
+        void AddLocationStation(string stationId, double latitude, double longitude);
+        void AddBatteryPercentage(string stationId, double batteryPercentage);
     }
 }

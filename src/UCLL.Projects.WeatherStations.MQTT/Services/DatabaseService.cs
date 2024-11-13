@@ -22,23 +22,22 @@ public class DatabaseService : IHostedService
         _channel = channel;
         _measurementRepository = measurementRepository;
         _stationRepository = stationRepository;
-        //_connectionString = "Server=;Database=;User Id=;Password=;";
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await foreach (MqttMessage message in _channel.Reader.ReadAllAsync(cancellationToken))
         {
-            _measurementRepository.CheckStaitonExists(message.StationId);
+            _measurementRepository.CheckStationExists(message.StationId);
 
             switch (message.Topic)
             {
                 case "measurement":
-
                     string type;
                     string unit;
                     string value;
-                    string[] measurement = message.Payload.Trim('{','}').Split(",");
+
+                    string[] measurement = message.Payload.Trim('{', '}').Split(",");
                     for (int i = 0; i < measurement.Length; i++)
                     {
                         string[] deeltjes = measurement[i].Split(":");
@@ -55,26 +54,27 @@ public class DatabaseService : IHostedService
 
                     break;
                 case "location":
-                    string[] location = message.Payload.Trim('{','}').Split(",");
+                    string[] location = message.Payload.Trim('{', '}').Split(",");
                     string[] lactionDeeltjes1 = location[0].Split(":");
                     double latitude = Convert.ToDouble(lactionDeeltjes1[1].Trim('"'));
 
                     string[] lactionDeeltjes2 = location[1].Split(":");
                     double longtitude = Convert.ToDouble(lactionDeeltjes2[1].Trim('"'));
 
-                    _stationRepository.addLocationStation(message.StationId, latitude, longtitude);
+                    _stationRepository.AddLocationStation(message.StationId, latitude, longtitude);
 
                     break;
 
                 case "status":
-                    string[] status = message.Payload.Trim('{','}').Split(",");
+                    string[] status = message.Payload.Trim('{', '}').Split(",");
                     string[] statusDeeltjes = status[0].Split(":");
                     double batteryLevel = Convert.ToDouble(statusDeeltjes[1].Trim('"'));
 
-                    _stationRepository.addBatteryPercentage(message.StationId, batteryLevel);
+                    _stationRepository.AddBatteryPercentage(message.StationId, batteryLevel);
                     break;
 
-                default: 
+                default:
+                    // We hebben geen default
                     break;
             }
         }

@@ -9,7 +9,6 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/UCLL.Projects.WeatherStations.MQTT/", "UCLL.Projects.WeatherStations.MQTT/"]
 COPY ["src/UCLL.Projects.WeatherStations.Shared/", "UCLL.Projects.WeatherStations.Shared/"]
-RUN rm -f UCLL.Projects.WeatherStations.Shared/appsettings.json
 RUN dotnet restore "./UCLL.Projects.WeatherStations.MQTT/UCLL.Projects.WeatherStations.MQTT.csproj"
 COPY . .
 WORKDIR "/src/UCLL.Projects.WeatherStations.MQTT"

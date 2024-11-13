@@ -40,8 +40,8 @@ jobs:
       - name: Build and publish ${{ matrix.service.name }}
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: ${{ matrix.path }}/Dockerfile
+          context: ${{ matrix.path }}
+          file: ./Dockerfile
           push: true
           tags: |
             ${{ matrix.tags }}:latest

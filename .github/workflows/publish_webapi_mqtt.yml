@@ -4,10 +4,9 @@ on:
   workflow_dispatch: # manual trigger
   create:
     branches:
-      - 'live'
+      - ['live']
 
 permissions:
-  id-token: write
   contents: read
 
 jobs:
@@ -15,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        path:
+          - "./src/UCLL.Projects.WeatherStations.WebApi"
+          - "./src/UCLL.Projects.WeatherStations.MQTT"
         tags:
           - "docker.io/weatherstations/ucll.projects.weatherstations.webapi"
           - "docker.io/weatherstations/ucll.projects.weatherstations.mqtt"
@@ -36,7 +38,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ${{ matrix.context }}/Dockerfile
+          file: ${{ matrix.path }}/Dockerfile
           push: true
           tags: |
             ${{ matrix.tags }}:latest

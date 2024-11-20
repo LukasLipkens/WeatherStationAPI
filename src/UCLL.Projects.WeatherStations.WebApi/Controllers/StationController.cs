@@ -10,7 +10,7 @@ using UCLL.Projects.WeatherStations.WebApi.Interfaces.Repositories;
 
 namespace UCLL.Projects.WeatherStations.WebApi.Controllers;
 
-[Route("api/v1/[Controller]")]
+[Route("api/v1/station")]
 [ApiController]
 public class StationController : Controller
 {
@@ -40,7 +40,7 @@ public class StationController : Controller
 
     //Endpoint = .../api/v1/Station/Latest?stationIds=1&stationIds=2&measurementAmount=1
 
-    [HttpGet("Latest")]
+    [HttpGet("latest")]
     [ProducesResponseType(200, Type = typeof(IEnumerable<StationDto>))] // Good response
     [ProducesResponseType(404)] // Not found
     public IActionResult GetLatestMeasurementsByStationId([FromQuery] List<string> stationIds, [FromQuery] int measurementAmount = 1)

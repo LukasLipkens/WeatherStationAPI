@@ -10,7 +10,7 @@ using UCLL.Projects.WeatherStations.WebApi.Interfaces.Repositories;
 
 namespace UCLL.Projects.WeatherStations.WebApi.Controllers;
 
-[Route("api/v1/[Controller]")]
+[Route("api/v1/measurement")]
 [ApiController]
 public class MeasurementController(IStationSensorRepository stationSensorRepository, IMeasurementRepository measurementRepository) : Controller
 {

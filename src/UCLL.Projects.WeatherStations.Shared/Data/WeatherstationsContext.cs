@@ -135,7 +135,7 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
                 .HasPrincipalKey(stationSensor => stationSensor.Id)
                 .HasConstraintName("FK_Measurements_StationSensorId");
         });
-
+        /*
         // Seed Stations
         modelBuilder.Entity<Station>().HasData(
             new Station { Id = "1", BatteryLevel = 3.784, Latitude = 34.0522, Longitude = -118.2437, Name = "WSTATION_821A7C4FB923-DUMMY", Description = "Dummy weather station with random MAC addresses: 82:1A:7C:4F:B9:23" },
@@ -208,6 +208,7 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
                 } );
             }
         }
+        */
     }
 
     public DbSet<Station> Stations { get; set; }

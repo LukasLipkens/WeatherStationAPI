@@ -113,6 +113,7 @@
       - WEATHERSTATIONS_MQTT_MQTT__Username=${MQTT_USER}
       - WEATHERSTATIONS_MQTT_MQTT__Password=${MQTT_USER_PASSWORD}
       - WEATHERSTATIONS_MQTT_MQTT__ReceiveMaximumCount=1000
+      - WEATHERSTATIONS_MQTT_MQTT__ClientId=${MQTT_CLIENT_ID}
       - WEATHERSTATIONS_MQTT_MQTT__SubscribeTopic=weatherstations/#
     networks:
       - default

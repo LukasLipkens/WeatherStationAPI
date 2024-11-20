@@ -28,7 +28,7 @@ public class MqttService : IHostedService
         _mqttClient = factory.CreateMqttClient();
 
         _mqttOptions = new MqttClientOptionsBuilder()
-            .WithClientId("MqttProcessing")
+            .WithClientId($"{_mqttSettings.ClientId}_{Guid.NewGuid()}")
             .WithTcpServer(_mqttSettings.Host, _mqttSettings.Port)
             .WithCredentials(_mqttSettings.Username, _mqttSettings.Password)
             .WithCleanSession()

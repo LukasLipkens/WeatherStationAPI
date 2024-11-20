@@ -16,5 +16,6 @@ public class DtoMapping : Profile
         CreateMap<Measurement, MeasurementDto>();
         CreateMap<Sensor, SensorDto>();
         CreateMap<Station, SimpleStationDto>();
+        CreateMap<Station, UpdateStationDto>();
     }
 }

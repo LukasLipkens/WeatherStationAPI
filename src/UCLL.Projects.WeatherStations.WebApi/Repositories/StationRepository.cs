@@ -3,6 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 using UCLL.Projects.WeatherStations.Shared.Data;
 using UCLL.Projects.WeatherStations.Shared.Data.Models;
+using UCLL.Projects.WeatherStations.Shared.Migrations;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
 using UCLL.Projects.WeatherStations.WebApi.Interfaces;
 using UCLL.Projects.WeatherStations.WebApi.Interfaces.Repositories;
@@ -45,5 +46,24 @@ public class StationRepository(WeatherstationsContext weatherstationsContext) : 
                     }).ToList()
             }).ToList()
         }).ToList();
+    }
+
+    public bool UpdateStationInfo(UpdateStationDto data)
+    {
+        Station? station = _weatherstationsContext.Stations.FirstOrDefault(s => s.Id == data.Id);
+        if (station != null)
+        {
+            station.Name = data.Name;
+            station.Description = data.Description;
+
+            _weatherstationsContext.Stations.Update(station);
+            _weatherstationsContext.SaveChanges();
+
+            return true;
+        } else
+        {
+            return false;
+        }
+
     }
 }

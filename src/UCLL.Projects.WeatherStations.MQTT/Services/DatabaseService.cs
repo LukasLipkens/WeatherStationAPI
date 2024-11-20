@@ -60,8 +60,16 @@ public class DatabaseService : IHostedService
                         try
                         {
                             string[] location = message.Payload.Trim('{', '}').Split(",");
-                            double latitude = Convert.ToDouble(location[0].Split(":")[1].Trim('"'));
-                            double longitude = Convert.ToDouble(location[1].Split(":")[1].Trim('"'));
+
+                            string input = location[0].Split(":")[1].Trim('"').Replace(',', '.');
+                            double latitude = Convert.ToDouble(input, CultureInfo.InvariantCulture);
+
+                            //double latitude = Convert.ToDouble(location[0].Split(":")[1].Trim('"'));
+
+                            input = location[1].Split(":")[1].Trim('"').Replace(',', '.');
+                            double longitude = Convert.ToDouble(input, CultureInfo.InvariantCulture);
+
+                            //double longitude = Convert.ToDouble(location[1].Split(":")[1].Trim('"'));
 
                             // Voeg locatie toe aan de repository
                             _stationRepository.AddLocationStation(message.StationId, latitude, longitude);

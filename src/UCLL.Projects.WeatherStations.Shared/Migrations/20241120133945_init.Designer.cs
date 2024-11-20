@@ -12,8 +12,8 @@ using UCLL.Projects.WeatherStations.Shared.Data;
 namespace UCLL.Projects.WeatherStations.Shared.Migrations
 {
     [DbContext(typeof(WeatherstationsContext))]
-    [Migration("20241112110256_seeder_weg")]
-    partial class seeder_weg
+    [Migration("20241120133945_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

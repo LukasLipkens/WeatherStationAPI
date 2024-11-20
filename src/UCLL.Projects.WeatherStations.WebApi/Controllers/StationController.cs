@@ -51,4 +51,20 @@ public class StationController : Controller
 
         return Ok(stationsWithMeasurements);
     }
+
+    //[HttpPut("station/{stationId}/name/{name}/description/{description}")] //met query parameters 
+    [HttpPut("update")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public IActionResult PutStationInfo([FromBody] UpdateStationDto data)
+    {
+        // Name, Description
+        if(_stationRepository.UpdateStationInfo(data))
+        {
+            return Ok("Done");
+        }
+
+        return BadRequest("Station not found");
+
+    }
 }

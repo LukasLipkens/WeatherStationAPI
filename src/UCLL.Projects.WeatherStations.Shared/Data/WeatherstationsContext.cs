@@ -21,6 +21,10 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
                 .HasMaxLength(100) // REMARK: check this with the MQTT topic
                 .IsRequired();
 
+            entity.Property(station => station.LastActivityTimestamp)
+                .HasColumnName("last_activity_timestamp")
+                .IsRequired();
+
             entity.Property(station => station.BatteryLevel)
                 .HasColumnName("battery_level")
                 .IsRequired(false)
@@ -36,15 +40,22 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
 
             entity.Property(station => station.Name)
                 .HasColumnName("name")
-                .HasMaxLength(100) // REMARK: check this with the requests
+                .HasMaxLength(100) // REMARK: check this in the requests
                 .IsRequired(false)
                 .HasDefaultValue(null);
 
             entity.Property(station => station.Description)
                 .HasColumnName("description")
-                .HasMaxLength(500) // REMARK: check this with the requests
+                .HasMaxLength(500) // REMARK: check this in the requests
                 .IsRequired(false)
                 .HasDefaultValue(null);
+
+            entity.Property(station => station.OnlineStatus)
+                .HasColumnName("online_status")
+                .HasComputedColumnSql(
+                    sql: "CASE WHEN last_activity_timestamp < DATEADD(MINUTE, -30, GETUTCDATE()) THEN 'Offline' ELSE 'Online' END",
+                    stored: false // Persisted computed columns in SQL Server do not allow nondeterministic functions like GETDATE()
+                );
 
             entity.Navigation(station => station.StationSensors)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);

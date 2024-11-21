@@ -54,7 +54,11 @@ namespace UCLL.Projects.WeatherStations.MQTT.Repositories
             {
                 Station? existingStation = _weatherstationsContext.Stations.Find(stationId);
 
-                if (existingStation != null) return; // Station bestaat, verder niets te doen
+                if (existingStation != null) // Station exists, update last activity timestamp and early return
+                {
+                    existingStation.LastActivityTimestamp = DateTime.UtcNow;
+                    return;
+                }
 
                 _weatherstationsContext.Stations.Add(new()
                 {

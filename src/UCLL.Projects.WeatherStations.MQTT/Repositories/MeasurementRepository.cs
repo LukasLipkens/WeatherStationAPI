@@ -52,16 +52,17 @@ namespace UCLL.Projects.WeatherStations.MQTT.Repositories
         {
             try
             {
-                var existingStation = _weatherstationsContext.Stations.FirstOrDefault(s => s.Id == stationId);
+                Station? existingStation = _weatherstationsContext.Stations.Find(stationId);
 
-                if (existingStation != null)
+                if (existingStation != null) return; // Station bestaat, verder niets te doen
+
+                _weatherstationsContext.Stations.Add(new()
                 {
-                    return; // Station bestaat, verder niets te doen
-                }
-
-                Station station = new Station { Id = stationId };
-                _weatherstationsContext.Stations.Add(station);
+                    Id = stationId,
+                    LastActivityTimestamp = DateTime.UtcNow,
+                });
                 _weatherstationsContext.SaveChanges();
+
                 _logger.LogInformation("New station '{StationId}' added to the system.", stationId);
             }
             catch (Exception ex)

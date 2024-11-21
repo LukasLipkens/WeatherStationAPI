@@ -53,7 +53,7 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
             entity.Property(station => station.OnlineStatus)
                 .HasColumnName("online_status")
                 .HasComputedColumnSql(
-                    sql: "CASE WHEN last_activity_timestamp < DATEADD(MINUTE, -30, GETUTCDATE()) THEN 'Offline' ELSE 'Online' END",
+                    sql: "CASE WHEN last_activity_timestamp < DATEADD(MINUTE, -30, GETUTCDATE()) THEN 1 ELSE 0 END", // 1 = offline, 0 = online. need to do it like this because of enum use and .HasConversion<string>() doesn't work with computed columns
                     stored: false // Persisted computed columns in SQL Server do not allow nondeterministic functions like GETDATE()
                 );
 

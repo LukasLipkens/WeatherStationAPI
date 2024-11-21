@@ -36,7 +36,7 @@ namespace UCLL.Projects.WeatherStations.Shared.Migrations
                     longitude = table.Column<double>(type: "float", nullable: true),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    online_status = table.Column<int>(type: "int", nullable: false, computedColumnSql: "CASE WHEN last_activity_timestamp < DATEADD(MINUTE, -30, GETUTCDATE()) THEN 1 ELSE 0 END", stored: false)
+                    online_status = table.Column<string>(type: "nvarchar(max)", nullable: false, computedColumnSql: "CASE WHEN last_activity_timestamp < DATEADD(MINUTE, -30, GETUTCDATE()) THEN 'Offline' ELSE 'Online' END", stored: false)
                 },
                 constraints: table =>
                 {

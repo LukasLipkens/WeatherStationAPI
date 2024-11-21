@@ -106,11 +106,12 @@ namespace UCLL.Projects.WeatherStations.Shared.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("name");
 
-                    b.Property<int>("OnlineStatus")
+                    b.Property<string>("OnlineStatus")
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("int")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("online_status")
-                        .HasComputedColumnSql("CASE WHEN last_activity_timestamp < DATEADD(MINUTE, -30, GETUTCDATE()) THEN 1 ELSE 0 END", false);
+                        .HasComputedColumnSql("CASE WHEN last_activity_timestamp < DATEADD(MINUTE, -30, GETUTCDATE()) THEN 'Offline' ELSE 'Online' END", false);
 
                     b.HasKey("Id")
                         .HasName("PK_Stations_Id");

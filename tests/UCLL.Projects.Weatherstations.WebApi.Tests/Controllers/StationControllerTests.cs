@@ -24,8 +24,8 @@ namespace UCLL.Projects.WeatherStations.WebApi.Tests.Controllers
         {
             // Arrange
             List<Station> stations = [
-                new() { Id = "1", Name = "Station A", Latitude = 40.7128, Longitude = -74.0060, Description = "Weather station in New York" },
-                new() { Id = "2", Name = "Station B", Latitude = 34.0522, Longitude = -118.2437, Description = "Weather station in Los Angeles" }
+                new() { Id = "1", LastActivityTimestamp = DateTime.UtcNow, Name = "Station A", Latitude = 40.7128, Longitude = -74.0060, Description = "Weather station in New York" },
+                new() { Id = "2", LastActivityTimestamp = DateTime.UtcNow, Name = "Station B", Latitude = 34.0522, Longitude = -118.2437, Description = "Weather station in Los Angeles" }
             ];
 
             List<SimpleStationDto> stationDtos = [

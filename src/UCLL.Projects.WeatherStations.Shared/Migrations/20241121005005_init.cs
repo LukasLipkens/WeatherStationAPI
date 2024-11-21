@@ -30,11 +30,13 @@ namespace UCLL.Projects.WeatherStations.Shared.Migrations
                 columns: table => new
                 {
                     id = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    last_activity_timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     battery_level = table.Column<double>(type: "float", nullable: true),
                     latitude = table.Column<double>(type: "float", nullable: true),
                     longitude = table.Column<double>(type: "float", nullable: true),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                    description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    online_status = table.Column<string>(type: "nvarchar(max)", nullable: false, computedColumnSql: "CASE WHEN last_activity_timestamp < DATEADD(MINUTE, -30, GETUTCDATE()) THEN 'Offline' ELSE 'Online' END", stored: false)
                 },
                 constraints: table =>
                 {

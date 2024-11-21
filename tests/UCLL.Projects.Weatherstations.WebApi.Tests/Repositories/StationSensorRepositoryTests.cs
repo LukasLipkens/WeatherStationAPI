@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UCLL.Projects.WeatherStations.Shared.Data;
 using UCLL.Projects.WeatherStations.Shared.Data.Models;
 using UCLL.Projects.WeatherStations.WebApi.Repositories;
@@ -21,18 +16,18 @@ namespace UCLL.Projects.Weatherstations.WebApi.Tests.Repositories
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
-            _context = new WeatherstationsContext(options);
+            _context = new(options);
 
             SeedDatabase();
 
-            _stationSensorRepository = new StationSensorRepository(_context);
+            _stationSensorRepository = new(_context);
         }
 
         private void SeedDatabase()
         {
             // Voeg stations toe
-            _context.Stations.Add(new Station { Id = "1", Latitude = 34.0522, Longitude = -118.2437 });
-            _context.Stations.Add(new Station { Id = "2", Latitude = 67.5768, Longitude = 12.9878 });
+            _context.Stations.Add(new Station { Id = "1", LastActivityTimestamp = DateTime.UtcNow, Latitude = 34.0522, Longitude = -118.2437 });
+            _context.Stations.Add(new Station { Id = "2", LastActivityTimestamp = DateTime.UtcNow, Latitude = 67.5768, Longitude = 12.9878 });
 
             // Voeg de sensoren toe
             _context.Sensors.Add(new Sensor { Id = 1, Type = "Temperature", Unit = "Celsius" });

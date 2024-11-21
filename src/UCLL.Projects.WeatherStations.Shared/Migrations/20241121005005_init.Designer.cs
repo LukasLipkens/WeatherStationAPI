@@ -12,7 +12,7 @@ using UCLL.Projects.WeatherStations.Shared.Data;
 namespace UCLL.Projects.WeatherStations.Shared.Migrations
 {
     [DbContext(typeof(WeatherstationsContext))]
-    [Migration("20241120133945_init")]
+    [Migration("20241121005005_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -92,6 +92,10 @@ namespace UCLL.Projects.WeatherStations.Shared.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("description");
 
+                    b.Property<DateTime>("LastActivityTimestamp")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("last_activity_timestamp");
+
                     b.Property<double?>("Latitude")
                         .HasColumnType("float")
                         .HasColumnName("latitude");
@@ -104,6 +108,13 @@ namespace UCLL.Projects.WeatherStations.Shared.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("name");
+
+                    b.Property<string>("OnlineStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("online_status")
+                        .HasComputedColumnSql("CASE WHEN last_activity_timestamp < DATEADD(MINUTE, -30, GETUTCDATE()) THEN 'Offline' ELSE 'Online' END", false);
 
                     b.HasKey("Id")
                         .HasName("PK_Stations_Id");

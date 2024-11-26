@@ -30,6 +30,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.Weatherstatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.Weatherstations.MQTT.Tests", "tests\UCLL.Projects.Weatherstations.MQTT.Tests\UCLL.Projects.Weatherstations.MQTT.Tests.csproj", "{2B3C429C-2E47-4E68-8616-0DEAE320A21B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UCLL.Projects.WeatherStations.GraphQL", "src\UCLL.Projects.WeatherStations.GraphQL\UCLL.Projects.WeatherStations.GraphQL.csproj", "{8FA3EFD1-DDC3-4958-B276-B0C140733FC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{C440E6FD-C294-49F8-B007-6FA01185C9EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C440E6FD-C294-49F8-B007-6FA01185C9EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C440E6FD-C294-49F8-B007-6FA01185C9EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FA3EFD1-DDC3-4958-B276-B0C140733FC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FA3EFD1-DDC3-4958-B276-B0C140733FC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FA3EFD1-DDC3-4958-B276-B0C140733FC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FA3EFD1-DDC3-4958-B276-B0C140733FC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 		{FB00EE12-EAB3-4516-86D1-CD733DE48396} = {EB03D4F0-E950-412B-967A-5C21D9E03114}
 		{2B3C429C-2E47-4E68-8616-0DEAE320A21B} = {EB03D4F0-E950-412B-967A-5C21D9E03114}
 		{C440E6FD-C294-49F8-B007-6FA01185C9EB} = {2215AC95-1A8B-4183-95DE-01908FF7823F}
+		{8FA3EFD1-DDC3-4958-B276-B0C140733FC7} = {2215AC95-1A8B-4183-95DE-01908FF7823F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B8A7FA4D-A054-4660-82BF-71BEB15D2E1F}

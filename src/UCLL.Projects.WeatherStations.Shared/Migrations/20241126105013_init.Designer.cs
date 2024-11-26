@@ -12,7 +12,7 @@ using UCLL.Projects.WeatherStations.Shared.Data;
 namespace UCLL.Projects.WeatherStations.Shared.Migrations
 {
     [DbContext(typeof(WeatherstationsContext))]
-    [Migration("20241121005005_init")]
+    [Migration("20241126105013_init")]
     partial class init
     {
         /// <inheritdoc />

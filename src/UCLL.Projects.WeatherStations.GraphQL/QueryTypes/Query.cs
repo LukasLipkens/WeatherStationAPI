@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using HotChocolate;
-using HotChocolate.Data;
-using UCLL.Projects.WeatherStations.Shared.Data;
+﻿using UCLL.Projects.WeatherStations.Shared.Data;
 using UCLL.Projects.WeatherStations.Shared.Data.Models;
+
+namespace UCLL.Projects.WeatherStations.GraphQL.QueryTypes;
 
 public class Query
 {

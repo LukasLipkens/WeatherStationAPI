@@ -1,13 +1,14 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Docker-PostgreSQL" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Docker-GraphQL" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
     <deployment type="docker-compose.yml">
       <settings>
         <option name="envFilePath" value="" />
         <option name="services">
           <list>
+            <option value="db_mssql" />
             <option value="mqtt" />
-            <option value="db_pg" />
-            <option value="webapi" />
+            <option value="mqtt_service" />
+            <option value="graphql" />
           </list>
         </option>
         <option name="sourceFilePath" value="docker/compose.yml" />

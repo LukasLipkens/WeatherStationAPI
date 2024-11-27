@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using UCLL.Projects.WeatherStations.Shared.Data; // Namespace van je DbContext
-using UCLL.Projects.WeatherStations.Shared.Data.Models;
+using UCLL.Projects.WeatherStations.GraphQL.QueryTypes;
+using UCLL.Projects.WeatherStations.Shared.Data;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddEnvironmentVariables(prefix: "WEATHERSTATIONS_GRAPHQL_");
 
 // Add services to the container
 builder.Services.AddDbContext<WeatherstationsContext>(options =>
@@ -16,20 +18,8 @@ builder.Services
     .AddFiltering()           // Voor filter queries
     .AddSorting();            // Voor sorteer mogelijkheden
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
-// Redirect root URL ("/") to "/graphql"
-app.UseRouting();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapGet("/", context =>
-    {
-        context.Response.Redirect("/graphql");
-        return Task.CompletedTask;
-    });
-
-    endpoints.MapGraphQL("/graphql"); // GraphQL endpoint
-});
+app.MapGraphQL("/graphql");
 
 app.Run();

@@ -52,34 +52,8 @@
       start_period: 30s
     restart: unless-stopped
 
-  #db_pg:
-  #  image: timescale/timescaledb:latest-pg16
-  #  container_name: weatherstations_db_pg
-  #  environment:
-  #    - POSTGRES_USER=${POSTGRES_USER}
-  #    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  #    - POSTGRES_DB=${DB_NAME}_prod
-  #    - DB_NAME=${DB_NAME}
-  #    - DB_USER_R=${DB_USER_R}
-  #    - DB_USER_R_PASSWORD=${DB_USER_R_PASSWORD}
-  #    - DB_USER_RW=${DB_USER_RW}
-  #    - DB_USER_RW_PASSWORD=${DB_USER_RW_PASSWORD}
-  #  ports:
-  #    - "5432:5432"
-  #  networks:
-  #    - default
-  #  volumes:
-  #    - pgdata:/var/lib/postgresql/data
-  #    - ../docker-data/timescaledb/init:/docker-entrypoint-initdb.d/:rw
-  #  healthcheck:
-  #    test: [ "CMD-SHELL", "su", "postgres", "-c", "'pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}'" ]
-  #    interval: 10s
-  #    timeout: 5s
-  #    retries: 5
-  #  restart: unless-stopped
-
   webapi:
-    image: ucll.projects.weatherstations.webapi:dev
+    image: weatherstations-api:dev
     container_name: weatherstations_webapi
     build:
       context: ../src/UCLL.Projects.WeatherStations.WebApi
@@ -96,11 +70,10 @@
       - default
     depends_on:
       - db_mssql
-      #- db_pg
     restart: unless-stopped
 
   mqtt_service:
-    image: ucll.projects.weatherstations.mqtt:dev
+    image: weatherstations-mqtt-service:dev
     container_name: weatherstations_mqtt_service
     build:
       context: ../src/UCLL.Projects.WeatherStations.MQTT
@@ -120,14 +93,30 @@
     depends_on:
       - mqtt
       - db_mssql
-      #- db_pg
+    restart: unless-stopped
+
+  graphql:
+    image: weatherstations-graphql:dev
+    container_name: weatherstations_graphql
+    build:
+      context: ../src/UCLL.Projects.WeatherStations.GraphQL
+      dockerfile: ./Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+      - WEATHERSTATIONS_GRAPHQL_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
+    ports:
+      - "80:8080"
+    networks:
+      - default
+    depends_on:
+      - db_mssql
     restart: unless-stopped
 
 
 
 volumes:
   mssqldata:
-  pgdata:
 
 
 

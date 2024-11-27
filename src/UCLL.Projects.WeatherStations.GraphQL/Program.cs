@@ -4,6 +4,8 @@ using UCLL.Projects.WeatherStations.Shared.Data;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables(prefix: "WEATHERSTATIONS_GRAPHQL_");
+
 // Add services to the container
 builder.Services.AddDbContext<WeatherstationsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("WeatherStationsDb")));

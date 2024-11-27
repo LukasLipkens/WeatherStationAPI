@@ -7,7 +7,6 @@
         <AssemblyName>UCLL.Projects.WeatherStations.WebApi</AssemblyName>
         <RootNamespace>UCLL.Projects.WeatherStations.WebApi</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <UserSecretsId>052bfa0a-abeb-407b-b0d2-320c065395b6</UserSecretsId>
         <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
 

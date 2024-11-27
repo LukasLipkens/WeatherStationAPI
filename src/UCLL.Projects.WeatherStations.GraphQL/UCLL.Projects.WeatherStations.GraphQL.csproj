@@ -7,7 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="HotChocolate.AspNetCore" Version="13.8.1" />
+      <PackageReference Include="HotChocolate.AspNetCore" Version="14.1.0" />
+      <PackageReference Include="HotChocolate.Data" Version="14.1.0" />
+      <PackageReference Include="HotChocolate.Data.EntityFramework" Version="14.1.0" />
+      <PackageReference Include="HotChocolate.Types" Version="14.1.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\UCLL.Projects.WeatherStations.Shared\UCLL.Projects.WeatherStations.Shared.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,21 +1,32 @@
-﻿namespace UCLL.Projects.WeatherStations.GraphQL.Types
-{
-    public class Query
-    {
-        public string Hello()
-        {
-            return "hello world";
-        }
+﻿using System.Linq;
+using HotChocolate;
+using HotChocolate.Data;
+using UCLL.Projects.WeatherStations.Shared.Data;
+using UCLL.Projects.WeatherStations.Shared.Data.Models;
 
-        [GraphQLDescription("Playlists hand-picked to be featured to all users.")]
-        public List<Playlist> FeaturedPlaylists()
-        {
-            return new List<Playlist>
-            {   
-                new Playlist("1", "GraphQL Groovin'"),
-                new Playlist("2", "Graph Explorer Jams"),
-                new Playlist("3", "Interpretive GraphQL Dance")
-            };
-        }
+public class Query
+{
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<Station> GetStations([Service] WeatherstationsContext dbContext)
+    {
+        return dbContext.Stations;
+    }
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<Sensor> GetSensors([Service] WeatherstationsContext dbContext)
+    {
+        return dbContext.Sensors;
+    }
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<Measurement> GetMeasurements([Service] WeatherstationsContext dbContext)
+    {
+        return dbContext.Measurements;
     }
 }

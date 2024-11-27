@@ -1,4 +1,4 @@
-name: Publish MQTT
+﻿name: Publish GraphQL
 
 on:
   workflow_dispatch: # manual trigger
@@ -7,14 +7,14 @@ on:
     branches:
       - 'live'
     paths:
-      - 'src/UCLL.Projects.WeatherStations.MQTT/**'
+      - 'src/UCLL.Projects.WeatherStations.GraphQL/**'
       - 'src/UCLL.Projects.WeatherStations.Shared/**'
 
 permissions:
   contents: read
 
 jobs:
-  build-publish_mqtt:
+  build-publish_webapi:
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'live'
     runs-on: ubuntu-latest
 
@@ -36,11 +36,11 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./src/UCLL.Projects.WeatherStations.MQTT/Dockerfile
+          file: ./src/UCLL.Projects.WeatherStations.GraphQL/Dockerfile
           push: true
           tags: |
-            docker.io/weatherstations/ucll.projects.weatherstations.mqtt:latest
-            docker.io/weatherstations/ucll.projects.weatherstations.mqtt:${{ github.sha }}
+            docker.io/weatherstations/ucll.projects.weatherstations.graphql:latest
+            docker.io/weatherstations/ucll.projects.weatherstations.graphql:${{ github.sha }}
       - # good practice (for when multiple jobs)
         name: Log out from Docker Hub
         run: docker logout

@@ -33,10 +33,14 @@ public class MeasurementController(IStationSensorRepository stationSensorReposit
         List<Measurement>? measurements = _measurementRepository.GetAllMeasurementsFromStationSensor(stationSensor.Id);
 
         // Controleer of er resultaten zijn
-        if (!measurements.Any()) return NotFound("Geen metingen gevonden voor het opgegeven station en sensor.");
+        if (measurements.Count == 0) return NotFound("Geen metingen gevonden voor het opgegeven station en sensor.");
 
         // Retourneer de metingen
-        return Ok(measurements);
+        return Ok(measurements.Select(measurement => new MeasurementDto
+        {
+            Timestamp = measurement.Timestamp,
+            SensorValue = measurement.SensorValue
+        }).ToList());
     }
 
     [HttpGet("station/{stationId}")]

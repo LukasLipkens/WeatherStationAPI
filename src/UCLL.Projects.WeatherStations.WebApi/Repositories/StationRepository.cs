@@ -27,6 +27,7 @@ public class StationRepository(WeatherstationsContext weatherstationsContext) : 
         return databaseStations.Select(databaseStation => new StationDto()
         {
             Id = databaseStation.Id,
+            OnlineStatus = databaseStation.OnlineStatus,
             Name = databaseStation.Name,
             Latitude = databaseStation.Latitude,
             Longitude = databaseStation.Longitude,

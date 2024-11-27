@@ -1,8 +1,11 @@
-﻿namespace UCLL.Projects.WeatherStations.WebApi.Dto;
+﻿using UCLL.Projects.WeatherStations.Shared.Enums;
+
+namespace UCLL.Projects.WeatherStations.WebApi.Dto;
 
 public class StationDto
 {
     public string Id { get; set; }
+    public required StationOnlineStatus OnlineStatus { get; set; }
     public double? BatteryLevel { get; set; } = null;
     public double? Latitude { get; set; } = null;
     public double? Longitude { get; set; } = null;

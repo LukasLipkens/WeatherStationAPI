@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using UCLL.Projects.WeatherStations.Shared.Data.Models;
+using UCLL.Projects.WeatherStations.Shared.Enums;
 using UCLL.Projects.WeatherStations.WebApi.Controllers;
 using UCLL.Projects.WeatherStations.WebApi.Dto;
 using UCLL.Projects.WeatherStations.WebApi.Interfaces.Repositories;
@@ -29,8 +30,8 @@ namespace UCLL.Projects.WeatherStations.WebApi.Tests.Controllers
             ];
 
             List<SimpleStationDto> stationDtos = [
-                new() { Id = "1", Name = "Station A", Latitude = 40.7128, Longitude = -74.0060, Description = "Weather station in New York" },
-                new() { Id = "2", Name = "Station B", Latitude = 34.0522, Longitude = -118.2437, Description = "Weather station in Los Angeles" }
+                new() { Id = "1", OnlineStatus = StationOnlineStatus.Online, Name = "Station A", Latitude = 40.7128, Longitude = -74.0060, Description = "Weather station in New York" },
+                new() { Id = "2", OnlineStatus = StationOnlineStatus.Online, Name = "Station B", Latitude = 34.0522, Longitude = -118.2437, Description = "Weather station in Los Angeles" }
             ];
 
             _stationRepositoryMock.Setup(repo => repo.GetAllStations()).Returns(stations);
@@ -76,6 +77,7 @@ namespace UCLL.Projects.WeatherStations.WebApi.Tests.Controllers
                 new()
                 {
                     Id = "1",
+                    OnlineStatus = StationOnlineStatus.Online,
                     Name = "Station A",
                     Latitude = 40.7128,
                     Longitude = -74.0060,
@@ -94,6 +96,7 @@ namespace UCLL.Projects.WeatherStations.WebApi.Tests.Controllers
                 new()
                 {
                     Id = "2",
+                    OnlineStatus = StationOnlineStatus.Online,
                     Name = "Station B",
                     Latitude = 34.0522,
                     Longitude = -118.2437,

@@ -53,7 +53,7 @@
     restart: unless-stopped
 
   webapi:
-    image: ucll.projects.weatherstations.webapi:dev
+    image: weatherstations-api:dev
     container_name: weatherstations_webapi
     build:
       context: ../src/UCLL.Projects.WeatherStations.WebApi
@@ -73,7 +73,7 @@
     restart: unless-stopped
 
   mqtt_service:
-    image: ucll.projects.weatherstations.mqtt:dev
+    image: weatherstations-mqtt-service:dev
     container_name: weatherstations_mqtt_service
     build:
       context: ../src/UCLL.Projects.WeatherStations.MQTT
@@ -96,7 +96,7 @@
     restart: unless-stopped
 
   graphql:
-    image: ucll.projects.weatherstations.graphql:dev
+    image: weatherstations-graphql:dev
     container_name: weatherstations_graphql
     build:
       context: ../src/UCLL.Projects.WeatherStations.GraphQL

@@ -39,8 +39,8 @@ jobs:
           file: ./src/UCLL.Projects.WeatherStations.GraphQL/Dockerfile
           push: true
           tags: |
-            docker.io/weatherstations/ucll.projects.weatherstations.graphql:latest
-            docker.io/weatherstations/ucll.projects.weatherstations.graphql:${{ github.sha }}
+            docker.io/weatherstations/weatherstations-graphql:latest
+            docker.io/weatherstations/weatherstations-graphql:${{ github.sha }}
       - # good practice (for when multiple jobs)
         name: Log out from Docker Hub
         run: docker logout

@@ -39,8 +39,8 @@ jobs:
           file: ./src/UCLL.Projects.WeatherStations.WebApi/Dockerfile
           push: true
           tags: |
-            docker.io/weatherstations/ucll.projects.weatherstations.webapi:latest
-            docker.io/weatherstations/ucll.projects.weatherstations.webapi:${{ github.sha }}
+            docker.io/weatherstations/weatherstations-api:latest
+            docker.io/weatherstations/weatherstations-api:${{ github.sha }}
       - # good practice (for when multiple jobs)
         name: Log out from Docker Hub
         run: docker logout

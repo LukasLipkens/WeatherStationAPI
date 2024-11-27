@@ -34,8 +34,8 @@ jobs:
           file: ./src/UCLL.Projects.WeatherStations.WebApi/Dockerfile
           push: true
           tags: |
-            docker.io/weatherstations/ucll.projects.weatherstations.webapi:latest
-            docker.io/weatherstations/ucll.projects.weatherstations.webapi:${{ github.sha }}
+            docker.io/weatherstations/weatherstations-api:latest
+            docker.io/weatherstations/weatherstations-api:${{ github.sha }}
       -
         name: Log out from Docker Hub
         run: docker logout
@@ -64,8 +64,8 @@ jobs:
           file: ./src/UCLL.Projects.WeatherStations.MQTT/Dockerfile
           push: true
           tags: |
-            docker.io/weatherstations/ucll.projects.weatherstations.mqtt:latest
-            docker.io/weatherstations/ucll.projects.weatherstations.mqtt:${{ github.sha }}
+            docker.io/weatherstations/weatherstations-mqtt-service:latest
+            docker.io/weatherstations/weatherstations-mqtt-service:${{ github.sha }}
       -
         name: Log out from Docker Hub
         run: docker logout
@@ -90,7 +90,7 @@ jobs:
           file: ./src/UCLL.Projects.WeatherStations.GraphQL/Dockerfile
           push: true
           tags: |
-            docker.io/weatherstations/ucll.projects.weatherstations.graphql:latest
-            docker.io/weatherstations/ucll.projects.weatherstations.graphql:${{ github.sha }}
+            docker.io/weatherstations/weatherstations-graphql:latest
+            docker.io/weatherstations/weatherstations-graphql:${{ github.sha }}
       - name: Log out from Docker Hub
         run: docker logout

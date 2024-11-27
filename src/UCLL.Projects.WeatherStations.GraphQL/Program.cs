@@ -1,21 +1,35 @@
-using UCLL.Projects.WeatherStations.GraphQL.Types;
-using UCLL.Projects.WeatherStations.Shared.Data;
+using Microsoft.EntityFrameworkCore;
+using UCLL.Projects.WeatherStations.Shared.Data; // Namespace van je DbContext
+using UCLL.Projects.WeatherStations.Shared.Data.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Voeg de DbContext toe via de extensie
-builder.Services.AddWeatherstationsData(builder.Configuration);
+// Add services to the container
+builder.Services.AddDbContext<WeatherstationsContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("WeatherStationsDb")));
 
-// Voeg GraphQL toe
+// Add GraphQL server
 builder.Services
     .AddGraphQLServer()
-    .AddQueryType<Query>()
-    .AddProjections()
-    .AddFiltering()
-    .AddSorting();
+    .AddQueryType<Query>()    // Je Query klasse
+    .AddProjections()         // Voor nested objecten
+    .AddFiltering()           // Voor filter queries
+    .AddSorting();            // Voor sorteer mogelijkheden
 
 var app = builder.Build();
 
-app.MapGraphQL();
+// Redirect root URL ("/") to "/graphql"
+app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGet("/", context =>
+    {
+        context.Response.Redirect("/graphql");
+        return Task.CompletedTask;
+    });
+
+    endpoints.MapGraphQL("/graphql"); // GraphQL endpoint
+});
 
 app.Run();

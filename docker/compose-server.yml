@@ -64,7 +64,7 @@
       - ASPNETCORE_ENVIRONMENT=Production
       #- ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_HTTP_PORTS=8080
-      - WEATHERSTATIONS_WEBAPI_CONNECTIONSTRINGS__WeatherStationsDb=Server=db-mssql;Database=${DB_NAME}_prod;User Id=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=true;
+      - WEATHERSTATIONS_API_CONNECTIONSTRINGS__WeatherStationsDb=Server=db-mssql;Database=${DB_NAME}_prod;User Id=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=true;
     networks:
       - default
       - traefik-routing
@@ -86,13 +86,13 @@
       - ASPNETCORE_ENVIRONMENT=Production
       - WEATHERSTATIONS_MQTT_CONNECTIONSTRINGS__WeatherStationsDb=Server=db-mssql;Database=${DB_NAME}_prod;User Id=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=true;
       #- WEATHERSTATIONS_MQTT_MQTT__Host=mqtt
-      - WEATHERSTATIONS_MQTT__MQTT_Host=k106.ucll-labo.be
-      - WEATHERSTATIONS_MQTT_MQTT__Port=1883
-      - WEATHERSTATIONS_MQTT_MQTT__Username=${MQTT_USER}
-      - WEATHERSTATIONS_MQTT_MQTT__Password=${MQTT_USER_PASSWORD}
-      - WEATHERSTATIONS_MQTT_MQTT__ReceiveMaximumCount=1000
-      - WEATHERSTATIONS_MQTT_MQTT__ClientId=${MQTT_CLIENT_ID}
-      - WEATHERSTATIONS_MQTT_MQTT__SubscribeTopic=weatherstations/#
+      - WEATHERSTATIONS_MQTTSERVICE__MQTT_Host=k106.ucll-labo.be
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Port=1883
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Username=${MQTT_USER}
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Password=${MQTT_USER_PASSWORD}
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__ReceiveMaximumCount=1000
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__ClientId=${MQTT_CLIENT_ID}
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__SubscribeTopic=weatherstations/#
     networks:
       - default
     depends_on:

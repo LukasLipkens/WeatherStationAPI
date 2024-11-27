@@ -1,7 +1,7 @@
 ﻿services:
-  mqtt:
+  mqtt-broker:
     image: eclipse-mosquitto:2.0
-    container_name: weatherstations_mqtt
+    container_name: weatherstations_mqtt_broker
     ports:
       - "1883:1883" # default mqtt port
       - "9001:9001" # default mqtt over websockets port
@@ -18,7 +18,7 @@
       retries: 3
     restart: unless-stopped
 
-  db_mssql:
+  db-mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: weatherstations_db_mssql
     user: root # don't like this but no other fix at the moment
@@ -52,17 +52,17 @@
       start_period: 30s
     restart: unless-stopped
 
-  webapi:
+  api:
     image: weatherstations-api:dev
-    container_name: weatherstations_webapi
+    container_name: weatherstations_api
     build:
-      context: ../src/UCLL.Projects.WeatherStations.WebApi
+      context: ../src/UCLL.Projects.WeatherStations.Api
       dockerfile: ./Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       #- ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_HTTP_PORTS=8080
-      - WEATHERSTATIONS_WEBAPI_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
+      - WEATHERSTATIONS_API_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
     ports:
       #- "443:8081"
       - "80:8080"
@@ -72,22 +72,22 @@
       - db_mssql
     restart: unless-stopped
 
-  mqtt_service:
+  mqtt-service:
     image: weatherstations-mqtt-service:dev
     container_name: weatherstations_mqtt_service
     build:
-      context: ../src/UCLL.Projects.WeatherStations.MQTT
+      context: ../src/UCLL.Projects.WeatherStations.MqttService
       dockerfile: ./Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - WEATHERSTATIONS_MQTT_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
-      - WEATHERSTATIONS_MQTT_MQTT__Host=mqtt
-      - WEATHERSTATIONS_MQTT_MQTT__Port=1883
-      - WEATHERSTATIONS_MQTT_MQTT__Username=${MQTT_USER}
-      - WEATHERSTATIONS_MQTT_MQTT__Password=${MQTT_USER_PASSWORD}
-      - WEATHERSTATIONS_MQTT_MQTT__ReceiveMaximumCount=1000
-      - WEATHERSTATIONS_MQTT_MQTT__ClientId=${MQTT_CLIENT_ID}
-      - WEATHERSTATIONS_MQTT_MQTT__SubscribeTopic=weatherstations/#
+      - WEATHERSTATIONS_MQTTSERVICE_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Host=mqtt
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Port=1883
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Username=${MQTT_USER}
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Password=${MQTT_USER_PASSWORD}
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__ReceiveMaximumCount=1000
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__ClientId=${MQTT_CLIENT_ID}
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__SubscribeTopic=weatherstations/#
     networks:
       - default
     depends_on:

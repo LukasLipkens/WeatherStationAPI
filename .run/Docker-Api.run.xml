@@ -5,10 +5,10 @@
         <option name="envFilePath" value="" />
         <option name="services">
           <list>
-            <option value="db_mssql" />
-            <option value="mqtt" />
-            <option value="mqtt_service" />
-            <option value="webapi" />
+            <option value="db-mssql" />
+            <option value="mqtt-broker" />
+            <option value="mqtt-service" />
+            <option value="api" />
           </list>
         </option>
         <option name="sourceFilePath" value="docker/compose.yml" />

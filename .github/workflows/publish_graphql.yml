@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  build-publish_webapi:
+  build-publish_graphql:
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'live'
     runs-on: ubuntu-latest
 

@@ -23,13 +23,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-data", "docker-data"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.WeatherStations.Shared", "src\UCLL.Projects.WeatherStations.Shared\UCLL.Projects.WeatherStations.Shared.csproj", "{C440E6FD-C294-49F8-B007-6FA01185C9EB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.WeatherStations.WebApi", "src\UCLL.Projects.WeatherStations.WebApi\UCLL.Projects.WeatherStations.WebApi.csproj", "{C057591D-6F9A-4E08-B687-CD301892F213}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.WeatherStations.Api", "src\UCLL.Projects.WeatherStations.Api\UCLL.Projects.WeatherStations.Api.csproj", "{C057591D-6F9A-4E08-B687-CD301892F213}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.WeatherStations.MQTT", "src\UCLL.Projects.WeatherStations.MQTT\UCLL.Projects.WeatherStations.MQTT.csproj", "{338E1417-ADC3-4E83-8597-2A075C025BE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.WeatherStations.MqttService", "src\UCLL.Projects.WeatherStations.MqttService\UCLL.Projects.WeatherStations.MqttService.csproj", "{338E1417-ADC3-4E83-8597-2A075C025BE9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.Weatherstations.WebApi.Tests", "tests\UCLL.Projects.Weatherstations.WebApi.Tests\UCLL.Projects.Weatherstations.WebApi.Tests.csproj", "{FB00EE12-EAB3-4516-86D1-CD733DE48396}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.Weatherstations.Api.Tests", "tests\UCLL.Projects.Weatherstations.Api.Tests\UCLL.Projects.Weatherstations.Api.Tests.csproj", "{FB00EE12-EAB3-4516-86D1-CD733DE48396}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.Weatherstations.MQTT.Tests", "tests\UCLL.Projects.Weatherstations.MQTT.Tests\UCLL.Projects.Weatherstations.MQTT.Tests.csproj", "{2B3C429C-2E47-4E68-8616-0DEAE320A21B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.Weatherstations.MqttService.Tests", "tests\UCLL.Projects.Weatherstations.MqttService.Tests\UCLL.Projects.Weatherstations.MqttService.Tests.csproj", "{2B3C429C-2E47-4E68-8616-0DEAE320A21B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UCLL.Projects.WeatherStations.GraphQL", "src\UCLL.Projects.WeatherStations.GraphQL\UCLL.Projects.WeatherStations.GraphQL.csproj", "{8FA3EFD1-DDC3-4958-B276-B0C140733FC7}"
 EndProject

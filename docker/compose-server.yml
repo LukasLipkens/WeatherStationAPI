@@ -20,7 +20,6 @@
     labels:
       - "traefik.enable=false"
 
-
   db-mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: weatherstations_db_mssql

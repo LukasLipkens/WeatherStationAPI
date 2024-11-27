@@ -69,7 +69,7 @@
     networks:
       - default
     depends_on:
-      - db_mssql
+      - db-mssql
     restart: unless-stopped
 
   mqtt-service:
@@ -91,8 +91,8 @@
     networks:
       - default
     depends_on:
-      - mqtt
-      - db_mssql
+      - mqtt-broker
+      - db-mssql
     restart: unless-stopped
 
   graphql:
@@ -110,7 +110,7 @@
     networks:
       - default
     depends_on:
-      - db_mssql
+      - db-mssql
     restart: unless-stopped
 
 
@@ -122,3 +122,4 @@ volumes:
 
 networks:
   default:
+    name: weatherstations-default

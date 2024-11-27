@@ -16,9 +16,9 @@ namespace UCLL.Projects.WeatherStations.MQTT.Repositories
         {
             _weatherstationsContext = weatherstationsContext;
             _logger = logger;
-        }
+        } 
 
-        public void AddBatteryPercentage(string stationId, double batteryPercentage)
+        public void AddInfoStation(string stationId, string name, string password)
         {
             try
             {
@@ -30,21 +30,22 @@ namespace UCLL.Projects.WeatherStations.MQTT.Repositories
                     throw new ArgumentException("Station with the given ID does not exist.");
                 }
 
-                station.BatteryLevel = batteryPercentage;
+                station.Name = name;
+                station.Password = password;
 
                 _weatherstationsContext.Stations.Update(station);
                 _weatherstationsContext.SaveChanges();
-                _logger.LogInformation("Battery percentage for station '{StationId}' updated to {BatteryPercentage}%.", stationId, batteryPercentage);
+                _logger.LogInformation("Info for station '{StationId}' updated to Name: {Name}, Password: {Password}.", stationId, name, password);
             }
             catch (ArgumentException ex)
             {
                 // Specifieke afhandeling voor een station dat niet bestaat
-                _logger.LogWarning(ex, "Argument exception occurred while updating battery percentage for station '{StationId}'.", stationId);
+                _logger.LogWarning(ex, "Argument exception occurred while updating info for station '{StationId}'.", stationId);
             }
             catch (Exception ex)
             {
                 // Algemene foutafhandeling
-                _logger.LogError(ex, "An error occurred while updating the battery percentage for station '{StationId}'.", stationId);
+                _logger.LogError(ex, "An error occurred while updating the info for station '{StationId}'.", stationId);
             }
         }
 

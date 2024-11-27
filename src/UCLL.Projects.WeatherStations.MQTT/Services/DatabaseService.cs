@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Threading.Channels;
+using System.Web;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using UCLL.Projects.WeatherStations.MQTT.Interfaces;
@@ -80,19 +81,20 @@ public class DatabaseService : IHostedService
                         }
                         break;
 
-                    case "status":
+                    case "info":
                         try
                         {
-                            string[] status = message.Payload.Trim('{', '}').Split(",");
-                            double batteryLevel = Convert.ToDouble(status[0].Split(":")[1].Trim('"'), CultureInfo.InvariantCulture);
-
-                            // Voeg batterijpercentage toe aan de repository
-                            _stationRepository.AddBatteryPercentage(message.StationId, batteryLevel);
+                            string[] info = message.Payload.Trim('{', '}').Split(",");
+                            string name = info[0].Split(":")[1].Trim('"');
+                            string password = info[1].Split(":")[1].Trim('"');
+                            //HttpUtility.UrlDecode(password);
+                            _stationRepository.AddInfoStation(message.StationId, name, password);
                         }
                         catch (Exception ex)
                         {
-                            _logger.LogError(ex, $"Error processing 'status' topic for station {message.StationId}");
+                            _logger.LogError(ex, $"Error processing 'info' topic for station {message.StationId}");
                         }
+
                         break;
 
                     default:

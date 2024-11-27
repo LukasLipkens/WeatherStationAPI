@@ -4,7 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddGraphQLServer()
-    .AddQueryType<Query>(); //voegt file toe aan server
+    .AddQueryType<Query>() //voegt file toe aan server
+    .AddType<Playlist>();
 
 //cors policy voor sandbox
 builder

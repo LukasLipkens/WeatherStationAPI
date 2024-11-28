@@ -125,7 +125,7 @@
     container_name: weatherstations_watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --cleanup weatherstations_api weatherstations_mqtt_service
+    command: --cleanup weatherstations_api weatherstations_mqtt_service weatherstations_graphql
     environment:
       - WATCHTOWER_POLL_INTERVAL=300
       - WATCHTOWER_INCLUDE_RESTARTING=true

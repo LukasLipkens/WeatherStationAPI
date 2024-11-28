@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{6F77E1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-data", "docker-data", "{2725C35D-EEC9-4E51-98BD-E791C7234828}"
+	ProjectSection(SolutionItems) = preProject
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.WeatherStations.Shared", "src\UCLL.Projects.WeatherStations.Shared\UCLL.Projects.WeatherStations.Shared.csproj", "{C440E6FD-C294-49F8-B007-6FA01185C9EB}"
 EndProject
@@ -32,6 +34,34 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UCLL.Projects.Weatherstations.MqttService.Tests", "tests\UCLL.Projects.Weatherstations.MqttService.Tests\UCLL.Projects.Weatherstations.MqttService.Tests.csproj", "{2B3C429C-2E47-4E68-8616-0DEAE320A21B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UCLL.Projects.WeatherStations.GraphQL", "src\UCLL.Projects.WeatherStations.GraphQL\UCLL.Projects.WeatherStations.GraphQL.csproj", "{8FA3EFD1-DDC3-4958-B276-B0C140733FC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mosquitto", "mosquitto", "{D2592F94-762D-4959-AFA0-57A2DB846D9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{A0CC4E9B-72A0-4BED-8084-970E80FC1B59}"
+	ProjectSection(SolutionItems) = preProject
+		docker-data\mosquitto\config\acl_file = docker-data\mosquitto\config\acl_file
+		docker-data\mosquitto\config\mosquitto.conf = docker-data\mosquitto\config\mosquitto.conf
+		docker-data\mosquitto\config\passwd = docker-data\mosquitto\config\passwd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{FF9527F6-20B9-49F4-B6D3-A334F41950CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "log", "log", "{CB7F869C-5578-41A4-95AC-63EB1D06F299}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mssql", "mssql", "{308FD050-06E7-40AA-9E16-38C9BE50D9D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "healthcheck", "healthcheck", "{12905777-3D02-48AE-B636-8F1BF0CB29BE}"
+	ProjectSection(SolutionItems) = preProject
+		docker-data\mssql\healthcheck\script.sh = docker-data\mssql\healthcheck\script.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "init", "init", "{B0AED9BE-C832-470D-B431-556CBAA8B0F0}"
+	ProjectSection(SolutionItems) = preProject
+		docker-data\mssql\init\init.sh = docker-data\mssql\init\init.sh
+		docker-data\mssql\init\init-db.sh = docker-data\mssql\init\init-db.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "log", "log", "{A4E648C0-4A65-45BB-B259-3219EF68080C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +104,14 @@ Global
 		{2B3C429C-2E47-4E68-8616-0DEAE320A21B} = {EB03D4F0-E950-412B-967A-5C21D9E03114}
 		{C440E6FD-C294-49F8-B007-6FA01185C9EB} = {2215AC95-1A8B-4183-95DE-01908FF7823F}
 		{8FA3EFD1-DDC3-4958-B276-B0C140733FC7} = {2215AC95-1A8B-4183-95DE-01908FF7823F}
+		{D2592F94-762D-4959-AFA0-57A2DB846D9B} = {2725C35D-EEC9-4E51-98BD-E791C7234828}
+		{A0CC4E9B-72A0-4BED-8084-970E80FC1B59} = {D2592F94-762D-4959-AFA0-57A2DB846D9B}
+		{FF9527F6-20B9-49F4-B6D3-A334F41950CE} = {D2592F94-762D-4959-AFA0-57A2DB846D9B}
+		{CB7F869C-5578-41A4-95AC-63EB1D06F299} = {D2592F94-762D-4959-AFA0-57A2DB846D9B}
+		{308FD050-06E7-40AA-9E16-38C9BE50D9D4} = {2725C35D-EEC9-4E51-98BD-E791C7234828}
+		{12905777-3D02-48AE-B636-8F1BF0CB29BE} = {308FD050-06E7-40AA-9E16-38C9BE50D9D4}
+		{B0AED9BE-C832-470D-B431-556CBAA8B0F0} = {308FD050-06E7-40AA-9E16-38C9BE50D9D4}
+		{A4E648C0-4A65-45BB-B259-3219EF68080C} = {308FD050-06E7-40AA-9E16-38C9BE50D9D4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B8A7FA4D-A054-4660-82BF-71BEB15D2E1F}

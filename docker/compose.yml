@@ -56,8 +56,8 @@
     image: weatherstations-api:dev
     container_name: weatherstations_api
     build:
-      context: ../src/UCLL.Projects.WeatherStations.Api
-      dockerfile: ./Dockerfile
+      context: ../
+      dockerfile: ./src/UCLL.Projects.WeatherStations.Api/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       #- ASPNETCORE_HTTPS_PORTS=8081
@@ -76,8 +76,8 @@
     image: weatherstations-mqtt-service:dev
     container_name: weatherstations_mqtt_service
     build:
-      context: ../src/UCLL.Projects.WeatherStations.MqttService
-      dockerfile: ./Dockerfile
+      context: ../
+      dockerfile: ./src/UCLL.Projects.WeatherStations.MqttService/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - WEATHERSTATIONS_MQTTSERVICE_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
@@ -99,8 +99,8 @@
     image: weatherstations-graphql:dev
     container_name: weatherstations_graphql
     build:
-      context: ../src/UCLL.Projects.WeatherStations.GraphQL
-      dockerfile: ./Dockerfile
+      context: ../
+      dockerfile: ./src/UCLL.Projects.WeatherStations.GraphQL/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_HTTP_PORTS=8080

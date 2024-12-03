@@ -1,0 +1,144 @@
+﻿services:
+  mqtt-broker:
+    image: eclipse-mosquitto:2.0
+    container_name: weatherstations_mqtt_broker
+    ports:
+      - "1883:1883" # default mqtt port
+      - "9001:9001" # default mqtt over websockets port
+    networks:
+      - default
+    volumes:
+      - ./mosquitto/config:/mosquitto/config:rw
+      - ./mosquitto/data:/mosquitto/data:rw
+      - ./mosquitto/log:/mosquitto/log:rw
+    healthcheck:
+      test: [ "CMD", "nc", "-zv", "localhost", "1883" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=false"
+
+  db-mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: weatherstations_db_mssql
+    user: root # don't like this but no other fix at the moment
+    command: /bin/bash -c "
+      sed -i 's/\r$//' /init/init.sh &&
+      chmod +x /init/init.sh &&
+      /bin/bash /init/init.sh
+      "
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${MSSQL_SERVERADMIN_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_USER_R=${DB_USER_R}
+      - DB_USER_R_PASSWORD=${DB_USER_R_PASSWORD}
+      - DB_USER_RW=${DB_USER_RW}
+      - DB_USER_RW_PASSWORD=${DB_USER_RW_PASSWORD}
+    ports:
+      - "1433:1433"
+    networks:
+      - default
+    volumes:
+      - mssqldata:/var/opt/mssql
+      - ./mssql/init:/init:rw
+      - ./mssql/healthcheck:/healthcheck:rw
+      - ./mssql/log:/var/opt/mssql/log:rw
+    healthcheck:
+      test: [ "CMD", "/bin/bash", "/healthcheck/script.sh" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=false"
+
+  api:
+    image: docker.io/weatherstations/weatherstations-api:latest
+    container_name: weatherstations_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      #- ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_HTTP_PORTS=8080
+      - WEATHERSTATIONS_API_CONNECTIONSTRINGS__WeatherStationsDb=Server=db-mssql;Database=${DB_NAME}_prod;User Id=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=true;
+    networks:
+      - default
+      - traefik-routing
+    depends_on:
+      - db-mssql
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.weatherstations-api.entryPoints=websecure"
+      - "traefik.http.routers.weatherstations-api.rule=Host(`school.rogiersj.be`) && (PathPrefix(`/api`) || PathPrefix(`/swagger`))"
+      - "traefik.http.services.weatherstations-api.loadbalancer.server.port=8080"
+      - "traefik.http.routers.weatherstations-api.tls=true"
+      - "traefik.http.routers.weatherstations-api.tls.certresolver=letsencrypt-resolver"
+
+  mqtt-service:
+    image: docker.io/weatherstations/weatherstations-mqtt-service:latest
+    container_name: weatherstations_mqtt_service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - WEATHERSTATIONS_MQTTSERVICE_CONNECTIONSTRINGS__WeatherStationsDb=Server=db-mssql;Database=${DB_NAME}_prod;User Id=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=true;
+      #- WEATHERSTATIONS_MQTT_MQTT__Host=mqtt
+      - WEATHERSTATIONS_MQTTSERVICE__MQTT_Host=k106.ucll-labo.be
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Port=1883
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Username=${MQTT_USER}
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Password=${MQTT_USER_PASSWORD}
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__ReceiveMaximumCount=1000
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__ClientId=${MQTT_CLIENT_ID}
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__SubscribeTopic=weatherstations/#
+    networks:
+      - default
+    depends_on:
+      - mqtt-broker
+      - db-mssql
+    restart: unless-stopped
+
+  graphql:
+    image: docker.io/weatherstations/weatherstations-graphql:latest
+    container_name: weatherstations_graphql
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+      - WEATHERSTATIONS_GRAPHQL_CONNECTIONSTRINGS__WeatherStationsDb=Server=db-mssql;Database=${DB_NAME}_prod;User Id=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};TrustServerCertificate=True;MultipleActiveResultSets=true;
+    networks:
+      - default
+      - traefik-routing
+    depends_on:
+      - db-mssql
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.weatherstations-graphql.entryPoints=websecure"
+      - "traefik.http.routers.weatherstations-graphql.rule=Host(`school.rogiersj.be`) && PathPrefix(`/graphql`)"
+      - "traefik.http.services.weatherstations-graphql.loadbalancer.server.port=8080"
+      - "traefik.http.routers.weatherstations-graphql.tls=true"
+      - "traefik.http.routers.weatherstations-graphql.tls.certresolver=letsencrypt-resolver"
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: weatherstations_watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --cleanup weatherstations_api weatherstations_mqtt_service weatherstations_graphql
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=300
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+
+
+
+volumes:
+  mssqldata:
+
+
+
+networks:
+  default:
+    name: weatherstations-default
+  traefik-routing:
+    external: true

@@ -10,7 +10,7 @@ public class WeatherstationsContextFactory : IDesignTimeDbContextFactory<Weather
     public WeatherstationsContext CreateDbContext(string[] args)
     {
         DbContextOptionsBuilder<WeatherstationsContext> optionsBuilder = new();
-        optionsBuilder.UseSqlServer(connectionString: @"Server=(localdb)\\MSSQLLocalDB;Database=weatherstationdata;Trusted_Connection=True;MultipleActiveResultSets=true");
+        optionsBuilder.UseSqlServer(connectionString: @"Server=(localdb)\MSSQLLocalDB;Database=weatherstationdata;Trusted_Connection=True;MultipleActiveResultSets=true");
 
         return new(optionsBuilder.Options);
     }

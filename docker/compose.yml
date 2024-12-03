@@ -1,7 +1,7 @@
 ﻿services:
-  mqtt:
+  mqtt-broker:
     image: eclipse-mosquitto:2.0
-    container_name: weatherstations_mqtt
+    container_name: weatherstations_mqtt_broker
     ports:
       - "1883:1883" # default mqtt port
       - "9001:9001" # default mqtt over websockets port
@@ -18,7 +18,7 @@
       retries: 3
     restart: unless-stopped
 
-  db_mssql:
+  db-mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: weatherstations_db_mssql
     user: root # don't like this but no other fix at the moment
@@ -52,84 +52,74 @@
       start_period: 30s
     restart: unless-stopped
 
-  #db_pg:
-  #  image: timescale/timescaledb:latest-pg16
-  #  container_name: weatherstations_db_pg
-  #  environment:
-  #    - POSTGRES_USER=${POSTGRES_USER}
-  #    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  #    - POSTGRES_DB=${DB_NAME}_prod
-  #    - DB_NAME=${DB_NAME}
-  #    - DB_USER_R=${DB_USER_R}
-  #    - DB_USER_R_PASSWORD=${DB_USER_R_PASSWORD}
-  #    - DB_USER_RW=${DB_USER_RW}
-  #    - DB_USER_RW_PASSWORD=${DB_USER_RW_PASSWORD}
-  #  ports:
-  #    - "5432:5432"
-  #  networks:
-  #    - default
-  #  volumes:
-  #    - pgdata:/var/lib/postgresql/data
-  #    - ../docker-data/timescaledb/init:/docker-entrypoint-initdb.d/:rw
-  #  healthcheck:
-  #    test: [ "CMD-SHELL", "su", "postgres", "-c", "'pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}'" ]
-  #    interval: 10s
-  #    timeout: 5s
-  #    retries: 5
-  #  restart: unless-stopped
-
-  webapi:
-    image: ucll.projects.weatherstations.webapi:dev
-    container_name: weatherstations_webapi
+  api:
+    image: weatherstations-api:dev
+    container_name: weatherstations_api
     build:
-      context: ../src/UCLL.Projects.WeatherStations.WebApi
-      dockerfile: ./Dockerfile
+      context: ../
+      dockerfile: ./src/UCLL.Projects.WeatherStations.Api/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       #- ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_HTTP_PORTS=8080
-      - WEATHERSTATIONS_WEBAPI_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
+      - WEATHERSTATIONS_API_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
     ports:
       #- "443:8081"
       - "80:8080"
     networks:
       - default
     depends_on:
-      - db_mssql
-      #- db_pg
+      - db-mssql
     restart: unless-stopped
 
-  mqtt_service:
-    image: ucll.projects.weatherstations.mqtt:dev
+  mqtt-service:
+    image: weatherstations-mqtt-service:dev
     container_name: weatherstations_mqtt_service
     build:
-      context: ../src/UCLL.Projects.WeatherStations.MQTT
-      dockerfile: ./Dockerfile
+      context: ../
+      dockerfile: ./src/UCLL.Projects.WeatherStations.MqttService/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - WEATHERSTATIONS_MQTT_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
-      - WEATHERSTATIONS_MQTT_MQTT__Host=mqtt
-      - WEATHERSTATIONS_MQTT_MQTT__Port=1883
-      - WEATHERSTATIONS_MQTT_MQTT__Username=${MQTT_USER}
-      - WEATHERSTATIONS_MQTT_MQTT__Password=${MQTT_USER_PASSWORD}
-      - WEATHERSTATIONS_MQTT_MQTT__ReceiveMaximumCount=1000
-      - WEATHERSTATIONS_MQTT_MQTT__ClientId=${MQTT_CLIENT_ID}
-      - WEATHERSTATIONS_MQTT_MQTT__SubscribeTopic=weatherstations/#
+      - WEATHERSTATIONS_MQTTSERVICE_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Host=mqtt
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Port=1883
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Username=${MQTT_USER}
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__Password=${MQTT_USER_PASSWORD}
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__ReceiveMaximumCount=1000
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__ClientId=${MQTT_CLIENT_ID}
+      - WEATHERSTATIONS_MQTTSERVICE_MQTT__SubscribeTopic=weatherstations/#
     networks:
       - default
     depends_on:
-      - mqtt
-      - db_mssql
-      #- db_pg
+      - mqtt-broker
+      - db-mssql
+    restart: unless-stopped
+
+  graphql:
+    image: weatherstations-graphql:dev
+    container_name: weatherstations_graphql
+    build:
+      context: ../
+      dockerfile: ./src/UCLL.Projects.WeatherStations.GraphQL/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+      - WEATHERSTATIONS_GRAPHQL_CONNECTIONSTRINGS__WeatherStationsDb=Server=db_mssql;Database=${DB_NAME}_prod;User=${DB_USER_RW};Password=${DB_USER_RW_PASSWORD};Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=false;
+    ports:
+      - "80:8080"
+    networks:
+      - default
+    depends_on:
+      - db-mssql
     restart: unless-stopped
 
 
 
 volumes:
   mssqldata:
-  pgdata:
 
 
 
 networks:
   default:
+    name: weatherstations-default

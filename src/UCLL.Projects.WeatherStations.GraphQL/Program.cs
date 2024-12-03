@@ -12,7 +12,6 @@ builder.Services.AddDbContext<WeatherstationsContext>(options =>
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()    // Je Query klasse
-    .AddType<StationType>() // Registreer de aangepaste StationType
     .AddProjections()         // Voor nested objecten
     .AddFiltering()           // Voor filter queries
     .AddSorting();            // Voor sorteer mogelijkheden

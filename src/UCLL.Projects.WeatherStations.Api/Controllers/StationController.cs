@@ -63,7 +63,7 @@ public class StationController : Controller
             return Ok("Done");
         }
 
-        return BadRequest("Station not found");
+        return BadRequest("Station not found or password is wrong");
 
     }
 }

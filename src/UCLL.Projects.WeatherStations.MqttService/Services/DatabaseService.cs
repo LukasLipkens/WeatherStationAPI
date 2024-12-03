@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Threading.Channels;
+using System.Web;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using UCLL.Projects.WeatherStations.MqttService.Interfaces;
@@ -86,7 +87,10 @@ public class DatabaseService : IHostedService
                             string[] info = message.Payload.Trim('{', '}').Split(",");
                             string name = info[0].Split(":")[1].Trim('"');
                             string password = info[1].Split(":")[1].Trim('"');
-                            //HttpUtility.UrlDecode(password);
+
+                            password = HttpUtility.UrlDecode(password); 
+                            name = HttpUtility.UrlDecode(name);
+                            
                             _stationRepository.AddInfoStation(message.StationId, name, password);
                         }
                         catch (Exception ex)

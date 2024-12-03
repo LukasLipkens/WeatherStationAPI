@@ -48,9 +48,21 @@ public class StationRepository(WeatherstationsContext weatherstationsContext) : 
 
     public bool UpdateStationInfo(UpdateStationDto data)
     {
+        // eerst checken of het passwoord klopt, passwoord niet aanpassen
+
         Station? station = _weatherstationsContext.Stations.FirstOrDefault(s => s.Id == data.Id);
+
+
+
+
         if (station != null)
         {
+            if (!ValidateStationPass(data, station))
+            {
+                return false;
+            }
+
+
             station.Name = data.Name;
             station.Description = data.Description;
 
@@ -63,5 +75,23 @@ public class StationRepository(WeatherstationsContext weatherstationsContext) : 
             return false;
         }
 
+    }
+
+    public bool ValidateStationPass(UpdateStationDto update, Station station)
+    {
+
+        var pass = update.Password;
+
+        if (pass == null)
+            return false;
+
+
+        if (station != null) {
+            if (station.Password == pass)
+                return true;
+        }
+
+
+        return false;
     }
 }

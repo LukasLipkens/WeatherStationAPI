@@ -9,5 +9,6 @@ public class StationSensor
     //navigation properties
     public virtual Station Station { get; set; } = null!;
     public virtual Sensor Sensor { get; set; } = null!;
+    [UseFiltering]
     public virtual ICollection<Measurement> Measurements { get; set; } = null!;
 }

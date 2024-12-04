@@ -15,7 +15,7 @@ builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()    // Je Query klasse
     .AddProjections()         // Voor nested objecten
-    .AddFiltering()           // Voor filter queries
+    .AddFiltering(options => options.AddDefaults()) // Voor filter queries
     .AddSorting();            // Voor sorteer mogelijkheden
 
 WebApplication app = builder.Build();

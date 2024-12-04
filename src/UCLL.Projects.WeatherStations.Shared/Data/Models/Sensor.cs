@@ -7,5 +7,6 @@ public class Sensor
     public required string Unit { get; set; }
 
     // navigation properties
+    [UseFiltering]
     public virtual ICollection<StationSensor> StationSensors { get; set; } = null!;
 }

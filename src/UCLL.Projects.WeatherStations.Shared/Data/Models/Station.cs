@@ -17,5 +17,7 @@ public class Station
     public StationOnlineStatus OnlineStatus { get; private set; }
 
     // navigation properties
+    [UseFiltering]
+
     public virtual ICollection<StationSensor> StationSensors { get; set; } = null!;
 }

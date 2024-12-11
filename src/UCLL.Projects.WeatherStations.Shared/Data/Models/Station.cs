@@ -1,4 +1,5 @@
-﻿using UCLL.Projects.WeatherStations.Shared.Enums;
+﻿using HotChocolate;
+using UCLL.Projects.WeatherStations.Shared.Enums;
 
 namespace UCLL.Projects.WeatherStations.Shared.Data.Models;
 
@@ -10,6 +11,7 @@ public class Station
     public double? Latitude { get; set; } = null;
     public double? Longitude { get; set; } = null;
     public string? Name { get; set; } = null;
+    [GraphQLIgnore]
     public string? Password { get; set; } = null;
     public string? Description { get; set; } = null;
 

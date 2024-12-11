@@ -203,6 +203,7 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
                 for (int i = 0; i < random.Next(100, 200); i++)
                 {
                     DateTime uniqueTimestamp = now.AddDays(-daysBack)
+                        .AddMicroseconds(measurementIdCounter + random.Next(10, 20))
                         .AddMilliseconds(measurementIdCounter + random.Next(0, 10))
                         .AddSeconds(random.Next(1, 60))
                         .AddMinutes(random.Next(1, 60))

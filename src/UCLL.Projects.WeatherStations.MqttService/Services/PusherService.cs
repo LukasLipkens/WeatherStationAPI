@@ -5,33 +5,45 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace UCLL.Projects.WeatherStations.MqttService.Services
 {
-    public class PusherService : Controller
+    public class PusherService
     {
-        [HttpPost]
-        public async Task<ActionResult> SendStationId(string data)
+        private readonly Pusher? _pusher;
+
+        public PusherService()
         {
+            // Hardcoded configuratie
             var options = new PusherOptions
             {
-                Cluster = "eu",
+                Cluster = "eu", // Vervang door jouw cluster
                 Encrypted = true
             };
 
-            var pusher = new Pusher(
-              "1909710",
-              "49d9d357bd1cd6ab9268",
-              "b32c743d7f8b9711f7a6",
-              options);
+            _pusher = new Pusher(
+                "1909710",       // AppId
+                "49d9d357bd1cd6ab9268", // Key
+                "b32c743d7f8b9711f7a6", // Secret
+                options);
+        }
+        public async Task<bool> SendStationId(string data)
+        {
+            try
+            {
+                var result = await _pusher.TriggerAsync(
+                  "WheaterStation-Channel",
+                  "StationId-Event",
+                  new { message = data });
 
-            var result = await pusher.TriggerAsync(
-              "WheaterStation-Channel",
-              "StationId-Event",
-              new { message = data });
+                return result.StatusCode == HttpStatusCode.OK;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending message to Pusher: {ex.Message}");
+                return false;
+            }
 
-            return new HttpStatusCodeResult((int)HttpStatusCode.OK);
         }
     }
 }

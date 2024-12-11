@@ -38,6 +38,7 @@ internal class Program
             {
                 IConfiguration configuration = hostBuilderContext.Configuration;
                 services.Configure<MqttSettings>(configuration.GetSection("MQTT"));
+                services.Configure<PusherSettings>(configuration.GetSection("PUSHER"));
 
                 services.AddSingleton(Channel.CreateUnbounded<MqttMessage>(
                     new()

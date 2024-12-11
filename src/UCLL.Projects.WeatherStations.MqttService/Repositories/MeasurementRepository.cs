@@ -38,6 +38,7 @@ namespace UCLL.Projects.WeatherStations.MqttService.Repositories
                 _weatherstationsContext.SaveChanges();
 
                 transaction.Commit(); // Commit de transactie als alles succesvol is
+
                 _logger.LogInformation("Measurement added successfully for station '{StationId}' with sensor '{SensorType}' of unit '{SensorUnit}'.", stationId, type, unit);
             }
             catch (Exception ex)

@@ -48,6 +48,7 @@ internal class Program
                 )); // channel voor strings (json wordt ontvangens als een string)
                 services.AddHostedService<Services.MqttService>();
                 services.AddHostedService<DatabaseService>();
+                services.AddSingleton<PusherService>();
                 services.AddSingleton<IMeasurementRepository, MeasurementRepository>();
                 services.AddSingleton<IStationRepository, StationRepository>();
 

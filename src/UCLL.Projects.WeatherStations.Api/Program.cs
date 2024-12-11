@@ -55,6 +55,7 @@ using (IServiceScope scope = app.Services.CreateScope())
 {
     WeatherstationsContext context = scope.ServiceProvider.GetRequiredService<WeatherstationsContext>();
     await context.Database.MigrateAsync();
+    await context.SeedDatabaseAsync();
 }
 
 // Configure the HTTP request pipeline.

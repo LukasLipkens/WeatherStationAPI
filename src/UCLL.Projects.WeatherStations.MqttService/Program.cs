@@ -38,6 +38,7 @@ internal class Program
             {
                 IConfiguration configuration = hostBuilderContext.Configuration;
                 services.Configure<MqttSettings>(configuration.GetSection("MQTT"));
+                services.Configure<PusherSettings>(configuration.GetSection("PUSHER"));
 
                 services.AddSingleton(Channel.CreateUnbounded<MqttMessage>(
                     new()
@@ -48,6 +49,7 @@ internal class Program
                 )); // channel voor strings (json wordt ontvangens als een string)
                 services.AddHostedService<Services.MqttService>();
                 services.AddHostedService<DatabaseService>();
+                services.AddSingleton<PusherService>();
                 services.AddSingleton<IMeasurementRepository, MeasurementRepository>();
                 services.AddSingleton<IStationRepository, StationRepository>();
 

@@ -16,12 +16,15 @@ public class DatabaseService : IHostedService
     private readonly IMeasurementRepository _measurementRepository;
     private readonly IStationRepository _stationRepository;
 
-    public DatabaseService(ILogger<DatabaseService> logger, Channel<MqttMessage> channel, IMeasurementRepository measurementRepository, IStationRepository stationRepository)
+    private PusherService _pusherService;
+
+    public DatabaseService(ILogger<DatabaseService> logger, Channel<MqttMessage> channel, IMeasurementRepository measurementRepository, IStationRepository stationRepository, PusherService pusherService)
     {
         _logger = logger;
         _channel = channel;
         _measurementRepository = measurementRepository;
         _stationRepository = stationRepository;
+        _pusherService = pusherService;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -50,6 +53,8 @@ public class DatabaseService : IHostedService
                                 // Voeg de meting toe aan de repository
                                 _measurementRepository.AddMeasurement(message.StationId, value, type, unit);
                             }
+                            // Pusher 
+                            await _pusherService.SendStationId(message.StationId);
                         }
                         catch (Exception ex)
                         {

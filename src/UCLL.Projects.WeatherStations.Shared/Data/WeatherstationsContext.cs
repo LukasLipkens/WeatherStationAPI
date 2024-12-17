@@ -180,8 +180,7 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
             new() { Type = "AQI", Unit = "ppm" },
             new() { Type = "TVOC", Unit = "ppb" },
             new() { Type = "eCO2", Unit = "ppm" },
-            new() { Type = "windspeed", Unit = "Km/h" },
-            new() { Type = "temperature", Unit = "C" }
+            new() { Type = "windspeed", Unit = "Km/h" }
         ];
         await Sensors.AddRangeAsync(mockSensors);
         await SaveChangesAsync();

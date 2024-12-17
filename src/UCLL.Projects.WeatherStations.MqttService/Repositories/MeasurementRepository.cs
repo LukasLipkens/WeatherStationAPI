@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Globalization;
 using UCLL.Projects.WeatherStations.MqttService.Interfaces;
 using UCLL.Projects.WeatherStations.Shared.Data;
 using UCLL.Projects.WeatherStations.Shared.Data.Models;
@@ -26,6 +27,16 @@ namespace UCLL.Projects.WeatherStations.MqttService.Repositories
                 int sensorId = CheckSensorExists(type, unit);
                 int linkId = CheckStationSensorExists(stationId, sensorId);
 
+                if (type == "battery")
+                {
+                    Station? station = _weatherstationsContext.Stations.FirstOrDefault(s => s.Id == stationId);
+
+                    if (station != null)
+                    {
+                        station.BatteryLevel = double.Parse(value, CultureInfo.InvariantCulture);
+                        _weatherstationsContext.Stations.Update(station);
+                    }
+                }
                 // Meting toevoegen
                 Measurement measurement = new Measurement
                 {

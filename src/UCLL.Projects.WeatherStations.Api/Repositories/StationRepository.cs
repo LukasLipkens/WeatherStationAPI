@@ -25,6 +25,7 @@ public class StationRepository(WeatherstationsContext weatherstationsContext) : 
         {
             Id = databaseStation.Id,
             OnlineStatus = databaseStation.OnlineStatus,
+            BatteryLevel = databaseStation.BatteryLevel,
             Name = databaseStation.Name,
             Latitude = databaseStation.Latitude,
             Longitude = databaseStation.Longitude,

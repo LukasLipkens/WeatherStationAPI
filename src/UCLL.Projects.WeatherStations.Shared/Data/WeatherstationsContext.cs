@@ -157,17 +157,20 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
 
         List<Station> mockStations =
         [
-            new() { Id = "mockstation_ecd1218f0cb2", LastActivityTimestamp = DateTime.UtcNow, BatteryLevel = 38, Latitude = 51.054342, Longitude = 3.717424, Name = "Gent", Description = "Koningin Astridlaan Gent" },
-            new() { Id = "mockstation_9310e8a9ce16", LastActivityTimestamp = DateTime.UtcNow, BatteryLevel = 72, Latitude = 51.329448, Longitude = 4.402464, Name = null, Description = "Grote Markt Antwerpen" },
-            new() { Id = "mockstation_6cd246bbbac3", LastActivityTimestamp = DateTime.UtcNow, BatteryLevel = null, Latitude = 51.2194, Longitude = 4.4025, Name = null, Description = "kleine Markt Antwerpen" },
-            new() { Id = "mockstation_0c455cbb2ceb", LastActivityTimestamp = DateTime.UtcNow, BatteryLevel = 2, Latitude = 51.1055, Longitude = 3.9937, Name = null, Description = "Lokeren" },
-            new() { Id = "mockstation_678a37c9a42c", LastActivityTimestamp = DateTime.UtcNow, BatteryLevel = 88.47, Latitude = 51.2093, Longitude = 3.2247, Name = null, Description = "Brugge" },
-            new() { Id = "mockstation_42bf17205943", LastActivityTimestamp = DateTime.UtcNow, BatteryLevel = 0, Latitude = 50.928467, Longitude = 5.394843, Name = null, Description = "Rooistraat Diepenbeek" },
-            new() { Id = "mockstation_5328f1f993f9", LastActivityTimestamp = DateTime.UtcNow, BatteryLevel = null, Latitude = 50.870927, Longitude = 5.518267, Name = null, Description = "Heidestraat Bilzen" },
-            new() { Id = "mockstation_8a9ca571f2e8", LastActivityTimestamp = DateTime.UtcNow, BatteryLevel = null, Latitude = 50.9304, Longitude = 5.3372, Name = null, Description = "Molenstraat Hasselt" },
-            new() { Id = "mockstation_e927b3abfe77", LastActivityTimestamp = DateTime.UtcNow, BatteryLevel = null, Latitude = 50.9307, Longitude = 5.3322, Name = "weerstation hasselt", Description = "Hasselt" },
-            new() { Id = "mockstation_bfd74310b1ff", LastActivityTimestamp = DateTime.UtcNow, BatteryLevel = null, Latitude = 51.1651, Longitude = 4.9891, Name = "Weerstation geel", Description = "Geel" },
-            new() { Id = "mockstation_27bf9faf9703", LastActivityTimestamp = DateTime.UtcNow, BatteryLevel = null, Latitude = 50.8445, Longitude = 3.6072, Name = "weerstation oudenaarde", Description = "Oudenaarde" }
+            new() { Id = "mockstation_ecd1218f0cb2", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 38, Latitude = 51.054342, Longitude = 3.717424, Name = "Gent-1", Description = "Weer station op de Koningin Astridlaan in Gent met een hele boel sensoren." },
+            new() { Id = "mockstation_9310e8a9ce16", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 72, Latitude = 51.329448, Longitude = 4.402464, Name = "Antwerpen-1", Description = "Weer station op de Grote Markt in Antwerpen met een hele boel sensoren." },
+            new() { Id = "mockstation_6cd246bbbac3", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 43.66, Latitude = 51.2194, Longitude = 4.4025, Name = "Antwerpen-2", Description = "Weer station op de Kleine Markt in Antwerpen met een hele boel sensoren." },
+            new() { Id = "mockstation_0c455cbb2ceb", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 2.54, Latitude = 51.1055, Longitude = 3.9937, Name = "Lokeren-1", Description = "Weer station in Lokeren met een hele boel sensoren." },
+            new() { Id = "mockstation_678a37c9a42c", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 88.47, Latitude = 51.2093, Longitude = 3.2247, Name = "Brugge-1", Description = "Weer station in Brugge met een hele boel sensoren." },
+            new() { Id = "mockstation_42bf17205943", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 11.34, Latitude = 50.928467, Longitude = 5.394843, Name = "Diepenbeek-1", Description = "Weer station op de Rooistraat in Diepenbeek met een hele boel sensoren." },
+            new() { Id = "mockstation_5328f1f993f9", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 56.43, Latitude = 50.870927, Longitude = 5.518267, Name = "Bilzen-1", Description = "Weer station op de Heidestraat in Bilzen met een hele boel sensoren." },
+            new() { Id = "mockstation_8a9ca571f2e8", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 45.23, Latitude = 50.9304, Longitude = 5.3372, Name = "Hasselt-1", Description = "Weer station op de Molenstraat in Hasselt met een hele boel sensoren." },
+            new() { Id = "mockstation_e927b3abfe77", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 14.65, Latitude = 50.9307, Longitude = 5.3322, Name = "Hasselt-2", Description = "Weer station in Hasselt met een hele boel sensoren." },
+            new() { Id = "mockstation_bfd74310b1ff", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 87.35, Latitude = 51.1651, Longitude = 4.9891, Name = "Geel-1", Description = "Weer station in Geel met een hele boel sensoren." },
+            new() { Id = "mockstation_27bf9faf9703", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 65.09, Latitude = 50.8445, Longitude = 3.6072, Name = "Oudenaarde-1", Description = "Weer station in Oudenaarde met een hele boel sensoren." },
+            new() { Id = "mockstation_f4e3d2c1b0a9", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 98.12, Latitude = 51.143117, Longitude = 5.581044, Name = "Bree-1", Description = "Weer station in Bree met een hele boel sensoren." },
+            new() { Id = "mockstation_a1b2c3d4e5f6", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 71.54, Latitude = 50.874192, Longitude = 4.703378, Name = "Leuven-1", Description = "Weer station in Leuven met een temperatuur sensor en een vochtigheidssensor." },
+            new() { Id = "mockstation_1a2b3c4d5e6f", LastActivityTimestamp = DateTime.UtcNow, Password = "defaultPassword123!", BatteryLevel = 38.34, Latitude = 50.957940, Longitude = 5.495229, Name = "Genk-1", Description = "Weer station in Genk met een temperatuur sensor, een vochtigheidssensor, een luchtdruk sensor en een wind snelheid sensor." },
         ];
         await Stations.AddRangeAsync(mockStations);
         await SaveChangesAsync();
@@ -180,13 +183,22 @@ public class WeatherstationsContext(DbContextOptions<WeatherstationsContext> opt
             new() { Type = "AQI", Unit = "ppm" },
             new() { Type = "TVOC", Unit = "ppb" },
             new() { Type = "eCO2", Unit = "ppm" },
-            new() { Type = "windspeed", Unit = "Km/h" }
+            new() { Type = "windspeed", Unit = "Km/h" },
         ];
         await Sensors.AddRangeAsync(mockSensors);
         await SaveChangesAsync();
 
         List<StationSensor> mockStationSensors = [];
-        mockStationSensors.AddRange(from mockStation in mockStations from mockSensor in mockSensors select new StationSensor() { StationId = mockStation.Id, SensorId = mockSensor.Id });
+        mockStationSensors.AddRange(from mockStation in mockStations.SkipLast(2) from mockSensor in mockSensors select new StationSensor() { StationId = mockStation.Id, SensorId = mockSensor.Id });
+
+        mockStationSensors.Add(new() { StationId = mockStations[^2].Id, SensorId = mockSensors[0].Id });
+        mockStationSensors.Add(new() { StationId = mockStations[^2].Id, SensorId = mockSensors[1].Id });
+
+        mockStationSensors.Add(new() { StationId = mockStations.Last().Id, SensorId = mockSensors[0].Id });
+        mockStationSensors.Add(new() { StationId = mockStations.Last().Id, SensorId = mockSensors[1].Id });
+        mockStationSensors.Add(new() { StationId = mockStations.Last().Id, SensorId = mockSensors[2].Id });
+        mockStationSensors.Add(new() { StationId = mockStations.Last().Id, SensorId = mockSensors[6].Id });
+
         await StationSensors.AddRangeAsync(mockStationSensors);
         await SaveChangesAsync();
 

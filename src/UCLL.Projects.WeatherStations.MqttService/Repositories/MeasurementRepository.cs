@@ -50,7 +50,7 @@ namespace UCLL.Projects.WeatherStations.MqttService.Repositories
 
                 transaction.Commit(); // Commit de transactie als alles succesvol is
 
-                _logger.LogInformation("Measurement added successfully for station '{StationId}' with sensor '{SensorType}' of unit '{SensorUnit}'.", stationId, type, unit);
+                //_logger.LogInformation("Measurement added successfully for station '{StationId}' with sensor '{SensorType}' of unit '{SensorUnit}'.", stationId, type, unit);
             }
             catch (Exception ex)
             {
@@ -78,7 +78,7 @@ namespace UCLL.Projects.WeatherStations.MqttService.Repositories
                 });
                 _weatherstationsContext.SaveChanges();
 
-                _logger.LogInformation("New station '{StationId}' added to the system.", stationId);
+                //_logger.LogInformation("New station '{StationId}' added to the system.", stationId);
             }
             catch (Exception ex)
             {

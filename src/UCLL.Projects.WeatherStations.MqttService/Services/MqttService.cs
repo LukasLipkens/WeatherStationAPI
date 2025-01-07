@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Threading;
 using System.Threading.Channels;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -49,17 +50,15 @@ public class MqttService : IHostedService
 
             _mqttClient.ApplicationMessageReceivedAsync += HandleIncomingMessageAsync;
 
-            var subscribeOptions = new MqttClientSubscribeOptionsBuilder()
-            .WithTopicFilter(f =>
-            {
-                f.WithTopic(_mqttSettings.SubscribeTopic);
-            })
-            .Build();
+            //var subscribeOptions = new MqttClientSubscribeOptionsBuilder()
+            //.WithTopicFilter(f =>
+            //{
+            //    f.WithTopic(_mqttSettings.SubscribeTopic);
+            //})
+            //.Build();
 
-            await _mqttClient.SubscribeAsync(subscribeOptions, cancellationToken);
-            _logger.LogInformation($"Subscribed to topic: {_mqttSettings.SubscribeTopic}");
-
-            _logger.LogInformation($"Subscribed to topic: {_mqttSettings.SubscribeTopic}");
+            //await _mqttClient.SubscribeAsync(subscribeOptions, cancellationToken);
+            //_logger.LogInformation($"Subscribed to topic: {_mqttSettings.SubscribeTopic}");
         }
         catch (Exception ex)
         {
@@ -95,12 +94,22 @@ public class MqttService : IHostedService
             _logger.LogInformation("Connecting to MQTT broker...");
             await _mqttClient.ConnectAsync(_mqttOptions, cancellationToken);
             _logger.LogInformation("Connected to MQTT broker.");
+
+            // subscribe op de topics
+            var subscribeOptions = new MqttClientSubscribeOptionsBuilder()
+            .WithTopicFilter(f =>
+            {
+                f.WithTopic(_mqttSettings.SubscribeTopic);
+            })
+            .Build();
+
+            await _mqttClient.SubscribeAsync(subscribeOptions);
+            _logger.LogInformation($"Subscribed to topic: {_mqttSettings.SubscribeTopic}");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to connect to MQTT broker. Retrying in 5 seconds...");
-            await Task.Delay(5000, cancellationToken);
-            if (!_isStopping) await ConnectAsync(cancellationToken);
+            _logger.LogError("Failed to connect to MQTT broker. Retrying in 5 seconds...");
+            
         }
     }
 
@@ -109,22 +118,19 @@ public class MqttService : IHostedService
         if (_isStopping) return;
 
         _logger.LogWarning("Disconnected from MQTT broker. Attempting to reconnect...");
-        int retryDelay = 1000; // Start with 1 second delay
-        const int maxRetryDelay = 30000; // Max delay of 30 seconds
 
         while (!_isStopping)
         {
             try
             {
                 await ConnectAsync(CancellationToken.None);
+                
                 break;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Reconnection attempt failed.");
-                await Task.Delay(retryDelay);
+                _logger.LogError("Reconnection attempt failed.");
 
-                retryDelay = Math.Min(retryDelay * 2, maxRetryDelay); // Exponential backoff
             }
         }
     }

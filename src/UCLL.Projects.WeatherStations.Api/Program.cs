@@ -28,6 +28,16 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 string databaseConnectionString = builder.Configuration.GetConnectionString("WeatherStationsDb")
     ?? throw new("ConnectionString 'WeatherStationsDb' not found.");
 
@@ -69,6 +79,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 //app.UseHttpsRedirection(); // prof's wishes
+
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
